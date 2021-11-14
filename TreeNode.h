@@ -163,6 +163,7 @@ template <typename datatype>
 TreeNode<datatype>::TreeNode() {
     left = nullptr;
     right = nullptr;
+    height = 0;
 }
 
 template <typename datatype>
@@ -170,6 +171,7 @@ TreeNode<datatype>::TreeNode(datatype newData) {
     data = newData;
     left = nullptr;
     right = nullptr;
+    height = 0;
 }
 
 template <typename datatype>
@@ -177,6 +179,7 @@ TreeNode<datatype>::TreeNode(TreeNode<datatype>& oldData) {
     data = oldData.data;
     left = oldData.left;
     right = oldData.right;
+    height = oldData.height;
 }
 
 template <typename datatype>
@@ -184,6 +187,7 @@ TreeNode<datatype>::TreeNode(TreeNode<datatype>* oldData) {
     data = oldData->data;
     left = oldData->left;
     right = oldData->right;
+    height = oldData->height;
 }
 
 

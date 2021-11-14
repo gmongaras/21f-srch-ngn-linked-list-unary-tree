@@ -12,26 +12,30 @@
  */
 #include "catch_setup.h"
 #include "AVLTree.h"
+#include "DocumentProcessor.h"
 
 
 int main(int argc, char** argv) {
     AVLTree<int> t;
     int a = 1;
-    int b = 3;
-    int c = -1;
+    int b = 2;
+    int c = 3;
+    int d = 4;
+    int e = 5;
+    int f = 6;
     t.insert(a);
     t.insert(b);
     t.insert(c);
+    t.insert(d);
+    t.insert(e);
+    t.insert(f);
     t.printTree();
-    AVLTree<int> t2(t);
-    int d = 10;
-    int e = 2;
-    t2.insert(d);
-    t2.insert(e);
-    t2.printTree();
 
-    int w;
-    std::cin >> w;
+    DocumentProcessor p;
+    p.processDocuments(argv[1]);
+
+
+
     if(argc == 1) {
 
         runCatchTests();

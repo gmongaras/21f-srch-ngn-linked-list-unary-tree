@@ -10,9 +10,6 @@
 template <typename nodetype>
 class AVLTree {
 private:
-    //friend class TreeNode<nodetype>;
-
-
     TreeNode<nodetype>* root;
 
 
@@ -25,7 +22,7 @@ private:
      * Clears the given subtree and frees the memory the nodes are using
      * @param subtree The subtree to clear
      */
-    void clearSubtree(TreeNode<nodetype>* subtree);
+    void clearSubtree(TreeNode<nodetype>*& subtree);
 
     /**
      * CopyConstructorHelper Method
@@ -33,7 +30,7 @@ private:
      * This method is mainly for the use of the copy constructor
      * @param subtree The subtree to add to this tree
      */
-    void CopyConstructorHelper(TreeNode<nodetype> *newSubtree, TreeNode<nodetype> *oldSubtree);
+    void CopyConstructorHelper(TreeNode<nodetype>*& newSubtree, TreeNode<nodetype>*& oldSubtree);
 
     /**
      * PrintSubtree Helper Method
@@ -42,7 +39,7 @@ private:
      * @param space The space within the print
      * Node: code from https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/
      */
-    void printSubtree(TreeNode<nodetype>* subtree, int space);
+    void printSubtree(TreeNode<nodetype>*& subtree, int space);
 
 
     /**
@@ -51,7 +48,33 @@ private:
      * @param newItem The item to insert into the tree
      * @param curPtr The current node to insert the new item into
      */
-    void insert(nodetype& newItem, TreeNode<nodetype>* curPtr);
+    void insert(nodetype& newItem, TreeNode<nodetype>*& curPtr);
+
+    /**
+     * balance Helper Method
+     * Ensures the given subtree is balanced
+     * @param subtree The subtree to balance
+     */
+    void balance(TreeNode<nodetype>*& subtree);
+
+    /**
+     * getSubtreeHeight Method
+     * Returns the height of a given subtree
+     * @param subtree The subtree to balance
+     */
+    int getSubtreeHeight(TreeNode<nodetype>*& subtree);
+
+
+    /**
+     * Rearranging Methods (4 methods)
+     * Given a subtree, the functions rearrange the nodes to maintain
+     * AVL node consistency and keep the tree balanced
+     * @param subtree The subtree to balance
+     */
+    void rotateWithLeftChild(TreeNode<nodetype>*& subtree);
+    void doubleWithLeftChild(TreeNode<nodetype>*& subtree);
+    void rotateWithRightChild(TreeNode<nodetype>*& subtree);
+    void doubleWithRightChild(TreeNode<nodetype>*& subtree);
 
 
 
@@ -96,7 +119,7 @@ public:
  **    clearSubtree Method    **
  ******************************/
 template <typename nodetype>
-void AVLTree<nodetype>::clearSubtree(TreeNode<nodetype>* subtree) {
+void AVLTree<nodetype>::clearSubtree(TreeNode<nodetype>*& subtree) {
     // If the subtree is nullptr, return (base case)
     if (subtree == nullptr) {
         return;
@@ -117,7 +140,7 @@ void AVLTree<nodetype>::clearSubtree(TreeNode<nodetype>* subtree) {
  **    CopyConstructorHelper Method    **
  ***************************************/
 template <typename nodetype>
-void AVLTree<nodetype>::CopyConstructorHelper(TreeNode<nodetype> *newSubtree, TreeNode<nodetype> *oldSubtree) {
+void AVLTree<nodetype>::CopyConstructorHelper(TreeNode<nodetype>*& newSubtree, TreeNode<nodetype>*& oldSubtree) {
     // If the old subtree is nullptr, go back up the stack
     if (oldSubtree == nullptr) {
         return;
@@ -138,7 +161,7 @@ void AVLTree<nodetype>::CopyConstructorHelper(TreeNode<nodetype> *newSubtree, Tr
  **    printSubtree Method    **
  ******************************/
 template <typename nodetype>
-void AVLTree<nodetype>::printSubtree(TreeNode<nodetype>* subtree, int space) {
+void AVLTree<nodetype>::printSubtree(TreeNode<nodetype>*& subtree, int space) {
     // Base case
     if (subtree == nullptr)
         return;
@@ -166,37 +189,143 @@ void AVLTree<nodetype>::printSubtree(TreeNode<nodetype>* subtree, int space) {
  **    insert Helper Method    **
  *******************************/
 template <typename nodetype>
-void AVLTree<nodetype>::insert(nodetype &newItem, TreeNode<nodetype>* curPtr) {
+void AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curPtr) {
+    // If curPtr is nullptr, set the curPtr to the newItem and set the
+    // current node's height to 0
+    if (curPtr == nullptr) {
+        curPtr = new TreeNode<nodetype>(newItem);
+    }
+
     // If the new item is less than the current node to insert the node into,
     // add the node to the left of that node
-    if (newItem < (*curPtr).data) {
-        // If the left side is nullptr, add the item to the left side
-        if (curPtr->left == nullptr) {
-            curPtr->left = new TreeNode<nodetype>(newItem);
-        }
-        // If the left side is not nullptr, call the insert method again
-        // and insert the node into the left subtree
-        else {
-            insert(newItem, curPtr->left);
-        }
+    else if (newItem < (*curPtr).data) {
+        insert(newItem, curPtr->left);
     }
 
-    // If the new item is not less than the current node to insert the node into,
+    // If the new item is greater than the current node to insert the node into,
     // add the node to the right of that node
+    else if (newItem > (*curPtr).data) {
+        insert(newItem, curPtr->right);
+    }
+
+    // If the node is equal
     else {
-        // If the right side is nullptr, add the item to the right side
-        if (curPtr->right == nullptr) {
-            curPtr->right = new TreeNode<nodetype>(newItem);
+        // call as method to add something to that node
+    }
+
+
+    // Balance the tree
+    balance(curPtr);
+}
+
+
+
+/**************************
+ **    balance Method    **
+ *************************/
+template <typename nodetype>
+void AVLTree<nodetype>::balance(TreeNode<nodetype>*& subtree) {
+    // If the subtree is nullptr, don't do anything
+    if (subtree == nullptr) {
+        return;
+    }
+
+
+    // If the height of the left subtree is greater than the height of the
+    // right subtree by more than 1, correct it
+    if (getSubtreeHeight(subtree->left) - getSubtreeHeight(subtree->right) > 1) {
+        // Case 1 (LL)
+        if (getSubtreeHeight(subtree->left->left) >= getSubtreeHeight(subtree->left->right)) {
+            rotateWithLeftChild(subtree);
         }
-        // If the right side is not nullptr, call the insert method again
-        // and insert the node into the right subtree
+        // Case 2 (LR)
         else {
-            insert(newItem, curPtr->right);
+            doubleWithLeftChild(subtree);
+        }
+    }
+    // If the height of the right subtree is greater than the height of the
+    // left subtree by more than 1, correct it
+    else if (getSubtreeHeight(subtree->right) - getSubtreeHeight(subtree->left) > 1) {
+        // Case 4 (RR)
+        if (getSubtreeHeight(subtree->right->right) >= getSubtreeHeight(subtree->right->left)) {
+            rotateWithRightChild(subtree);
+        }
+        // Case 3 (RL)
+        else {
+            doubleWithRightChild(subtree);
         }
     }
 
 
-    // Call checks as stack unwinds
+    // If none of the statements are met, the subtree is balanced
+
+
+
+    // Calculate the subtree's height
+    subtree->height = std::max(getSubtreeHeight(subtree->left), getSubtreeHeight(subtree->right)) + 1;
+}
+
+
+
+/***********************************
+ **    getSubtreeHeight Method    **
+ **********************************/
+template <typename nodetype>
+int AVLTree<nodetype>::getSubtreeHeight(TreeNode<nodetype>*& subtree) {
+    // If the node is nullptr, the value is -1
+    if (subtree == nullptr) {
+        return -1;
+    }
+
+    return subtree->height;
+}
+
+
+
+
+/*****************************
+ **    Rearrange Methods    **
+ ****************************/
+template <typename nodetype>
+void AVLTree<nodetype>::rotateWithLeftChild(TreeNode<nodetype>*& subtree) {
+    TreeNode<nodetype>* temp = subtree->left;
+    subtree->left = temp->right;
+    temp->right = subtree;
+    subtree->height = std::max(getSubtreeHeight(subtree->left), getSubtreeHeight(subtree->right)) + 1;
+    temp->height = std::max(getSubtreeHeight(temp->left), subtree->height) + 1;
+    subtree = temp;
+
+//    subtree = subtree->left;
+//    subtree->height = temp->height;
+//    temp->left = subtree->right;
+//    subtree->right = temp;
+}
+
+template <typename nodetype>
+void AVLTree<nodetype>::doubleWithLeftChild(TreeNode<nodetype>*& subtree) {
+    rotateWithRightChild(subtree->left);
+    rotateWithLeftChild(subtree);
+}
+
+template <typename nodetype>
+void AVLTree<nodetype>::rotateWithRightChild(TreeNode<nodetype>*& subtree) {
+    TreeNode<nodetype>* temp = subtree->right;
+    subtree->right = temp->left;
+    temp->left = subtree;
+    subtree->height = std::max(getSubtreeHeight(subtree->right), getSubtreeHeight(subtree->left)) + 1;
+    temp->height = std::max(getSubtreeHeight(temp->right), subtree->height) + 1;
+    subtree = temp;
+
+//    TreeNode<nodetype>* temp = subtree;
+//    subtree = subtree->right;
+//    temp->right = subtree->left;
+//    subtree->left = temp;
+}
+
+template <typename nodetype>
+void AVLTree<nodetype>::doubleWithRightChild(TreeNode<nodetype>*& subtree) {
+    rotateWithLeftChild(subtree->right);
+    rotateWithRightChild(subtree);
 }
 
 
