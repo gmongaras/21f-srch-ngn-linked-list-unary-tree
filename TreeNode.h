@@ -103,7 +103,7 @@ public:
      * Output:
      *   The data being held by this node
      */
-    const datatype& getData() const;
+    datatype& getData();
 
     /**
      * Get the right node in the sequence
@@ -283,7 +283,7 @@ std::ostream& operator<< (std::ostream& out, const TreeNode<datatype2>* node) {
  **    getData    **
  ******************/
 template <typename datatype>
-const datatype& TreeNode<datatype>::getData() const {
+datatype& TreeNode<datatype>::getData() {
     return data;
 }
 

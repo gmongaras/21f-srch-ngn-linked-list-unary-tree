@@ -4,6 +4,8 @@
 
 #include "TreeNode.h"
 #include <iostream>
+#include <functional>
+
 #define COUNT 4;
 
 
@@ -47,8 +49,29 @@ private:
      * Inserts a node into the tree while maintaining BSTree consistency
      * @param newItem The item to insert into the tree
      * @param curPtr The current node to insert the new item into
+     * @param equalityFunction The function to run if the given item is already in the tree
      */
-    void insert(nodetype& newItem, TreeNode<nodetype>*& curPtr);
+    void insert(nodetype& newItem, TreeNode<nodetype>*& curPtr,
+                std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction);
+
+    /**
+     * hasNode Helper Method
+     * @param node The node to look for in the tree.
+     * @param subtree The subtree to look for the node
+     * @return True if the node look for is in the tree, false otherwise
+     */
+    bool hasNode(nodetype& node, TreeNode<nodetype>*& subtree);
+    bool hasNode(TreeNode<nodetype>& node, TreeNode<nodetype>*& subtree);
+
+    /**
+     * getNode Helper Method
+     * Returns the node being looked for if found
+     * @param node The node to look for in the tree.
+     * @param subtree The subtree to look for the node
+     * @return The node in the tree if the node is found
+     */
+    TreeNode<nodetype>* getNode(nodetype& node, TreeNode<nodetype>*& subtree);
+    TreeNode<nodetype>* getNode(TreeNode<nodetype>& node, TreeNode<nodetype>*& subtree);
 
     /**
      * balance Helper Method
@@ -92,8 +115,27 @@ public:
      * Insert Method
      * Inserts a node into the tree keeping the AVL tree balanced
      * @param newItem The new item to add to the tree
+     * @param equalityFunction The function to run if the given item is already in the tree
      */
-    void insert(nodetype& newItem);
+    void insert(nodetype& newItem,
+                std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction);
+
+    /**
+     * hasNode Method
+     * @param node The node to look for in the tree.
+     * @return True if the node look for is in the tree, false otherwise
+     */
+    bool hasNode(nodetype& node);
+    bool hasNode(TreeNode<nodetype>& node);
+
+    /**
+     * getNode Method
+     * Returns the node if the node is found in the node.
+     * @param node The node to look for in the tree.
+     * @return The node in the tree if the node is found
+     */
+    TreeNode<nodetype>* getNode(nodetype& node);
+    TreeNode<nodetype>* getNode(TreeNode<nodetype>& node);
 
     /**
      * clearTree Method
@@ -189,7 +231,7 @@ void AVLTree<nodetype>::printSubtree(TreeNode<nodetype>*& subtree, int space) {
  **    insert Helper Method    **
  *******************************/
 template <typename nodetype>
-void AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curPtr) {
+void AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curPtr, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
     // If curPtr is nullptr, set the curPtr to the newItem and set the
     // current node's height to 0
     if (curPtr == nullptr) {
@@ -199,23 +241,129 @@ void AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curPtr) {
     // If the new item is less than the current node to insert the node into,
     // add the node to the left of that node
     else if (newItem < (*curPtr).data) {
-        insert(newItem, curPtr->left);
+        insert(newItem, curPtr->left, equalityFunction);
     }
 
     // If the new item is greater than the current node to insert the node into,
     // add the node to the right of that node
     else if (newItem > (*curPtr).data) {
-        insert(newItem, curPtr->right);
+        insert(newItem, curPtr->right, equalityFunction);
     }
 
-    // If the node is equal
+    // If the node is equal call the equality function
     else {
-        // call as method to add something to that node
+        equalityFunction(newItem, curPtr);
     }
 
 
     // Balance the tree
     balance(curPtr);
+}
+
+
+
+/**********************************
+ **    hasNode Helper Methods    **
+ *********************************/
+template <typename nodetype>
+bool AVLTree<nodetype>::hasNode(nodetype &node, TreeNode<nodetype> *&subtree) {
+    // If the subtree is empty return false
+    if (subtree == nullptr) {
+        return false;
+    }
+
+    // If the node is found, return true
+    else if (subtree->getData() == node) {
+        return true;
+    }
+
+    // If the node to search for is less than the current subtree root, look
+    // to the left of the subtree
+    else if (node < subtree->getData()) {
+        return hasNode(node, subtree->left);
+    }
+    // If the node to search for is greater than the current subtree root, look
+    // to the left of the subtree
+    else {
+        return hasNode(node, subtree->right);
+    }
+}
+
+template <typename nodetype>
+bool AVLTree<nodetype>::hasNode(TreeNode<nodetype>& node, TreeNode<nodetype> *&subtree) {
+    // If the subtree is empty return false
+    if (subtree == nullptr) {
+        return false;
+    }
+
+    // If the node is found, return true
+    else if (subtree == node) {
+        return true;
+    }
+
+    // If the node to search for is less than the current subtree root, look
+    // to the left of the subtree
+    else if (node < subtree) {
+        return hasNode(node, subtree->left);
+    }
+    // If the node to search for is greater than the current subtree root, look
+    // to the left of the subtree
+    else {
+        return hasNode(node, subtree->right);
+    }
+}
+
+
+
+/**********************************
+ **    getNode Helper Methods    **
+ *********************************/
+template <typename nodetype>
+TreeNode<nodetype> *AVLTree<nodetype>::getNode(nodetype &node, TreeNode<nodetype> *&subtree) {
+    // If the subtree is empty, the node was not found so raise an error
+    if (subtree == nullptr) {
+        throw std::runtime_error("Node not found in tree");
+    }
+
+    // If the node is found, return it
+    else if (subtree->getData() == node) {
+        return subtree;
+    }
+
+    // If the node to search for is less than the current subtree root, look
+    // to the left of the subtree
+    else if (node < subtree->getData()) {
+        return getNode(node, subtree->left);
+    }
+    // If the node to search for is greater than the current subtree root, look
+    // to the left of the subtree
+    else {
+        return getNode(node, subtree->right);
+    }
+}
+
+template <typename nodetype>
+TreeNode<nodetype> *AVLTree<nodetype>::getNode(TreeNode<nodetype>& node, TreeNode<nodetype>*& subtree) {
+    // If the subtree is empty, the node was not found so raise an error
+    if (subtree == nullptr) {
+        throw std::runtime_error("Node not found in tree");
+    }
+
+    // If the node is found, return it
+    else if (subtree == node) {
+        return subtree;
+    }
+
+    // If the node to search for is less than the current subtree root, look
+    // to the left of the subtree
+    else if (node < subtree) {
+        return getNode(node, subtree->left);
+    }
+    // If the node to search for is greater than the current subtree root, look
+    // to the left of the subtree
+    else {
+        return getNode(node, subtree->right);
+    }
 }
 
 
@@ -394,14 +542,44 @@ AVLTree<nodetype>::~AVLTree<nodetype>() {
  **    Insert Method    **
  ************************/
 template <typename nodetype>
-void AVLTree<nodetype>::insert(nodetype &newItem) {
+void AVLTree<nodetype>::insert(nodetype &newItem, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
     // If the head is nullptr, make the given node head
     if (root == nullptr) {
         root = new TreeNode<nodetype>(newItem);
         return;
     }
 
-    insert(newItem, root);
+    insert(newItem, root, equalityFunction);
+}
+
+
+
+/***************************
+ **    hasNode Methods    **
+ **************************/
+template <typename nodetype>
+bool AVLTree<nodetype>::hasNode(nodetype &node) {
+    return hasNode(node, root);
+}
+
+template <typename nodetype>
+bool AVLTree<nodetype>::hasNode(TreeNode<nodetype> &node) {
+    return hasNode(node, root);
+}
+
+
+
+/***************************
+ **    getNode Methods    **
+ **************************/
+template <typename nodetype>
+TreeNode<nodetype>* AVLTree<nodetype>::getNode(nodetype& node) {
+    return getNode(node, root);
+}
+
+template <typename nodetype>
+TreeNode<nodetype>* AVLTree<nodetype>::getNode(TreeNode<nodetype>& node) {
+    return getNode(node, root);
 }
 
 

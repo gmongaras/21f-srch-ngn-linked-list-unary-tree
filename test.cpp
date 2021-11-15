@@ -95,10 +95,12 @@ TEST_CASE("TreeNode class", "[TreeNode]") {
     }
 
     SECTION("Checking the getData method") {
-        REQUIRE(n1->getData() == 1);
-        REQUIRE(n2->getData() == 1);
-        REQUIRE(n3->getData() == 2);
-        REQUIRE((*n2=2).getData() == 2);
+        int a = 1;
+        int b = 2;
+        REQUIRE(n1->getData() == a);
+        REQUIRE(n2->getData() == a);
+        REQUIRE(n3->getData() == b);
+        REQUIRE((*n2=2).getData() == b);
         REQUIRE(n4->getData() == 0.009f);
         REQUIRE(n5->getData() == std::string("hello"));
         REQUIRE(n6->getData() == '\n');
