@@ -5,6 +5,7 @@
 #include "TreeNode.h"
 #include <iostream>
 #include <functional>
+#include <vector>
 
 #define COUNT 4;
 
@@ -50,8 +51,9 @@ private:
      * @param newItem The item to insert into the tree
      * @param curPtr The current node to insert the new item into
      * @param equalityFunction The function to run if the given item is already in the tree
+     * @return The value at the inserted node.
      */
-    void insert(nodetype& newItem, TreeNode<nodetype>*& curPtr,
+    nodetype& insert(nodetype& newItem, TreeNode<nodetype>*& curPtr,
                 std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction);
 
     /**
@@ -70,8 +72,8 @@ private:
      * @param subtree The subtree to look for the node
      * @return The node in the tree if the node is found
      */
-    TreeNode<nodetype>* getNode(nodetype& node, TreeNode<nodetype>*& subtree);
-    TreeNode<nodetype>* getNode(TreeNode<nodetype>& node, TreeNode<nodetype>*& subtree);
+    nodetype& getNode(nodetype& node, TreeNode<nodetype>*& subtree);
+    nodetype& getNode(TreeNode<nodetype>& node, TreeNode<nodetype>*& subtree);
 
     /**
      * balance Helper Method
@@ -99,6 +101,15 @@ private:
     void rotateWithRightChild(TreeNode<nodetype>*& subtree);
     void doubleWithRightChild(TreeNode<nodetype>*& subtree);
 
+    /**
+     * getInOrderVec Helper Method
+     * Get an inorder traversal of the tree in a vector
+     * @param vec The vector to store the contents of the tree
+     * @param subtree The subtree to parse
+     * @return A vector storing the contents of the tree in order
+     */
+    std::vector<nodetype>& getInOrderVec(std::vector<nodetype>&, TreeNode<nodetype>* subtree);
+
 
 
 public:
@@ -116,8 +127,9 @@ public:
      * Inserts a node into the tree keeping the AVL tree balanced
      * @param newItem The new item to add to the tree
      * @param equalityFunction The function to run if the given item is already in the tree
+     * @return The value at the inserted node.
      */
-    void insert(nodetype& newItem,
+    nodetype& insert(nodetype& newItem,
                 std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction);
 
     /**
@@ -134,8 +146,15 @@ public:
      * @param node The node to look for in the tree.
      * @return The node in the tree if the node is found
      */
-    TreeNode<nodetype>* getNode(nodetype& node);
-    TreeNode<nodetype>* getNode(TreeNode<nodetype>& node);
+    nodetype& getNode(nodetype& node);
+    nodetype& getNode(TreeNode<nodetype>& node);
+
+    /**
+     * getInOrderVec Method
+     * Get an inorder traversal of the tree in a vector
+     * @return A vector storing the contents of the tree in order
+     */
+    std::vector<nodetype> getInOrderVec();
 
     /**
      * clearTree Method
@@ -147,6 +166,21 @@ public:
      * printTree Method
      */
     void printTree();
+
+    /**
+     * saveTree Method
+     * Saves a tree to a given filename
+     * @param filename The filename to save to
+     */
+    void saveTree(const std::string& filename = std::string("storage/AVLTree.csv"));
+
+    /**
+     * loadTree Method
+     * Loads a tree from a given file
+     * @param filename The file use to lead in
+     * @param delimiter The delimiter used when leading in the tree
+     */
+    void loadTree(const std::string& filename, char delimiter = ',');
 };
 
 
@@ -231,33 +265,35 @@ void AVLTree<nodetype>::printSubtree(TreeNode<nodetype>*& subtree, int space) {
  **    insert Helper Method    **
  *******************************/
 template <typename nodetype>
-void AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curPtr, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
+nodetype& AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curPtr, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
     // If curPtr is nullptr, set the curPtr to the newItem and set the
     // current node's height to 0
     if (curPtr == nullptr) {
         curPtr = new TreeNode<nodetype>(newItem);
+        return curPtr->data;
     }
 
     // If the new item is less than the current node to insert the node into,
     // add the node to the left of that node
     else if (newItem < (*curPtr).data) {
-        insert(newItem, curPtr->left, equalityFunction);
+        nodetype& sub = insert(newItem, curPtr->left, equalityFunction);
+        balance(curPtr);
+        return sub;
     }
 
     // If the new item is greater than the current node to insert the node into,
     // add the node to the right of that node
     else if (newItem > (*curPtr).data) {
-        insert(newItem, curPtr->right, equalityFunction);
+        nodetype& sub = insert(newItem, curPtr->right, equalityFunction);
+        balance(curPtr);
+        return sub;
     }
 
     // If the node is equal call the equality function
     else {
         equalityFunction(newItem, curPtr);
+        return curPtr->data;
     }
-
-
-    // Balance the tree
-    balance(curPtr);
 }
 
 
@@ -319,7 +355,7 @@ bool AVLTree<nodetype>::hasNode(TreeNode<nodetype>& node, TreeNode<nodetype> *&s
  **    getNode Helper Methods    **
  *********************************/
 template <typename nodetype>
-TreeNode<nodetype> *AVLTree<nodetype>::getNode(nodetype &node, TreeNode<nodetype> *&subtree) {
+nodetype& AVLTree<nodetype>::getNode(nodetype &node, TreeNode<nodetype> *&subtree) {
     // If the subtree is empty, the node was not found so raise an error
     if (subtree == nullptr) {
         throw std::runtime_error("Node not found in tree");
@@ -327,7 +363,7 @@ TreeNode<nodetype> *AVLTree<nodetype>::getNode(nodetype &node, TreeNode<nodetype
 
     // If the node is found, return it
     else if (subtree->getData() == node) {
-        return subtree;
+        return subtree->data;
     }
 
     // If the node to search for is less than the current subtree root, look
@@ -343,7 +379,7 @@ TreeNode<nodetype> *AVLTree<nodetype>::getNode(nodetype &node, TreeNode<nodetype
 }
 
 template <typename nodetype>
-TreeNode<nodetype> *AVLTree<nodetype>::getNode(TreeNode<nodetype>& node, TreeNode<nodetype>*& subtree) {
+nodetype& AVLTree<nodetype>::getNode(TreeNode<nodetype>& node, TreeNode<nodetype>*& subtree) {
     // If the subtree is empty, the node was not found so raise an error
     if (subtree == nullptr) {
         throw std::runtime_error("Node not found in tree");
@@ -351,7 +387,7 @@ TreeNode<nodetype> *AVLTree<nodetype>::getNode(TreeNode<nodetype>& node, TreeNod
 
     // If the node is found, return it
     else if (subtree == node) {
-        return subtree;
+        return subtree->data;
     }
 
     // If the node to search for is less than the current subtree root, look
@@ -478,6 +514,31 @@ void AVLTree<nodetype>::doubleWithRightChild(TreeNode<nodetype>*& subtree) {
 
 
 
+/****************************************
+ **    getInOrderVec Helper Methods    **
+ ***************************************/
+template <typename nodetype>
+std::vector<nodetype> &AVLTree<nodetype>::getInOrderVec(std::vector<nodetype>& vec, TreeNode<nodetype> *subtree) {
+    // If the subtree is nullptr, return the vector
+    if (subtree == nullptr) {
+        return vec;
+    }
+
+    // Store the values in the left subtree
+    getInOrderVec(vec, subtree->left);
+
+    // Store this subtrees value
+    vec.emplace_back(subtree->data);
+
+    // Store the values in the right subtree
+    getInOrderVec(vec, subtree->right);
+
+    // Return the vector
+    return vec;
+}
+
+
+
 
 
 
@@ -542,14 +603,14 @@ AVLTree<nodetype>::~AVLTree<nodetype>() {
  **    Insert Method    **
  ************************/
 template <typename nodetype>
-void AVLTree<nodetype>::insert(nodetype &newItem, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
+nodetype& AVLTree<nodetype>::insert(nodetype &newItem, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
     // If the head is nullptr, make the given node head
     if (root == nullptr) {
         root = new TreeNode<nodetype>(newItem);
-        return;
+        return root->data;
     }
 
-    insert(newItem, root, equalityFunction);
+    return insert(newItem, root, equalityFunction);
 }
 
 
@@ -573,13 +634,24 @@ bool AVLTree<nodetype>::hasNode(TreeNode<nodetype> &node) {
  **    getNode Methods    **
  **************************/
 template <typename nodetype>
-TreeNode<nodetype>* AVLTree<nodetype>::getNode(nodetype& node) {
+nodetype& AVLTree<nodetype>::getNode(nodetype& node) {
     return getNode(node, root);
 }
 
 template <typename nodetype>
-TreeNode<nodetype>* AVLTree<nodetype>::getNode(TreeNode<nodetype>& node) {
+nodetype& AVLTree<nodetype>::getNode(TreeNode<nodetype>& node) {
     return getNode(node, root);
+}
+
+
+
+/********************************
+ **    getInOrderVec Method    **
+ *******************************/
+template <typename nodetype>
+std::vector<nodetype> AVLTree<nodetype>::getInOrderVec() {
+    std::vector<nodetype> vec;
+    return getInOrderVec(vec, root);
 }
 
 
@@ -599,6 +671,7 @@ void AVLTree<nodetype>::clearTree() {
 
     // Frees the root
     delete root;
+    root = nullptr;
 }
 
 
@@ -608,10 +681,17 @@ void AVLTree<nodetype>::clearTree() {
  **************************/
  template <typename nodetype>
 void AVLTree<nodetype>::printTree() {
-    // Set the tree count
-    //COUNT tree.root->height;
-
     return printSubtree(root, 0);
+}
+
+
+
+/********************
+ **    saveTree    **
+ *******************/
+template <typename nodetype>
+void AVLTree<nodetype>::saveTree(const std::string &filename) {
+    ;
 }
 
 

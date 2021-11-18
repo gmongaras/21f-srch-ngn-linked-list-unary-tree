@@ -16,10 +16,15 @@
 #include "rapidjson/filereadstream.h"
 #include <cstdio>
 #include <time.h>
-//#include "myDocument.h"
+#include "myDocument.h"
 #include "WordNode.h"
 #include "TreeNode.h"
 #include <unistd.h>
+#include "./porter2_stemmer/porter2_stemmer.cpp"
+#include "dirent.h"
+#include "sys/stat.h"
+//#include "boost/filesystem.hpp"
+//#include "boost/range/iterator_range.hpp"
 
 namespace fs = std::experimental::filesystem;
 
@@ -35,14 +40,13 @@ namespace fs = std::experimental::filesystem;
  * @param curPtr The pointer to the current subtree
  */
 void wordsEqualityFunction(WordNode& newItem, TreeNode<WordNode>*& curPtr) {
-    WordNode& temp = curPtr->getData();
-    temp.incrementDoc(temp.getDocLocation(newItem.getDocuments()[0]));
+    curPtr->getData().addDoc(newItem.getDocuments()[0]);//temp.getDocLocation(newItem.getDocuments()[0]));
 }
 
 /**
  * stopWordsEqualityFunction
  * Function to pass into the insert method in the stopWords AVL tree.
- * Since we don'e need to do anything for equality, this function
+ * Since we don't need to do anything for equality, this function
  * does nothing.
  * @param newItem The item to insert
  * @param curPtr The pointer to the current subtree
@@ -76,6 +80,14 @@ private:
      * @param filename The name of the file to read the stop words from
      */
     void storeStopWords(const std::string& filename);
+
+
+    /**
+     * processDocuments Helper Method
+     * Reads in the files given a directory
+     * @param directory The name of the directory to parse files from
+     */
+    void processDocumentsHelper(const std::string& directory);
 
 
 
@@ -128,16 +140,22 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document *doc, std::string& docNa
             if (word.empty()) {
                 continue;
             }
+
+            // If the word is not empty, stem it and add it
+            Porter2Stemmer::trim(word);
+            Porter2Stemmer::stem(word);
+
             // If the word is a stop word, don't add it to the words tree
             if (stopWords.hasNode(word) == true) {
                 word.clear();
                 continue;
             }
-
             // If the word is fine, add it to the words tree
-            WordNode temp(word, docName);
-            Words.insert(temp, &wordsEqualityFunction);
-            word.clear();
+            else {
+                WordNode temp(word, docName);
+                Words.insert(temp, &wordsEqualityFunction);
+                word.clear();
+            }
         }
 
 
@@ -188,6 +206,94 @@ void DocumentProcessor::storeStopWords(const std::string &filename) {
 
 
 
+/*****************************************
+ **    processDocumentsHelper Method    **
+ ****************************************/
+void DocumentProcessor::processDocumentsHelper(const std::string &directory) {
+    FILE* filePointer; // Holds each file
+
+
+    // Initialize variables to start file iteraton
+    DIR *dir = opendir(directory.data());
+    struct dirent *ent;
+    struct stat path_stat;
+    class stat st;
+
+
+    char* readBuffer = new char[65536]; // The buffer
+
+    // Iterate over all documents in the directory
+    while ((ent = readdir(dir)) != NULL) {
+        // Gett he file name
+        std::string fileName = std::string(ent->d_name);
+        std::string fullFileName = directory + "/" + fileName;
+
+
+        // Check if the file is a directory
+        if (fileName == "." || fileName == "..") {
+            continue;
+        }
+        else if (stat(fullFileName.c_str(), &st) == -1)
+            continue;
+        else if ((st.st_mode & S_IFDIR) != 0) {
+            // If the file is a directory, iterate over all those files
+            processDocumentsHelper(directory+"/"+fileName);
+            continue;
+        }
+
+
+        // Open the file for reading
+        filePointer = fopen(fullFileName.c_str(), "rb");
+
+        // If the file is not opened, skip it
+        if (filePointer == nullptr) {
+            std::cout << fileName << std::endl;
+            continue;
+        }
+
+        // Read the JSON from the file into the document
+        rapidjson::FileReadStream* inputStream = new rapidjson::FileReadStream(filePointer, readBuffer, sizeof(readBuffer));
+        //        myDocument<rapidjson::UTF8<>> *doc = new myDocument<rapidjson::UTF8<>>;
+        //        AVLTree<std::string>* AVL = new AVLTree<std::string>;
+        //        doc->ParseStream(*inputStream, AVL);
+        rapidjson::Document *doc = new rapidjson::Document;
+        doc->ParseStream(*inputStream);
+
+
+        // clean and add the word to the tree
+        cleanAndAdd(doc, fullFileName);
+
+
+
+        // Reset the pointers and free the memory
+        delete doc;
+        delete inputStream;
+        fclose(filePointer);
+        //delete filePointer;
+        memset(readBuffer, 0, sizeof(readBuffer));
+    }
+
+
+    // Free the memory used to read the files
+    delete [] readBuffer;
+    closedir(dir);
+    delete ent;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /****************************
@@ -195,7 +301,7 @@ void DocumentProcessor::storeStopWords(const std::string &filename) {
  ***************************/
 void DocumentProcessor::processDocuments(const std::string& directory) {
     // Read in the stop words.
-    // Node the stop words list was found at: https://www.link-assistant.com/seo-stop-words.html
+    // Note the stop words list was found at: https://www.link-assistant.com/seo-stop-words.html
     std::string stopWordFilename = "../storage/stopWords2.txt";
     storeStopWords(stopWordFilename);
 
@@ -211,62 +317,11 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
 
     double original = time(&timer);  /* get current time; same as: timer = time(NULL)  */
 
-    FILE* filePointer = nullptr;
+    // Process the documents
+    processDocumentsHelper(directory);
 
 
-
-
-
-
-    char* readBuffer = new char[65536]; // The buffer
-    //FILE* filePointer;
-    fs::recursive_directory_iterator p(directory);
-
-    // Iterate over all documents in the directory
-    for (auto& entry : p) {
-        std::string fileName = std::string(entry.path().c_str());
-        //std::cout << fileName << std::endl;
-        // Open the file if it's not a directory
-        if (fs::is_directory(entry) == true) {
-            continue;
-        }
-
-        // Open the file for reading
-        filePointer = fopen(entry.path().c_str(), "rb");
-
-        // If the file is not opened, skip it
-        if (filePointer == nullptr) {
-            continue;
-        }
-
-        // Read the JSON from the file into the document
-        rapidjson::FileReadStream* inputStream = new rapidjson::FileReadStream(filePointer, readBuffer, sizeof(readBuffer));
-//        myDocument<rapidjson::UTF8<>> *doc = new myDocument<rapidjson::UTF8<>>;
-//        AVLTree<std::string>* AVL = new AVLTree<std::string>;
-//        doc->ParseStream(*inputStream, AVL);
-        rapidjson::Document *doc = new rapidjson::Document;
-        doc->ParseStream(*inputStream);
-
-
-        // clean and add the word to the tree
-        cleanAndAdd(doc, fileName);
-
-
-
-        // Reset the pointers and free the memory
-        //doc->RemoveAllMembers();
-        delete doc;
-        delete inputStream;
-        fclose(filePointer);
-        //delete filePointer;
-        memset(readBuffer, 0, sizeof(readBuffer));
-    }
-
-
-    std::cout << "Time: " << time(&timer)-original << " :( || :) " << std::endl;
-
-    // Free the memory used to read the files
-    delete [] readBuffer;
+    std::cout << "Processing Time: " << time(&timer)-original << " seconds" << std::endl;
 }
 
 
@@ -275,8 +330,13 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
  **    search    **
  *****************/
 WordNode DocumentProcessor::search(std::string word) {
+    // Stem the word
+    Porter2Stemmer::trim(word);
+    Porter2Stemmer::stem(word);
+
+    // Return the word
     WordNode temp(word);
-    return Words.getNode(temp)->getData();
+    return Words.getNode(temp);
 }
 
 

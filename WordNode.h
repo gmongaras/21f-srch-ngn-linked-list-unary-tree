@@ -72,6 +72,12 @@ public:
      * Overloaded Assignment Operator
      */
     WordNode& operator=(const WordNode& w);
+
+    /**
+     * Overload stream insertion operator to print the contents of this list
+     * to the output stream in the first argument.
+     */
+    friend std::ostream& operator<< (std::ostream&, const WordNode&);
 };
 
 
@@ -88,8 +94,8 @@ WordNode::WordNode(std::string newWord) {
 }
 WordNode::WordNode(std::string newWord, std::string doc) {
     word = newWord;
-    documents.push_back(doc);
-    counts.push_back(1);
+    documents.emplace_back(doc);
+    counts.emplace_back(1);
 }
 
 
@@ -107,8 +113,8 @@ void WordNode::addDoc(std::string &Doc) {
     }
 
     // If the document is not in the vector, add it
-    documents.push_back(Doc);
-    counts.push_back(1);
+    documents.emplace_back(Doc);
+    counts.emplace_back(1);
 }
 
 
@@ -195,11 +201,30 @@ bool WordNode::operator>(std::string &w) {
 WordNode &WordNode::operator=(const WordNode &w) {
     word = w.word;
     for (int i = 0; i < w.documents.size(); i++) {
-        documents.push_back(w.documents[i]);
-        counts.push_back(w.counts[i]);
+        documents.emplace_back(w.documents[i]);
+        counts.emplace_back(w.counts[i]);
     }
 
     return *this;
+}
+
+
+
+/**********************************************
+ **    Overload Stream Insertion Operator    **
+ **********************************************/
+std::ostream& operator<< (std::ostream& out, const WordNode& node) {
+    out << "Word: " << node.word << std::endl;
+
+    for (int i = 0; i < node.documents.size(); i++) {
+        out << node.documents[i] << std::endl;
+    }
+
+    for (int i = 0; i < node.counts.size(); i++) {
+        out << node.counts[i] << std::endl;
+    }
+
+    return out;
 }
 
 

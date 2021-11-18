@@ -143,3 +143,101 @@ TEST_CASE("TreeNode class", "[TreeNode]") {
     delete n7;
     delete n8;
 }
+
+
+
+
+
+template <typename T>
+void equalityFunction(T& newItem, TreeNode<T>*& curPtr) {
+    return;
+}
+
+TEST_CASE("AVLTree class", "[AVLTree]") {
+    AVLTree<int> AVL1;
+    int a = 9; AVL1.insert(a, &equalityFunction<int>);
+    int b = 5; AVL1.insert(b, &equalityFunction<int>);
+    AVL1.insert(a, &equalityFunction<int>);
+    int c = 100; AVL1.insert(c, &equalityFunction<int>);
+    int d = 1; AVL1.insert(d, &equalityFunction<int>);
+    int e = 0; AVL1.insert(e, &equalityFunction<int>);
+    int f = 4; AVL1.insert(f, &equalityFunction<int>);
+    int g = 101; AVL1.insert(g, &equalityFunction<int>);
+    int h = 11; AVL1.insert(h, &equalityFunction<int>);
+    int i = 10; AVL1.insert(i, &equalityFunction<int>);
+    int j = 90; AVL1.insert(j, &equalityFunction<int>);
+    AVL1.insert(j, &equalityFunction<int>);
+
+
+    AVLTree<std::string> AVL2;
+    std::string a2("hello"); AVL2.insert(a2, &equalityFunction<std::string>);
+    std::string b2("sussy"); AVL2.insert(b2, &equalityFunction<std::string>);
+    AVL2.insert(b2, &equalityFunction<std::string>);
+    std::string c2("Sussy"); AVL2.insert(c2, &equalityFunction<std::string>);
+    std::string d2("baka"); AVL2.insert(d2, &equalityFunction<std::string>);
+    std::string e2("bob"); AVL2.insert(e2, &equalityFunction<std::string>);
+    std::string f2("cob"); AVL2.insert(f2, &equalityFunction<std::string>);
+    std::string g2("sob"); AVL2.insert(g2, &equalityFunction<std::string>);
+    std::string h2("iii"); AVL2.insert(h2, &equalityFunction<std::string>);
+    std::string i2("job"); AVL2.insert(i2, &equalityFunction<std::string>);
+    std::string j2("Zaka"); AVL2.insert(j2, &equalityFunction<std::string>);
+
+
+
+
+    SECTION("Checking the insert method with the getInOrderVec method") {
+        std::vector<int> v = AVL1.getInOrderVec();
+        REQUIRE(v == std::vector<int>({0,1,4,5,9,10,11,90,100,101}));
+        std::vector<std::string> v1 = AVL2.getInOrderVec();
+        REQUIRE(v1 == std::vector<std::string>({std::string("Sussy"), std::string("Zaka"), std::string("baka"), std::string("bob"), std::string("cob"), std::string("hello"), std::string("iii"), std::string("job"), std::string("sob"), std::string("sussy")}));
+    }
+
+
+
+    SECTION("Checking the hasNode Method") {
+        REQUIRE(AVL1.hasNode(c) == true);
+        REQUIRE(AVL1.hasNode(g) == true);
+        int g1 = 101;
+        REQUIRE(AVL1.hasNode(g1) == true);
+        int g3 = 102;
+        REQUIRE(AVL1.hasNode(g3) == false);
+        REQUIRE(AVL2.hasNode(a2) == true);
+        REQUIRE(AVL2.hasNode(j2) == true);
+        std::string h3("iii");
+        REQUIRE(AVL2.hasNode(h3) == true);
+        std::string h4("III");
+        REQUIRE(AVL2.hasNode(h4) == false);
+        std::string h5("iij");
+        REQUIRE(AVL2.hasNode(h5) == false);
+    }
+
+
+
+    SECTION("Checking the getNode Method") {
+        REQUIRE(AVL1.getNode(c) == c);
+        REQUIRE(AVL1.getNode(g) == g);
+        int g1 = 101;
+        REQUIRE(AVL1.getNode(g1) == g1);
+        int g3 = 102;
+        REQUIRE_THROWS(AVL1.getNode(g3));
+        REQUIRE(AVL2.getNode(a2) == a2);
+        REQUIRE(AVL2.getNode(j2) == j2);
+        std::string h3("iii");
+        REQUIRE(AVL2.getNode(h3) == h3);
+        std::string h4("III");
+        REQUIRE_THROWS(AVL2.getNode(h4));
+        std::string h5("iij");
+        REQUIRE_THROWS(AVL2.getNode(h5));
+    }
+
+
+
+    SECTION("Checking the clearTree Method") {
+        AVL1.clearTree();
+        AVL2.clearTree();
+        std::vector<int> v = AVL1.getInOrderVec();
+        REQUIRE(v.size() == std::vector<int>().size());
+        std::vector<std::string> v1 = AVL2.getInOrderVec();
+        REQUIRE(v1.size() == std::vector<std::string>().size());
+    }
+}
