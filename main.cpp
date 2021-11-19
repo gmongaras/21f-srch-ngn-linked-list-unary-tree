@@ -17,8 +17,6 @@
 
 
 int main(int argc, char** argv) {
-    //runCatchTests();
-    //return 0;
     // If there are no command line arguments, run the catch tests
     if(argc == 1) {
         runCatchTests();
@@ -27,20 +25,7 @@ int main(int argc, char** argv) {
 
 
 
-//    AVLTree<int> t;
-//    int a = 1;
-//    int b = 2;
-//    int c = 3;
-//    int d = 4;
-//    int e = 5;
-//    int f = 6;
-//    t.insert(a);
-//    t.insert(b);
-//    t.insert(c);
-//    t.insert(d);
-//    t.insert(e);
-//    t.insert(f);
-//    t.printTree();
+
 
     // Process the documents from the given input file
     DocumentProcessor p;

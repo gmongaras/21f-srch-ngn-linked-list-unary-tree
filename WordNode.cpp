@@ -1,5 +1,3 @@
-
-
 #include "WordNode.h"
 
 
@@ -43,42 +41,11 @@ void WordNode::addDoc(std::string &Doc, std::string& ID) {
     // Try inserting the document, if it is already in the
     // tree, increment the value.
     docs.insert(temp, &docsEqualityFunction);
-
-//    // If the document is already in the list, increment it
-//    try {
-//        docs.getNode(temp);
-//    }
-//    // If the document wasn't found, add it
-//    catch (std::runtime_error e) {
-//        docs.insert(Doc, &docsEqualityFunction); // Try inserting the node without reiterating
-//        return;
-//    }
-//    for (int i = 0; i < docs.size(); i++) {
-//        if (docs[i] == Doc) {
-//            docs[i].updateFreq();
-//            return;
-//        }
-//    }
-//
-//    // If the document is not in the vector, add it
-//    docs.emplace_back(DocumentNode(Doc, 1));
 }
 void WordNode::addDoc(DocumentNode &Doc) {
     // Try inserting the document, if it is already in the
     // tree, increment the value.
     docs.insert(Doc, &docsEqualityFunction);
-
-
-//    // If the document is already in the list, increment it
-//    for (int i = 0; i < docs.size(); i++) {
-//        if (docs[i] == Doc) {
-//            docs[i].updateFreq();
-//            return;
-//        }
-//    }
-//
-//    // If the document is not in the vector, add it
-//    docs.emplace_back(Doc);
 }
 
 
@@ -93,29 +60,11 @@ DocumentNode& WordNode::getDoc(std::string &Doc) {
     // Try finding the document, if the node is found,
     // return the
     return docs.getNode(temp);
-
-
-//    for (int i = 0; i < docs.size(); i++) {
-//        if (docs[i] == Doc) {
-//            return i;
-//        }
-//    }
-//
-//    return -1;
 }
 DocumentNode& WordNode::getDoc(DocumentNode &Doc) {
     // Try finding the document, if the node is found,
     // return the
     return docs.getNode(Doc);
-
-
-//    for (int i = 0; i < docs.size(); i++) {
-//        if (docs[i] == Doc) {
-//            return i;
-//        }
-//    }
-//
-//    return -1;
 }
 
 
@@ -126,20 +75,6 @@ DocumentNode& WordNode::getDoc(DocumentNode &Doc) {
 void WordNode::incrementDoc(std::string& Doc) {
     // Try finding the document in the tree. If it's found, increment it
     getDoc(Doc).updateFreq();
-
-
-//    // If the index is too large or small, throw an error
-//    if ((index >= docs.size() && index != -1) || index < -1) {
-//        throw std::runtime_error("Index out of array bounds");
-//    }
-//
-//    // If the index is -1, increment the last item in the vector
-//    if (index == -1) {
-//        docs[docs.size()-1].updateFreq();
-//        return;
-//    }
-//
-//    docs[index].updateFreq();
 }
 
 void WordNode::incrementDoc(DocumentNode& Doc) {
@@ -198,13 +133,6 @@ WordNode &WordNode::operator=(WordNode &w) {
     docs = w.docs;
 
     return *this;
-
-
-//    for (int i = 0; i < w.docs.size(); i++) {
-//        docs.emplace_back(DocumentNode(w.docs[i].getName(), w.docs[i].getFreq()));
-//    }
-//
-//    return *this;
 }
 
 
@@ -216,11 +144,6 @@ std::ostream& operator<< (std::ostream& out, const WordNode& node) {
     out << "Word: " << node.word << std::endl;
 
     node.docs.printTree2();
-//
-//    for (int i = 0; i < node.docs.size(); i++) {
-//        out << "  " << node.docs[i];
-//    }
-//    out << std::endl;
 
     return out;
 }
