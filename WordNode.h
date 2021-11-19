@@ -7,13 +7,16 @@
 #include <stdexcept>
 #include "AVLTree.h"
 #include "DocumentNode.h"
+#include "AVLTree.h"
+
+
 
 
 // Stores information on words read from the JSON file
 class WordNode {
 private:
     std::string word; // The word stored in this node
-    std::vector<DocumentNode> docs; // Stores the document name and corresponding information
+    AVLTree<DocumentNode> docs; // Stores the document name and corresponding information
 
 
 public:
@@ -32,20 +35,21 @@ public:
     void addDoc(DocumentNode& Doc);
 
     /**
-     * getDocLocation Method
+     * getDoc Method
+     * Get the document from the AVL tree
      * @param Doc The document to search for
-     * @return The index of the given document name, -1 if not found
+     * @return The document in the AVL tree
      */
-    int getDocLocation(std::string& Doc);
-    int getDocLocation(DocumentNode& Doc);
+    DocumentNode& getDoc(std::string& Doc);
+    DocumentNode& getDoc(DocumentNode& Doc);
 
     /**
      * incrementDoc
-     * Increment the counter for an index of a given doc. If the
-     * index is -1, add to the last doc added
-     * @param index The index to increment
+     * Increment the counter for a given document
+     * @param Doc The document to search for
      */
-    void incrementDoc(int index);
+    void incrementDoc(std::string& Doc);
+    void incrementDoc(DocumentNode& Doc);
 
     /**
      * getWord Method
@@ -59,7 +63,7 @@ public:
      * Returns the word stored in this object
      * @retrun The stored word in this object
      */
-    std::vector<DocumentNode>& getDocuments();
+    AVLTree<DocumentNode>& getDocuments();
 
     /**
      * Comparison Operators
@@ -74,7 +78,7 @@ public:
     /**
      * Overloaded Assignment Operator
      */
-    WordNode& operator=(const WordNode& w);
+    WordNode& operator=(WordNode& w);
 
     /**
      * Overload stream insertion operator to print the contents of this list

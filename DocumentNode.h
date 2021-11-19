@@ -45,6 +45,14 @@ public:
     bool operator!=(const DocumentNode& node);
     bool operator!=(const std::string& name);
 
+    /**
+     * Comparison Operators
+     */
+    bool operator<(const DocumentNode& node);
+    bool operator<(const std::string& name);
+    bool operator>(const DocumentNode& node);
+    bool operator>(const std::string& name);
+
 
     /**
      * updateFreq Method

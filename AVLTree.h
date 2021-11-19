@@ -21,6 +21,14 @@ private:
      *************************/
 
     /**
+     * AssignmentOperatorHelper Method
+     * Inserts the nodes of a given subtree in an order so that sorting isn't needed
+     * This method is mainly for the use of the overloaded assignment operator
+     * @param subtree The subtree to add to this tree
+     */
+    void AssignmentOperatorHelper(TreeNode<nodetype>*& newSubtree, TreeNode<nodetype>*& oldSubtree);
+
+    /**
      * clearSubtree Helper Method
      * Clears the given subtree and frees the memory the nodes are using
      * @param subtree The subtree to clear
@@ -40,9 +48,16 @@ private:
      * Sends the given subtree to the ostream
      * @param subtree The subtree to print to the ostream
      * @param space The space within the print
-     * Node: code from https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/
+     * Note: code from https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/
      */
     void printSubtree(TreeNode<nodetype>*& subtree, int space);
+
+    /**
+     * PrintSubtree2 Helper Method
+     * Sends the given subtree to the ostream
+     * @param subtree The subtree to print to the ostream
+     */
+    void printSubtree2(TreeNode<nodetype>* const subtree) const;
 
 
     /**
@@ -130,7 +145,7 @@ public:
      * @return The value at the inserted node.
      */
     nodetype& insert(nodetype& newItem,
-                std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction);
+                     std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction);
 
     /**
      * hasNode Method
@@ -157,6 +172,15 @@ public:
     std::vector<nodetype> getInOrderVec();
 
     /**
+     * Iterator Methods
+     */
+
+    /**
+     * Overloaded Assignment Operator
+     */
+    AVLTree<nodetype>& operator=(AVLTree<nodetype>& tree);
+
+    /**
      * clearTree Method
      * Clears the subtree and frees the memory used
      */
@@ -166,6 +190,17 @@ public:
      * printTree Method
      */
     void printTree();
+
+    /**
+     * printTree Method
+     */
+    void printTree2() const;
+
+    /**
+     * getRootData Method
+     * Returns the data at the root node
+     */
+    nodetype& getRootData();
 
     /**
      * saveTree Method
@@ -188,6 +223,27 @@ public:
 /**********************************************************
  **                Private Helper Methods                **
  *********************************************************/
+
+
+
+/*******************************************
+ **    AssignmentOperatorHelper Method    **
+ ******************************************/
+template <typename nodetype>
+void AVLTree<nodetype>::AssignmentOperatorHelper(TreeNode<nodetype>*& newSubtree, TreeNode<nodetype>*& oldSubtree) {
+    // If the old subtree is nullptr, go back up the stack
+    if (oldSubtree == nullptr) {
+        return;
+    }
+
+    // Add the left and right nodes from the old subtree to the new one
+    if (oldSubtree->left != nullptr) {newSubtree->left = new TreeNode<nodetype>(oldSubtree->left);}
+    if (oldSubtree->right != nullptr) {newSubtree->right = new TreeNode<nodetype>(oldSubtree->right);}
+
+    // Add the left and right subtrees
+    CopyConstructorHelper(newSubtree->left, oldSubtree->left);
+    CopyConstructorHelper(newSubtree->right, oldSubtree->right);
+}
 
 
 
@@ -257,6 +313,26 @@ void AVLTree<nodetype>::printSubtree(TreeNode<nodetype>*& subtree, int space) {
 
     // Process left child
     printSubtree(subtree->left, space);
+}
+
+/********************************
+ **    printSubtree2 Method    **
+ *******************************/
+template <typename nodetype>
+void AVLTree<nodetype>::printSubtree2(TreeNode<nodetype>* const subtree) const {
+    // Base case
+    if (subtree == nullptr) {
+        return;
+    }
+
+    // Print the Left subtree
+    printSubtree2(subtree->left);
+
+    // Print the middle node
+    std::cout << subtree->data << std::endl;
+
+    // Print the right subtree
+    printSubtree2(subtree->right);
 }
 
 
@@ -656,6 +732,27 @@ std::vector<nodetype> AVLTree<nodetype>::getInOrderVec() {
 
 
 
+/******************************************
+ **    Overloaded Assignment Operator    **
+ *****************************************/
+template <typename nodetype>
+AVLTree<nodetype> &AVLTree<nodetype>::operator=(AVLTree<nodetype> &tree) {
+    // If the given tree is nullptr, do nothing.
+    if (tree.root == nullptr) {
+        return *this;
+    }
+
+    // Insert the root node
+    root = new TreeNode<nodetype>(tree.root);
+
+    // Insert the other nodes
+    AssignmentOperatorHelper(root, tree.root);
+
+    return *this;
+}
+
+
+
 /*******************************
  **    clearSubtree Method    **
  ******************************/
@@ -679,9 +776,29 @@ void AVLTree<nodetype>::clearTree() {
 /***************************
  **    printTree Method   **
  **************************/
- template <typename nodetype>
+template <typename nodetype>
 void AVLTree<nodetype>::printTree() {
     return printSubtree(root, 0);
+}
+
+
+
+/****************************
+ **    printTree2 Method   **
+ ***************************/
+template <typename nodetype>
+void AVLTree<nodetype>::printTree2() const {
+    return printSubtree2(root);
+}
+
+
+
+/******************************
+ **    getRootData Method    **
+ *****************************/
+template <typename nodetype>
+nodetype& AVLTree<nodetype>::getRootData() {
+    return root->data;
 }
 
 

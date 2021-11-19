@@ -40,7 +40,8 @@ namespace fs = std::experimental::filesystem;
  * @param curPtr The pointer to the current subtree
  */
 void wordsEqualityFunction(WordNode& newItem, TreeNode<WordNode>*& curPtr) {
-    curPtr->getData().addDoc(newItem.getDocuments()[0]);//temp.getDocLocation(newItem.getDocuments()[0]));
+    curPtr->getData().addDoc(newItem.getDocuments().getRootData());
+    //curPtr->getData().addDoc(newItem.getDocuments()[0]);//temp.getDocLocation(newItem.getDocuments()[0]));
 }
 
 /**

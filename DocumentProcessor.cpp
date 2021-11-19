@@ -113,6 +113,7 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory) {
         // Gett he file name
         std::string fileName = std::string(ent->d_name);
         std::string fullFileName = directory + "/" + fileName;
+        //std::cout << fileName << std::endl;
 
 
         // Check if the file is a directory

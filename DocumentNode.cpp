@@ -66,6 +66,24 @@ bool DocumentNode::operator!=(const std::string &name) {
 
 
 
+/********************************
+ **    Comparison Operators    **
+ *******************************/
+bool DocumentNode::operator<(const DocumentNode &node) {
+    return documentName < node.documentName;
+}
+bool DocumentNode::operator<(const std::string &name) {
+    return documentName < name;
+}
+bool DocumentNode::operator>(const DocumentNode &node) {
+    return documentName > node.documentName;
+}
+bool DocumentNode::operator>(const std::string &name) {
+    return documentName > name;
+}
+
+
+
 /*****************************
  **    updateFreq Method    **
  ****************************/
