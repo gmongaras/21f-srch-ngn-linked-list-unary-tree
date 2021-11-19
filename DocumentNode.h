@@ -11,6 +11,7 @@ class DocumentNode {
 private:
     std::string documentName; // The name of this document
     int frequency; // The number of times a word shows up in this document
+    std::string documentID; // The ID of the document
 
 
 
@@ -19,7 +20,7 @@ public:
      * Constructors
      */
     DocumentNode();
-    DocumentNode(const std::string& name, int freq);
+    DocumentNode(const std::string& name, int freq, std::string ID);
     DocumentNode(const DocumentNode& node);
 
 
@@ -28,6 +29,7 @@ public:
      */
     void changeName(const std::string& name);
     void changeFrequency(const int freq);
+    void changeID(const std::string& ID);
 
 
     /**
@@ -35,6 +37,7 @@ public:
      */
     std::string getName() const;
     int getFreq() const;
+    std::string getID() const;
 
 
     /**

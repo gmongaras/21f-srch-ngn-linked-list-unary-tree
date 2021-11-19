@@ -9,6 +9,7 @@
 void DocumentProcessor::cleanAndAdd(rapidjson::Document *doc, std::string& docName) {
     // Get the text from the document
     rapidjson::Value& text = (*doc)["text"];
+    std::string ID = (*doc)["uuid"].GetString();
     std::string textStr = text.GetString();
 
     // Storage used to store each word in the sequence
@@ -38,7 +39,7 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document *doc, std::string& docNa
             }
             // If the word is fine, add it to the words tree
             else {
-                WordNode temp(word, docName);
+                WordNode temp(word, docName, ID);
                 Words.insert(temp, &wordsEqualityFunction);
                 word.clear();
             }
@@ -52,7 +53,7 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document *doc, std::string& docNa
     }
 
     // Add the final word
-    WordNode temp(word, docName);
+    WordNode temp(word, docName, ID);
     Words.insert(temp, &wordsEqualityFunction);
     word.clear();
 }
@@ -108,9 +109,18 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory) {
 
     char* readBuffer = new char[65536]; // The buffer
 
+    int numFiles = 0;
+
     // Iterate over all documents in the directory
     while ((ent = readdir(dir)) != NULL) {
-        // Gett he file name
+        // Increase the counter and update the display
+        numFiles++;
+        if (numFiles%1000 == 0) {
+            std::cout << "Files read: " << numFiles << std::endl;
+        }
+
+
+        // Get the file name
         std::string fileName = std::string(ent->d_name);
         std::string fullFileName = directory + "/" + fileName;
         //std::cout << fileName << std::endl;
@@ -148,7 +158,7 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory) {
 
 
         // clean and add the word to the tree
-        cleanAndAdd(doc, fullFileName);
+        cleanAndAdd(doc, fileName);
 
 
 

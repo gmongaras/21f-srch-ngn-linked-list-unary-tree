@@ -25,13 +25,13 @@ public:
      */
     WordNode();
     WordNode(std::string newWord);
-    WordNode(std::string newWord, std::string doc);
+    WordNode(std::string& newWord, std::string& doc, std::string& ID);
 
     /**
      * addDoc Method
      * @param Doc The document to add to the vector
      */
-    void addDoc(std::string& Doc);
+    void addDoc(std::string& Doc, std::string& ID);
     void addDoc(DocumentNode& Doc);
 
     /**
