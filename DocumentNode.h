@@ -19,7 +19,7 @@ public:
      * Constructors
      */
     DocumentNode();
-    DocumentNode(const std::string& name, const int freq);
+    DocumentNode(const std::string& name, int freq);
     DocumentNode(const DocumentNode& node);
 
 
@@ -33,8 +33,17 @@ public:
     /**
      * Get Value Methods
      */
-    std::string& getName();
-    int getFreq();
+    std::string getName() const;
+    int getFreq() const;
+
+
+    /**
+     * Equality Operations
+     */
+    bool operator==(const DocumentNode& node);
+    bool operator==(const std::string& name);
+    bool operator!=(const DocumentNode& node);
+    bool operator!=(const std::string& name);
 
 
     /**
@@ -43,6 +52,12 @@ public:
      * @return The stored value of the frequency
      */
     int updateFreq();
+
+
+    /**
+     * Overloaded Stream Insertion Operator
+     */
+    friend std::ostream& operator<< (std::ostream&, const DocumentNode&);
 };
 
 

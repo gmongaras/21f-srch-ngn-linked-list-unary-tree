@@ -48,9 +48,9 @@ int main(int argc, char** argv) {
 
 
     // Try to find a result given the query
-    std::vector<std::string> vec;
+    WordNode results;
     try {
-        vec = p.search(std::string(argv[2])).getDocuments();
+        results = p.search(std::string(argv[2]));
     } catch (std::logic_error& e) {
         // If a result wasn't found, display an error message
         std::cout << "No results for query" << std::endl;
@@ -63,9 +63,10 @@ int main(int argc, char** argv) {
 
     // If a result was found, display it
     std::cout << "Results: " << std::endl;
-    for (int i = 0; i < vec.size(); i++) {
-        std::cout << vec[i] << std::endl;
-    }
+    std::cout << results;
+//    for (int i = 0; i < vec.size(); i++) {
+//        std::cout << vec[i] << std::endl;
+//    }
 
 
 

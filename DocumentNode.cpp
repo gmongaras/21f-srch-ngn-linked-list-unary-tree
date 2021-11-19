@@ -1,4 +1,5 @@
 #include "DocumentNode.h"
+#include <iostream>
 
 
 
@@ -9,7 +10,7 @@ DocumentNode::DocumentNode() {
     documentName = "";
     frequency = 0;
 }
-DocumentNode::DocumentNode(const std::string &name, const int freq) {
+DocumentNode::DocumentNode(const std::string &name, int freq) {
     documentName = name;
     frequency = freq;
 }
@@ -37,12 +38,30 @@ void DocumentNode::changeFrequency(const int freq) {
 /******************************
  **    Get Value Methods     **
  *****************************/
-std::string &DocumentNode::getName() {
+std::string DocumentNode::getName() const {
     return documentName;
 }
 
-int DocumentNode::getFreq() {
+int DocumentNode::getFreq() const {
     return frequency;
+}
+
+
+
+/******************************
+ **    Equality Operators    **
+ *****************************/
+bool DocumentNode::operator==(const DocumentNode &node) {
+    return documentName == node.documentName;
+}
+bool DocumentNode::operator==(const std::string &name) {
+    return documentName == name;
+}
+bool DocumentNode::operator!=(const DocumentNode &node) {
+    return documentName != node.documentName;
+}
+bool DocumentNode::operator!=(const std::string &name) {
+    return documentName != name;
 }
 
 
@@ -53,4 +72,14 @@ int DocumentNode::getFreq() {
 int DocumentNode::updateFreq() {
     frequency++;
     return frequency;
+}
+
+
+
+/**********************************************
+ **    Overload Stream Insertion Operator    **
+ **********************************************/
+std::ostream& operator<< (std::ostream& out, const DocumentNode& node) {
+    out << "Name: " << node.documentName << "   " << "Word Frequency: " << node.frequency << std::endl;
+    return out;
 }

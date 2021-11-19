@@ -6,14 +6,14 @@
 #include <string>
 #include <stdexcept>
 #include "AVLTree.h"
+#include "DocumentNode.h"
 
 
 // Stores information on words read from the JSON file
 class WordNode {
 private:
     std::string word; // The word stored in this node
-    std::vector<std::string> documents; // The documents which contain this word
-    std::vector<int> counts; // The number of times each document contains this word
+    std::vector<DocumentNode> docs; // Stores the document name and corresponding information
 
 
 public:
@@ -29,6 +29,7 @@ public:
      * @param Doc The document to add to the vector
      */
     void addDoc(std::string& Doc);
+    void addDoc(DocumentNode& Doc);
 
     /**
      * getDocLocation Method
@@ -36,6 +37,7 @@ public:
      * @return The index of the given document name, -1 if not found
      */
     int getDocLocation(std::string& Doc);
+    int getDocLocation(DocumentNode& Doc);
 
     /**
      * incrementDoc
@@ -57,7 +59,7 @@ public:
      * Returns the word stored in this object
      * @retrun The stored word in this object
      */
-    std::vector<std::string>& getDocuments();
+    std::vector<DocumentNode>& getDocuments();
 
     /**
      * Comparison Operators

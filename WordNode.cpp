@@ -12,8 +12,7 @@ WordNode::WordNode(std::string newWord) {
 }
 WordNode::WordNode(std::string newWord, std::string doc) {
     word = newWord;
-    documents.emplace_back(doc);
-    counts.emplace_back(1);
+    docs.emplace_back(DocumentNode(doc, 1));
 }
 
 
@@ -23,16 +22,27 @@ WordNode::WordNode(std::string newWord, std::string doc) {
  ************************/
 void WordNode::addDoc(std::string &Doc) {
     // If the document is already in the list, increment it
-    for (int i = 0; i < documents.size(); i++) {
-        if (documents[i] == Doc) {
-            counts[i]++;
+    for (int i = 0; i < docs.size(); i++) {
+        if (docs[i] == Doc) {
+            docs[i].updateFreq();
             return;
         }
     }
 
     // If the document is not in the vector, add it
-    documents.emplace_back(Doc);
-    counts.emplace_back(1);
+    docs.emplace_back(DocumentNode(Doc, 1));
+}
+void WordNode::addDoc(DocumentNode &Doc) {
+    // If the document is already in the list, increment it
+    for (int i = 0; i < docs.size(); i++) {
+        if (docs[i] == Doc) {
+            docs[i].updateFreq();
+            return;
+        }
+    }
+
+    // If the document is not in the vector, add it
+    docs.emplace_back(Doc);
 }
 
 
@@ -41,8 +51,17 @@ void WordNode::addDoc(std::string &Doc) {
  **    getDocLocation    **
  *************************/
 int WordNode::getDocLocation(std::string &Doc) {
-    for (int i = 0; i < documents.size(); i++) {
-        if (documents[i] == Doc) {
+    for (int i = 0; i < docs.size(); i++) {
+        if (docs[i] == Doc) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+int WordNode::getDocLocation(DocumentNode &Doc) {
+    for (int i = 0; i < docs.size(); i++) {
+        if (docs[i] == Doc) {
             return i;
         }
     }
@@ -57,17 +76,17 @@ int WordNode::getDocLocation(std::string &Doc) {
  ******************************/
 void WordNode::incrementDoc(int index) {
     // If the index is too large or small, throw an error
-    if ((index >= documents.size() && index != -1) || index < -1) {
+    if ((index >= docs.size() && index != -1) || index < -1) {
         throw std::runtime_error("Index out of array bounds");
     }
 
     // If the index is -1, increment the last item in the vector
     if (index == -1) {
-        counts[counts.size()-1]++;
+        docs[docs.size()-1].updateFreq();
         return;
     }
 
-    counts[index]++;
+    docs[index].updateFreq();
 }
 
 
@@ -83,8 +102,8 @@ std::string& WordNode::getWord() {
 /*******************************
  **    getDocuments Method    **
  ******************************/
-std::vector<std::string>& WordNode::getDocuments() {
-    return documents;
+std::vector<DocumentNode>& WordNode::getDocuments() {
+    return docs;
 }
 
 
@@ -118,9 +137,8 @@ bool WordNode::operator>(std::string &w) {
  *****************************************/
 WordNode &WordNode::operator=(const WordNode &w) {
     word = w.word;
-    for (int i = 0; i < w.documents.size(); i++) {
-        documents.emplace_back(w.documents[i]);
-        counts.emplace_back(w.counts[i]);
+    for (int i = 0; i < w.docs.size(); i++) {
+        docs.emplace_back(DocumentNode(w.docs[i].getName(), w.docs[i].getFreq()));
     }
 
     return *this;
@@ -134,13 +152,10 @@ WordNode &WordNode::operator=(const WordNode &w) {
 std::ostream& operator<< (std::ostream& out, const WordNode& node) {
     out << "Word: " << node.word << std::endl;
 
-    for (int i = 0; i < node.documents.size(); i++) {
-        out << node.documents[i] << std::endl;
+    for (int i = 0; i < node.docs.size(); i++) {
+        out << "  " << node.docs[i];
     }
-
-    for (int i = 0; i < node.counts.size(); i++) {
-        out << node.counts[i] << std::endl;
-    }
+    out << std::endl;
 
     return out;
 }
