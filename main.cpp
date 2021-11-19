@@ -10,9 +10,9 @@
  * On average, this should reduce the build time for your project on your local
  * machine.
  */
+#include "DocumentProcessor.cpp"
 #include "catch_setup.h"
 #include "AVLTree.h"
-#include "DocumentProcessor.h"
 #include <vector>
 
 
