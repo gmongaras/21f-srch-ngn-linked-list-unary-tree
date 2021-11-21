@@ -22,7 +22,7 @@ void docsEqualityFunction(DocumentNode& newItem, TreeNode<DocumentNode>*& curPtr
 WordNode::WordNode() {
     word = "";
 }
-WordNode::WordNode(std::string newWord) {
+WordNode::WordNode(std::string& newWord) {
     word = newWord;
 }
 WordNode::WordNode(std::string& newWord, std::string& doc, std::string& ID) {
@@ -156,7 +156,7 @@ std::ostream& operator<< (std::ostream& out, const WordNode& node) {
  **    Overload FStream Insertion Operator    **
  **********************************************/
 std::fstream& operator<< (std::fstream& out, const WordNode& node) {
-    out << "Word: " << node.word << std::endl;
+    out << node.word << ":";
 
     node.docs.fstreamLevelOrder(out, ",");
     //node.docs.printTree2();

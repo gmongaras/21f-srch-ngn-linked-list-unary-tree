@@ -109,6 +109,7 @@ int DocumentNode::updateFreq() {
  **    Overload Stream Insertion Operator    **
  **********************************************/
 std::ostream& operator<< (std::ostream& out, const DocumentNode& node) {
-    out << "Name: " << node.documentName << "   " << "Word Frequency: " << node.frequency << "   Document ID: " << node.documentID;
+    //out << "Name: " << node.documentName << "   " << "Word Frequency: " << node.frequency << "   Document ID: " << node.documentID;
+    out << node.documentName << " " << node.frequency << " " << node.documentID;
     return out;
 }

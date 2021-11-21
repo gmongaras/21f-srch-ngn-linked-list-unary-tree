@@ -121,7 +121,6 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
         // Get the file name
         std::string fileName = std::string(ent->d_name);
         std::string fullFileName = directory + "/" + fileName;
-        //std::cout << fileName << std::endl;
 
 
         // Check if the file is a directory
@@ -142,7 +141,7 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
 
         // If the file is not opened, skip it
         if (filePointer == nullptr) {
-            std::cout << fileName << std::endl;
+            std::cout << "File could not be opened: " << fileName << std::endl;
             continue;
         }
 
@@ -155,8 +154,10 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
         doc->ParseStream(*inputStream);
 
 
-        // clean and add the word to the tree
-        cleanAndAdd(doc, fileName);
+        // If the file is open, clean and add the word to the tree
+        if (doc->IsNull() == false){
+            cleanAndAdd(doc, fileName);
+        }
 
 
 

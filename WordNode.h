@@ -24,7 +24,7 @@ public:
      * Constructors
      */
     WordNode();
-    WordNode(std::string newWord);
+    WordNode(std::string& newWord);
     WordNode(std::string& newWord, std::string& doc, std::string& ID);
 
     /**

@@ -71,6 +71,7 @@ private:
      * cleanAndAdd Method
      * Cleans and adds data to the AVL tree
      * @param doc The document to clean and store
+     * @param docName The name of the document to store
      */
     void cleanAndAdd(rapidjson::Document* doc, std::string& docName);
 

@@ -134,7 +134,7 @@ public:
      * Constructors and Destructor
      */
     AVLTree();
-    AVLTree(TreeNode<nodetype>* r);
+    AVLTree(TreeNode<nodetype>*& r);
     AVLTree(AVLTree<nodetype>& tree);
     ~AVLTree();
 
@@ -172,10 +172,6 @@ public:
      * @return A vector storing the contents of the tree in order
      */
     std::vector<nodetype> getInOrderVec();
-
-    /**
-     * Iterator Methods
-     */
 
     /**
      * Overloaded Assignment Operator
@@ -228,6 +224,11 @@ public:
      */
     void loadTree(const std::string& filename, char delimiter = ',');
 };
+
+
+
+
+
 
 
 
@@ -656,7 +657,7 @@ AVLTree<nodetype>::AVLTree() {
     root = nullptr;
 }
 template <typename nodetype>
-AVLTree<nodetype>::AVLTree(TreeNode<nodetype>* r) {
+AVLTree<nodetype>::AVLTree(TreeNode<nodetype>*& r) {
     // If the given node is nullptr, do nothing.
     if (r == nullptr) {
         return;
@@ -867,6 +868,31 @@ void AVLTree<nodetype>::saveTree(const std::string &filename) {
 
     // Close the file
     file.close();
+}
+
+
+
+/***************************
+ **    loadTree Method    **
+ **************************/
+template <typename nodetype>
+void AVLTree<nodetype>::loadTree(const std::string &filename, char delimiter) {
+//    // Open a file for reading
+//    std::fstream file(filename.c_str(), std::fstream::in);
+//
+//    // Check if the file is open
+//    if (file.is_open()) {
+//        // Iterate over all lines in the file
+//        while (!file.eof()) {
+//            // Create a temporary node to read in the line
+//            TreeNode<nodetype> newNode;
+//            newNode << file.getline();
+//        }
+//    }
+//    // If the file isn't open, throw and error
+//    else {
+//        throw std::runtime_error("AVLTree file could not open");
+//    }
 }
 
 
