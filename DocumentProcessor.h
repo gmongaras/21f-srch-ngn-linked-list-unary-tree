@@ -87,8 +87,10 @@ private:
      * processDocuments Helper Method
      * Reads in the files given a directory
      * @param directory The name of the directory to parse files from
+     * @param numFiles THe number of files read in
+     * @return The number of files read in total.
      */
-    void processDocumentsHelper(const std::string& directory);
+    int processDocumentsHelper(const std::string& directory, int numFiles);
 
 
 

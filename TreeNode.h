@@ -43,7 +43,7 @@ public:
      * Output:
      *     bool (True if data is equal. False otherwise)
      */
-    bool operator== (const datatype) const;
+    bool operator== (const datatype&) const;
     bool operator== (const TreeNode<datatype>&) const;
 
     /**
@@ -53,7 +53,7 @@ public:
      * Output:
      *     bool (True if data is not equal. False otherwise)
      */
-    bool operator!= (const datatype) const;
+    bool operator!= (const datatype&) const;
     bool operator!= (const TreeNode<datatype>&) const;
 
     /**
@@ -63,7 +63,7 @@ public:
      * Output:
      *     bool (True if given data is less than the data in this node. False otherwise)
      */
-    bool operator> (const datatype) const;
+    bool operator> (const datatype&) const;
     bool operator> (const TreeNode<datatype>&) const;
 
     /**
@@ -73,7 +73,7 @@ public:
      * Output:
      *     bool (True if given data is greater than the data in this node. False otherwise)
      */
-    bool operator< (const datatype) const;
+    bool operator< (const datatype&) const;
     bool operator< (const TreeNode<datatype>&) const;
 
     /**
@@ -83,17 +83,26 @@ public:
      * Output:
      *     A pointer to this node object
      */
-    TreeNode<datatype>& operator= (const datatype);
+    TreeNode<datatype>& operator= (const datatype&);
     TreeNode<datatype>& operator= (const TreeNode<datatype>&);
 
     /**
-     * Overload stream insertion operator to print the contents of this list
-     * to the output stream in the first argument.
+     * Overload ostream insertion operator to print the contents of this list
+     * to ostream's output stream in the first argument.
      */
     template <typename datatype2>
     friend std::ostream& operator<< (std::ostream&, const TreeNode<datatype2>&);
     template <typename datatype2>
     friend std::ostream& operator<< (std::ostream&, const TreeNode<datatype2>*);
+
+    /**
+     * Overload fstream insertion operator to print the contents of this list
+     * to fstream's output stream in the first argument.
+     */
+    template <typename datatype2>
+    friend std::fstream& operator<< (std::fstream&, const TreeNode<datatype2>&);
+    template <typename datatype2>
+    friend std::fstream& operator<< (std::fstream&, const TreeNode<datatype2>*);
 
     /**
      * Get the data within this node
@@ -196,7 +205,7 @@ TreeNode<datatype>::TreeNode(TreeNode<datatype>* oldData) {
  **    Overload == operator    **
  *******************************/
 template <typename datatype>
-bool TreeNode<datatype>::operator==(const datatype d) const {
+bool TreeNode<datatype>::operator==(const datatype& d) const {
     return (data==d);
 }
 
@@ -209,7 +218,7 @@ bool TreeNode<datatype>::operator==(const TreeNode<datatype>& d) const {
  **    Overload != operator    **
  *******************************/
 template <typename datatype>
-bool TreeNode<datatype>::operator!=(const datatype d) const {
+bool TreeNode<datatype>::operator!=(const datatype& d) const {
     return (data!=d);
 }
 
@@ -222,7 +231,7 @@ bool TreeNode<datatype>::operator!=(const TreeNode<datatype>& d) const {
  **    Overload > operator    **
  ******************************/
 template <typename datatype>
-bool TreeNode<datatype>::operator>(const datatype d) const {
+bool TreeNode<datatype>::operator>(const datatype& d) const {
     return (data>d);
 }
 
@@ -235,7 +244,7 @@ bool TreeNode<datatype>::operator>(const TreeNode<datatype>& d) const {
  **    Overload < operator    **
  ******************************/
 template <typename datatype>
-bool TreeNode<datatype>::operator<(const datatype d) const {
+bool TreeNode<datatype>::operator<(const datatype& d) const {
     return (data<d);
 }
 
@@ -248,7 +257,7 @@ bool TreeNode<datatype>::operator<(const TreeNode<datatype>& d) const {
  **    Overload Modifying = operator    **
  ****************************************/
 template <typename datatype>
-TreeNode<datatype>& TreeNode<datatype>::operator=(const datatype d) {
+TreeNode<datatype>& TreeNode<datatype>::operator=(const datatype& d) {
     data = d;
 
     return *this;
@@ -262,8 +271,8 @@ TreeNode<datatype>& TreeNode<datatype>::operator=(const TreeNode<datatype>& d) {
 }
 
 
-/**********************************************
- **    Overload Stream Insertion Operator    **
+/***********************************************
+ **    Overload OStream Insertion Operator    **
  **********************************************/
 template <typename datatype2>
 std::ostream& operator<< (std::ostream& out, const TreeNode<datatype2>& node) {
@@ -273,6 +282,23 @@ std::ostream& operator<< (std::ostream& out, const TreeNode<datatype2>& node) {
 
 template <typename datatype2>
 std::ostream& operator<< (std::ostream& out, const TreeNode<datatype2>* node) {
+    out << node->data;
+    return out;
+}
+
+
+
+/***********************************************
+ **    Overload FStream Insertion Operator    **
+ **********************************************/
+template <typename datatype2>
+std::fstream& operator<< (std::fstream& out, const TreeNode<datatype2>& node) {
+    out << node.data;
+    return out;
+}
+
+template <typename datatype2>
+std::fstream& operator<< (std::fstream& out, const TreeNode<datatype2>* node) {
     out << node->data;
     return out;
 }

@@ -81,10 +81,16 @@ public:
     WordNode& operator=(WordNode& w);
 
     /**
-     * Overload stream insertion operator to print the contents of this list
-     * to the output stream in the first argument.
+     * Overload ostream insertion operator to print the contents of this list
+     * to ostream's output stream in the first argument.
      */
     friend std::ostream& operator<< (std::ostream&, const WordNode&);
+
+    /**
+     * Overload fstream insertion operator to print the contents of this list
+     * to fstream's output stream in the first argument.
+     */
+    friend std::fstream& operator<< (std::fstream&, const WordNode&);
 };
 
 

@@ -96,7 +96,7 @@ void DocumentProcessor::storeStopWords(const std::string &filename) {
 /*****************************************
  **    processDocumentsHelper Method    **
  ****************************************/
-void DocumentProcessor::processDocumentsHelper(const std::string &directory) {
+int DocumentProcessor::processDocumentsHelper(const std::string &directory, int numFiles) {
     FILE* filePointer; // Holds each file
 
 
@@ -108,8 +108,6 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory) {
 
 
     char* readBuffer = new char[65536]; // The buffer
-
-    int numFiles = 0;
 
     // Iterate over all documents in the directory
     while ((ent = readdir(dir)) != NULL) {
@@ -134,7 +132,7 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory) {
             continue;
         else if ((st.st_mode & S_IFDIR) != 0) {
             // If the file is a directory, iterate over all those files
-            processDocumentsHelper(directory+"/"+fileName);
+            numFiles = processDocumentsHelper(directory+"/"+fileName, numFiles);
             continue;
         }
 
@@ -175,6 +173,10 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory) {
     delete [] readBuffer;
     closedir(dir);
     delete ent;
+
+
+    // Return the number of files read in
+    return numFiles;
 }
 
 
@@ -215,7 +217,7 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
     double original = time(&timer);  /* get current time; same as: timer = time(NULL)  */
 
     // Process the documents
-    processDocumentsHelper(directory);
+    processDocumentsHelper(directory, 0);
 
 
     std::cout << "Processing Time: " << time(&timer)-original << " seconds" << std::endl;
@@ -233,5 +235,6 @@ WordNode& DocumentProcessor::search(std::string word) {
 
     // Return the word
     WordNode temp(word);
+    //Words.saveTree(std::string("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/21f-srch-ngn-linked-list-unary-tree/storage/tree.csv"));
     return Words.getNode(temp);
 }

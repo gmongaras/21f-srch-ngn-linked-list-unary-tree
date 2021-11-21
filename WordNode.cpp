@@ -1,4 +1,6 @@
 #include "WordNode.h"
+#include <fstream>
+#include <iostream>
 
 
 /**
@@ -137,13 +139,27 @@ WordNode &WordNode::operator=(WordNode &w) {
 
 
 
-/**********************************************
- **    Overload Stream Insertion Operator    **
+/***********************************************
+ **    Overload OStream Insertion Operator    **
  **********************************************/
 std::ostream& operator<< (std::ostream& out, const WordNode& node) {
     out << "Word: " << node.word << std::endl;
 
     node.docs.printTree2();
+
+    return out;
+}
+
+
+
+/***********************************************
+ **    Overload FStream Insertion Operator    **
+ **********************************************/
+std::fstream& operator<< (std::fstream& out, const WordNode& node) {
+    out << "Word: " << node.word << std::endl;
+
+    node.docs.fstreamLevelOrder(out, ",");
+    //node.docs.printTree2();
 
     return out;
 }

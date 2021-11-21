@@ -49,9 +49,8 @@ int main(int argc, char** argv) {
     // If a result was found, display it
     std::cout << "Results: " << std::endl;
     std::cout << results;
-//    for (int i = 0; i < vec.size(); i++) {
-//        std::cout << vec[i] << std::endl;
-//    }
+
+    // Save the tree
 
 
 

@@ -6,6 +6,8 @@
 #include <iostream>
 #include <functional>
 #include <vector>
+#include <queue>
+#include <fstream>
 
 #define COUNT 4;
 
@@ -201,6 +203,15 @@ public:
      * Returns the data at the root node
      */
     nodetype& getRootData();
+
+    /**
+     * fstream LevelOrder Method
+     * Sends a level order of the tree to a given fstream
+     * @param out The fstream to send output to
+     * @param delimiter The delimiter to go between each part of the tree
+     * @return The fstream with contents from the tree
+     */
+    std::fstream& fstreamLevelOrder(std::fstream& out, const std::string& delimiter) const;
 
     /**
      * saveTree Method
@@ -803,12 +814,59 @@ nodetype& AVLTree<nodetype>::getRootData() {
 
 
 
+/************************************
+ **    fstreamLevelOrder Method    **
+ ***********************************/
+template <typename nodetype>
+std::fstream &AVLTree<nodetype>::fstreamLevelOrder(std::fstream &out, const std::string& delimiter) const {
+    // Code from: https://www.geeksforgeeks.org/level-order-tree-traversal/
+
+    // Base case
+    if (root == nullptr) {
+        return out;
+    }
+
+    // Create queue for level traversial
+    std::queue<TreeNode<nodetype>*> q;
+
+    // Enqueue the subtree and initialize the height
+    q.push(root);
+
+    // The node to send to the fstream
+    TreeNode<nodetype>* node;
+
+    // Iterate till the queue is empty meaning all nodes have been visitied
+    while (q.empty() == false) {
+        // Save the front of the queue and remove it from the queue
+        node = q.front();
+        out << node->data << delimiter;
+        q.pop();
+
+        // Visit the left child
+        if (node->left != nullptr) {q.push(node->left);}
+
+        // Visit the right child
+        if (node->right != nullptr) {q.push(node->right);}
+    }
+
+    return out;
+}
+
+
+
 /********************
  **    saveTree    **
  *******************/
 template <typename nodetype>
 void AVLTree<nodetype>::saveTree(const std::string &filename) {
-    ;
+    // Open a file for writing
+    std::fstream file(filename.c_str(), std::fstream::out);
+
+    // Save the tree to the file
+    fstreamLevelOrder(file, "\n");
+
+    // Close the file
+    file.close();
 }
 
 
