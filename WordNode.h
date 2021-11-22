@@ -2,12 +2,9 @@
 #define INC_21F_FINAL_PROJ_TEMPLATE_WORDNODE_H
 
 
-#include <vector>
-#include <string>
-#include <stdexcept>
+//#include <string>
 #include "AVLTree.h"
 #include "DocumentNode.h"
-#include "AVLTree.h"
 
 
 
@@ -15,6 +12,7 @@
 // Stores information on words read from the JSON file
 class WordNode {
 private:
+
     std::string word; // The word stored in this node
     AVLTree<DocumentNode> docs; // Stores the document name and corresponding information
 
@@ -26,6 +24,7 @@ public:
     WordNode();
     WordNode(std::string& newWord);
     WordNode(std::string& newWord, std::string& doc, std::string& ID);
+    WordNode(WordNode& node);
 
     /**
      * addDoc Method

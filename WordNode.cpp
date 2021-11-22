@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 
-
 /**
  * docsEqualityFunction
  * Function to pass into the insert method in the docs AVL tree. It
@@ -30,6 +29,10 @@ WordNode::WordNode(std::string& newWord, std::string& doc, std::string& ID) {
     DocumentNode temp = DocumentNode(doc, 1, ID);
     docs.insert(temp, &docsEqualityFunction);
 }
+WordNode::WordNode(WordNode &node) {
+    word = node.word;
+    docs = node.docs;
+}
 
 
 
@@ -49,8 +52,6 @@ void WordNode::addDoc(DocumentNode &Doc) {
     // tree, increment the value.
     docs.insert(Doc, &docsEqualityFunction);
 }
-
-
 
 /**************************
  **    getDocLocation    **
@@ -156,7 +157,7 @@ std::ostream& operator<< (std::ostream& out, const WordNode& node) {
  **    Overload FStream Insertion Operator    **
  **********************************************/
 std::fstream& operator<< (std::fstream& out, const WordNode& node) {
-    out << node.word << ":";
+    out << node.word.c_str() << ":";
 
     node.docs.fstreamLevelOrder(out, ",");
     //node.docs.printTree2();
