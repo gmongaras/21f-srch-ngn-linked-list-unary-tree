@@ -6,7 +6,7 @@
 /******************************
  **    cleanAndAdd Method    **
  *****************************/
-void DocumentProcessor::cleanAndAdd(rapidjson::Document *doc, std::string& docName) {
+void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docName) {
     // Get the text from the document
     rapidjson::Value& text = (*doc)["text"];
     std::string ID = (*doc)["uuid"].GetString();
@@ -28,9 +28,10 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document *doc, std::string& docNa
                 continue;
             }
 
-            // If the word is not empty, stem it and add it
+            // If the word is not empty, stem it, lowercase it, and add it
             Porter2Stemmer::trim(word);
             Porter2Stemmer::stem(word);
+            //std::tolower(word);
 
             // If the word is a stop word, don't add it to the words tree
             if (stopWords.hasNode(word) == true) {
@@ -107,7 +108,13 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
     class stat st;
 
 
-    char* readBuffer = new char[65536]; // The buffer
+    char* readBuffer = new char[228362]; // The buffer
+    int readBufferSize = sizeof(readBuffer);
+
+    // If the file isn't open, stop the program
+    if (dir == NULL) {
+        throw std::runtime_error("File not open");
+    }
 
     // Iterate over all documents in the directory
     while ((ent = readdir(dir)) != NULL) {
@@ -123,8 +130,9 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
         std::string fullFileName = directory + "/" + fileName;
 
 
-        // Check if the file is a directory
-        if (fileName == "." || fileName == "..") {
+        // Check if the file is a directory and ends in .json
+        int size = fileName.size();
+        if (fileName == "." || fileName == "..") {// || fileName[size-4] != 'j' || fileName[size-3] != 's' && fileName[size-2] != 'o' && fileName[size-1] != 'n') {
             continue;
         }
         else if (stat(fullFileName.c_str(), &st) == -1)
@@ -146,7 +154,7 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
         }
 
         // Read the JSON from the file into the document
-        rapidjson::FileReadStream* inputStream = new rapidjson::FileReadStream(filePointer, readBuffer, sizeof(readBuffer));
+        rapidjson::FileReadStream* inputStream = new rapidjson::FileReadStream(filePointer, readBuffer, readBufferSize);
         //        myDocument<rapidjson::UTF8<>> *doc = new myDocument<rapidjson::UTF8<>>;
         //        AVLTree<std::string>* AVL = new AVLTree<std::string>;
         //        doc->ParseStream(*inputStream, AVL);
@@ -166,7 +174,7 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
         delete inputStream;
         fclose(filePointer);
         //delete filePointer;
-        memset(readBuffer, 0, sizeof(readBuffer));
+        memset(readBuffer, 0, readBufferSize);
     }
 
 
@@ -231,11 +239,12 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
  *****************/
 WordNode& DocumentProcessor::search(std::string word) {
     // Stem the word
-    Porter2Stemmer::trim(word);
-    Porter2Stemmer::stem(word);
+    //Porter2Stemmer::trim(word);
+    //Porter2Stemmer::stem(word);
 
     // Return the word
     WordNode temp(word);
+    //stopWords.saveTree(std::string("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/21f-srch-ngn-linked-list-unary-tree/storage/stop.csv"));
     //Words.saveTree(std::string("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/21f-srch-ngn-linked-list-unary-tree/storage/tree.csv"));
     return Words.getNode(temp);
 }

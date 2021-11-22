@@ -50,8 +50,6 @@ int main(int argc, char** argv) {
     std::cout << "Results: " << std::endl;
     std::cout << results;
 
-    // Save the tree
-
 
 
     //std::cout << "UWU Sussy Baka" << std::endl;
