@@ -4,11 +4,6 @@
 
 #include <string>
 #include<bits/stdc++.h>
-//#include "WordNode.h"
-//#include <filesystem>
-//#include <experimental/filesystem>
-
-
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -18,16 +13,12 @@
 #include "rapidjson/filereadstream.h"
 #include <cstdio>
 #include <time.h>
-//#include "myDocument.h"
 #include "TreeNode.h"
 #include <unistd.h>
 #include "./porter2_stemmer/porter2_stemmer.cpp"
 #include "dirent.h"
 #include "sys/stat.h"
-//#include "boost/filesystem.hpp"
-//#include "boost/range/iterator_range.hpp"
-
-//namespace fs = std::experimental::filesystem;
+#include "Index.h"
 
 
 
@@ -40,10 +31,10 @@
  * @param newItem The item to insert
  * @param curPtr The pointer to the current subtree
  */
-void wordsEqualityFunction(WordNode& newItem, TreeNode<WordNode>*& curPtr) {
-    curPtr->getData().addDoc(newItem.getDocuments().getRootData());
-    //curPtr->getData().addDoc(newItem.getDocuments()[0]);//temp.getDocLocation(newItem.getDocuments()[0]));
-}
+//void wordsEqualityFunction(WordNode& newItem, TreeNode<WordNode>*& curPtr) {
+//    curPtr->getData().addDoc(newItem.getDocuments().getRootData());
+//    //curPtr->getData().addDoc(newItem.getDocuments()[0]);//temp.getDocLocation(newItem.getDocuments()[0]));
+//}
 
 /**
  * stopWordsEqualityFunction
@@ -64,7 +55,7 @@ void stopWordsEqualityFunction(std::string& newItem, TreeNode<std::string>*& cur
 class DocumentProcessor {
 private:
     AVLTree<std::string> stopWords;
-    AVLTree<WordNode> Words;
+    Index index;
 
 
 
@@ -155,7 +146,8 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
             // If the word is fine, add it to the words tree
             else {
                 WordNode temp(word, docName, ID);
-                Words.insert(temp, &wordsEqualityFunction);
+                //Words.insert(temp, &wordsEqualityFunction);
+                index.addWord(temp);
                 word.clear();
             }
         }
@@ -169,7 +161,8 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
 
     // Add the final word
     WordNode temp(word, docName, ID);
-    Words.insert(temp, &wordsEqualityFunction);
+    //Words.insert(temp, &wordsEqualityFunction);
+    index.addWord(temp);
     word.clear();
 }
 
@@ -357,10 +350,11 @@ WordNode& DocumentProcessor::search(std::string word) {
     std::transform(word.begin(), word.end(), word.begin(), ::tolower);
 
     // Return the word
-    WordNode temp(word);
+    return index.getWord(word);
     //stopWords.saveTree(std::string("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/21f-srch-ngn-linked-list-unary-tree/storage/stop.csv"));
     //Words.saveTree(std::string("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/21f-srch-ngn-linked-list-unary-tree/storage/tree.csv"));
-    return Words.getNode(temp);
+    //WordNode temp(word);
+    //return Words.getNode(temp);
 }
 
 

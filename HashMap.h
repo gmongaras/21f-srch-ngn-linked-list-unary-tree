@@ -2,6 +2,7 @@
 #define INC_21F_FINAL_PROJ_TEMPLATE_HASHMAP_H
 
 #include "HashNode.h"
+#include "HashFunction.h"
 
 
 template <typename K, typename V, typename F = KeyHash<K>>

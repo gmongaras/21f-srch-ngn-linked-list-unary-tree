@@ -1,13 +1,11 @@
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_HASHNODE_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_HASHNODE_H
 
-#include "HashFunction.h"
-
 
 
 template <typename K, typename V>
 class HashNode {
-    template <typename K3, typename V3, typename F3 = KeyHash<K3>>
+    template <typename K3, typename V3, typename F3>
     friend class HashMap;
 
 
