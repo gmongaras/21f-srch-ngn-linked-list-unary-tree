@@ -7,6 +7,11 @@
 #include "catch_setup.h"
 
 
+
+
+#include "HashNode.h"
+
+
 int main(int argc, char** argv) {
     // If there are no command line arguments, run the catch tests
     if(argc == 1) {

@@ -3,6 +3,7 @@
 
 
 #include <string>
+#include<bits/stdc++.h>
 //#include "WordNode.h"
 //#include <filesystem>
 //#include <experimental/filesystem>
@@ -144,7 +145,7 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
             // If the word is not empty, stem it, lowercase it, and add it
             Porter2Stemmer::trim(word);
             Porter2Stemmer::stem(word);
-            //std::tolower(word);
+            std::transform(word.begin(), word.end(), word.begin(), ::tolower);
 
             // If the word is a stop word, don't add it to the words tree
             if (stopWords.hasNode(word) == true) {
@@ -244,7 +245,6 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
 
 
         // Check if the file is a directory and ends in .json
-        int size = fileName.size();
         if (fileName == "." || fileName == "..") {// || fileName[size-4] != 'j' || fileName[size-3] != 's' && fileName[size-2] != 'o' && fileName[size-1] != 'n') {
             continue;
         }
@@ -351,9 +351,10 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
  **    search    **
  *****************/
 WordNode& DocumentProcessor::search(std::string word) {
-    // Stem the word
+    // Stem and lowercase the word
     Porter2Stemmer::trim(word);
     Porter2Stemmer::stem(word);
+    std::transform(word.begin(), word.end(), word.begin(), ::tolower);
 
     // Return the word
     WordNode temp(word);
