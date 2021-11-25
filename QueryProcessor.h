@@ -24,8 +24,20 @@ private:
 
 
     /**
+     * Intersection Method
+     * Takes the intersection of two vectors
+     * @param vec1 The first vector to compare
+     * @param vec2 The second vector to compare
+     * @return A vector with the intersection of the two given vectors
+     */
+    template <typename vectype>
+    std::vector<vectype> Intersection(std::vector<vectype>& vec1, std::vector<vectype>& vec2);
+
+
+
+    /**
      * Union Method
-     * Takes the union of two vectors
+     * Takes the Union of two vectors
      * @param vec1 The first vector to compare
      * @param vec2 The second vector to compare
      * @return A vector with the union of the two given vectors

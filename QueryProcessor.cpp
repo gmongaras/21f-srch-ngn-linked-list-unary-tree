@@ -40,13 +40,13 @@ std::vector<std::string> QueryProcessor::tokStr(std::string &str, char tok) {
 
 
 
-/************************
- **    Union Method    **
- ***********************/
+/*******************************
+ **    Intersection Method    **
+ ******************************/
 template <typename vectype>
-std::vector<vectype> QueryProcessor::Union(std::vector<vectype> &vec1, std::vector<vectype> &vec2) {
-    // Vector to hold the union of the two vectors
-    std::vector<vectype> unionVec;
+std::vector<vectype> QueryProcessor::Intersection(std::vector<vectype> &vec1, std::vector<vectype> &vec2) {
+    // Vector to hold the intersection of the two vectors
+    std::vector<vectype> interVec;
 
     // Iterate over all values in vec1
     for (int i = 0; i < vec1.size(); i++) {
@@ -55,9 +55,45 @@ std::vector<vectype> QueryProcessor::Union(std::vector<vectype> &vec1, std::vect
             // If the current value being looked at in vec1 is the same as the
             // current value being looked at in vec2, add it to the unionVec
             if (vec1[i] == vec2[j]) {
-                unionVec.emplace_back(vec1[i]);
+                interVec.emplace_back(vec1[i]);
                 break;
             }
+        }
+    }
+
+    // Return the intersection vector
+    return interVec;
+}
+
+
+
+/************************
+ **    Union Method    **
+ ***********************/
+template <typename vectype>
+std::vector<vectype> QueryProcessor::Union(std::vector<vectype> &vec1, std::vector<vectype> &vec2) {
+    // Vector to hold the union of the two vectors
+    std::vector<vectype> unionVec = vec1;
+
+    // Iterate over all values in vec2
+    for (int i = 0; i < vec2.size(); i++) {
+        // True if the current value is in the unionVec, false otherwise
+        bool repeat = false;
+
+        // Iterate over all values in unionVec to check if the same value was found.
+        for (int j = 0; j < unionVec.size(); j++) {
+            // If the current value being looked at in vec2 is the same as the
+            // current value being looked at in unionVec, set the boolean to
+            // true as the value should not be added again
+            if (vec2[i] == unionVec[j]) {
+                repeat = true;
+                break;
+            }
+        }
+
+        // If the item is not a repeat, add it to the unionVec
+        if (!repeat) {
+            unionVec.emplace_back(vec2[i]);
         }
     }
 
@@ -82,12 +118,11 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
 
     // Holds all queries
     std::vector<std::vector<DocumentNode>> queries;
-    queries.resize(vec.size()-startIndex);
 
 
     // Query all words
     for (int i = startIndex; i < vec.size(); i++) {
-        queries[i-startIndex] = DocProcessor.search(vec[i]).getDocuments().getInOrderVec();
+        queries.emplace_back(DocProcessor.search(vec[i]).getDocuments().getInOrderVec());
     }
 
 
@@ -95,6 +130,26 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
     // If the query mode is and, keep and store the documents that
     // appear in all lists
     if (mode == "and") {
+        // Store the current intersection
+        std::vector<DocumentNode> interVec;
+
+        // Get the intersection between the first and second elements in the vector
+        interVec = Intersection<DocumentNode>(queries[0], queries[1]);
+
+        // Get the intersection for all other elements
+        for (int i = 2; i < queries.size(); i++) {
+            interVec = Intersection<DocumentNode>(interVec, queries[i]);
+        }
+
+        // Return the union of all words
+        return interVec;
+    }
+
+
+
+    // If the query mode is or, keep and store the documents that
+    // appear in any of the lists
+    else if (mode == "or") {
         // Store the current union
         std::vector<DocumentNode> unionVec;
 
@@ -103,7 +158,7 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
 
         // Get the union for all other elements
         for (int i = 2; i < queries.size(); i++) {
-            unionVec = Union(unionVec, queries[i]);
+            unionVec = Union<DocumentNode>(unionVec, queries[i]);
         }
 
         // Return the union of all words
@@ -111,12 +166,8 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
     }
 
 
-
-    // If the query mode is or, keep and store the documents that
-    // appear in any of the lists
-    else if (mode == "or") {
-        ;
-    }
+    // If the mode is not OR or AND, return the first vector of results
+    return queries[0];
 }
 
 
@@ -221,7 +272,7 @@ std::vector<DocumentNode> QueryProcessor::ProcessQuery(std::string& query) {
         }
         // If the length of the vector is greater than 2, query all given words
         else {
-            return DocProcessor.search(tokenizedQuery[1]).getDocuments().getInOrderVec();
+            return queryWords(tokenizedQuery, tokenizedQuery[0]);
         }
     }
     // If the first word is not blank, query only that word

@@ -27,12 +27,12 @@ int main(int argc, char** argv) {
 
 
     // Process the documents from the input files
-    std::string inputDir("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/test/");
+    std::string inputDir("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/srch-ngn-data/");
     q.Load(inputDir);
 
 
     // Iterate until the search engine is closed
-    while (q.isShutdown() == false) {
+    while (!q.isShutdown()) {
         // Prompt the user for input
         std::cout << "Enter a query to be handled. Enter ~W~ to exit:" << std::endl;
         getline(std::cin, query);
