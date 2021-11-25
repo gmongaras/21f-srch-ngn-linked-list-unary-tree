@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 
 
     // Process the documents from the input files
-    std::string inputDir("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/srch-ngn-data/size-221/");
+    std::string inputDir("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/test/");
     q.Load(inputDir);
 
 
@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
     while (q.isShutdown() == false) {
         // Prompt the user for input
         std::cout << "Enter a query to be handled. Enter ~W~ to exit:" << std::endl;
-        std::cin >> query;
+        getline(std::cin, query);
 
         // If the query is ~W~, stop the query
         if (query == std::string("~W~")) {
@@ -45,14 +45,23 @@ int main(int argc, char** argv) {
         else {
 
             // Try to find a result given the query
-            WordNode results;
+            std::vector<DocumentNode> results;
             try {
                 //results = p.search(std::string(argv[2]));
                 results = q.ProcessQuery(query);
 
                 // If a result was found, display it
-                std::cout << "Results: " << std::endl;
-                std::cout << results;
+                if (!results.empty()) {
+                    std::cout << "Results: " << std::endl;
+                    for (int i = 0; i < results.size(); i++) {
+                        std::cout << results[i] << std::endl;
+                    }
+                }
+                // If a result wasn't found, display an error message
+                else {
+                    std::cout << "No results for query" << std::endl;
+                }
+
             } catch (std::logic_error& e) {
                 // If a result wasn't found, display an error message
                 std::cout << "No results for query" << std::endl;

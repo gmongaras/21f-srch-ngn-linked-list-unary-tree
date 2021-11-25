@@ -230,22 +230,8 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
     storeStopWords(stopWordFilename);
 
 
-
-
-    time_t timer;
-    struct tm y2k = {0};
-    double seconds;
-
-    y2k.tm_hour = 0;   y2k.tm_min = 0; y2k.tm_sec = 0;
-    y2k.tm_year = 100; y2k.tm_mon = 0; y2k.tm_mday = 1;
-
-    double original = time(&timer);  /* get current time; same as: timer = time(NULL)  */
-
     // Process the documents
     processDocumentsHelper(directory, 0);
-
-
-    std::cout << "Processing Time: " << time(&timer)-original << " seconds" << std::endl;
 }
 
 
@@ -253,11 +239,17 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
 /******************
  **    search    **
  *****************/
-WordNode& DocumentProcessor::search(std::string word) {
+WordNode DocumentProcessor::search(std::string word) {
     // Stem and lowercase the word
     Porter2Stemmer::trim(word);
     Porter2Stemmer::stem(word);
     std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+
+    // If the word is "", return an empty WordNode and display an error message
+    if (word.empty()) {
+        WordNode temp;
+        return temp;
+    }
 
     // Return the word
     return index.getWord(word);

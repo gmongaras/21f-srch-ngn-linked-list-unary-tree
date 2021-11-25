@@ -19,7 +19,30 @@ private:
      * @param tok The token used to tokenize the string
      * @return A vector holding the tokenized string
      */
-    std::vector<std::string> tokStr(std::string& str, char tok);
+    std::vector<std::string> tokStr(std::string& str, char tok = ' ');
+
+
+
+    /**
+     * Union Method
+     * Takes the union of two vectors
+     * @param vec1 The first vector to compare
+     * @param vec2 The second vector to compare
+     * @return A vector with the union of the two given vectors
+     */
+    template <typename vectype>
+    std::vector<vectype> Union(std::vector<vectype>& vec1, std::vector<vectype>& vec2);
+
+
+
+    /**
+     * queryWords
+     * Given a vector of strings, it queries all words in the vector on a specific mode
+     * @param vec A vector of strings to query
+     * @param mode Query using either the AND or OR clause or query using none
+     * @return The result of the query
+     */
+    std::vector<DocumentNode> queryWords(std::vector<std::string>& vec, std::string& mode);
 
 
 
@@ -49,7 +72,7 @@ public:
      * @param query The query to process
      * @return The results of the query
      */
-    WordNode& ProcessQuery(std::string& query);
+    std::vector<DocumentNode> ProcessQuery(std::string& query);
 
     /**
      * isShutdown Method

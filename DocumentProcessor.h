@@ -23,21 +23,6 @@
 
 
 
-/**
- * wordsEqualityFunction
- * Function to pass into the insert method in the words AVL tree. It
- * increases the counter in the WordNode by 1 for the given document.
- * @param newItem The item to insert
- * @param curPtr The pointer to the current subtree
- */
-//void wordsEqualityFunction(WordNode& newItem, TreeNode<WordNode>*& curPtr) {
-//    curPtr->getData().addDoc(newItem.getDocuments().getRootData());
-//    //curPtr->getData().addDoc(newItem.getDocuments()[0]);//temp.getDocLocation(newItem.getDocuments()[0]));
-//}
-
-
-
-
 
 class DocumentProcessor {
 private:
@@ -91,7 +76,7 @@ public:
      * @param word The word to search for
      * @return A WordNode containing that word
      */
-    WordNode& search(std::string word);
+    WordNode search(std::string word);
 };
 
 

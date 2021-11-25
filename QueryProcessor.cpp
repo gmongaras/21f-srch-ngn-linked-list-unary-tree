@@ -17,8 +17,8 @@ std::vector<std::string> QueryProcessor::tokStr(std::string &str, char tok) {
     // Iterate over all values in the string
     for (int i = 0; i < str.size(); i++) {
         // If the current character is the token, add the substring to the vector
-        if (substr[i] == tok) {
-            if (substr.empty() != true) {
+        if (str[i] == tok) {
+            if (!substr.empty()) {
                 tokenizedString.emplace_back(substr);
             }
 
@@ -28,7 +28,7 @@ std::vector<std::string> QueryProcessor::tokStr(std::string &str, char tok) {
         }
 
         // Add the next character to the substring
-        substr.push_back(str[i]);
+        substr += str[i];
     }
 
     // Add the final substring to the vector
@@ -36,6 +36,87 @@ std::vector<std::string> QueryProcessor::tokStr(std::string &str, char tok) {
 
     // Return the vector of substring
     return tokenizedString;
+}
+
+
+
+/************************
+ **    Union Method    **
+ ***********************/
+template <typename vectype>
+std::vector<vectype> QueryProcessor::Union(std::vector<vectype> &vec1, std::vector<vectype> &vec2) {
+    // Vector to hold the union of the two vectors
+    std::vector<vectype> unionVec;
+
+    // Iterate over all values in vec1
+    for (int i = 0; i < vec1.size(); i++) {
+        // Iterate over all values in vec2 to check if the same value was found.
+        for (int j = 0; j < vec2.size(); j++) {
+            // If the current value being looked at in vec1 is the same as the
+            // current value being looked at in vec2, add it to the unionVec
+            if (vec1[i] == vec2[j]) {
+                unionVec.emplace_back(vec1[i]);
+                break;
+            }
+        }
+    }
+
+    // Return the union vector
+    return unionVec;
+}
+
+
+
+/*****************************
+ **    queryWords Method    **
+ ****************************/
+std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& vec, std::string& mode) {
+    // The index to start at
+    int startIndex = 0;
+
+    // If the mode is AND or OR, skip the first word in the vector
+    if (mode == "and" || mode == "or") {
+        startIndex = 1;
+    }
+
+
+    // Holds all queries
+    std::vector<std::vector<DocumentNode>> queries;
+    queries.resize(vec.size()-startIndex);
+
+
+    // Query all words
+    for (int i = startIndex; i < vec.size(); i++) {
+        queries[i-startIndex] = DocProcessor.search(vec[i]).getDocuments().getInOrderVec();
+    }
+
+
+
+    // If the query mode is and, keep and store the documents that
+    // appear in all lists
+    if (mode == "and") {
+        // Store the current union
+        std::vector<DocumentNode> unionVec;
+
+        // Get the union between the first and second elements in the vector
+        unionVec = Union<DocumentNode>(queries[0], queries[1]);
+
+        // Get the union for all other elements
+        for (int i = 2; i < queries.size(); i++) {
+            unionVec = Union(unionVec, queries[i]);
+        }
+
+        // Return the union of all words
+        return unionVec;
+    }
+
+
+
+    // If the query mode is or, keep and store the documents that
+    // appear in any of the lists
+    else if (mode == "or") {
+        ;
+    }
 }
 
 
@@ -106,7 +187,7 @@ void QueryProcessor::Load(std::string& directory) {
 /*******************************
  **    ProcessQuery Method    **
  ******************************/
-WordNode& QueryProcessor::ProcessQuery(std::string& query) {
+std::vector<DocumentNode> QueryProcessor::ProcessQuery(std::string& query) {
     // Lowercase the query
     std::transform(query.begin(), query.end(), query.begin(), ::tolower);
 
@@ -115,21 +196,43 @@ WordNode& QueryProcessor::ProcessQuery(std::string& query) {
 
     // If the first word is AND, query using the AND clause
     if (tokenizedQuery[0] == "and") {
-        return DocProcessor.search(tokenizedQuery[0]);
+        // If the length of the vector is less than 2, print an error message
+        if (tokenizedQuery.size() < 2) {
+            std::cout << "A query with an AND clause must have at least two arguments" << std::endl << std::endl;
+        }
+        // If the length of the vector is 2, return a query with just one word
+        else if (tokenizedQuery.size() == 2) {
+            return DocProcessor.search(tokenizedQuery[1]).getDocuments().getInOrderVec();
+        }
+        // If the length of the vector is greater than 2, query all given words
+        else {
+            return queryWords(tokenizedQuery, tokenizedQuery[0]);
+        }
     }
     // If the first word is OR, query using the OR clause
     else if (tokenizedQuery[0] == "or") {
-        return DocProcessor.search(tokenizedQuery[0]);
+        // If the length of the vector is less than 2, print an error message
+        if (tokenizedQuery.size() < 2) {
+            std::cout << "A query with an OR clause must have at least two arguments" << std::endl << std::endl;
+        }
+        // If the length of the vector is 2, return a query with just one word
+        else if (tokenizedQuery.size() == 2) {
+            return DocProcessor.search(tokenizedQuery[1]).getDocuments().getInOrderVec();
+        }
+        // If the length of the vector is greater than 2, query all given words
+        else {
+            return DocProcessor.search(tokenizedQuery[1]).getDocuments().getInOrderVec();
+        }
     }
     // If the first word is not blank, query only that word
     else if (!tokenizedQuery[0].empty()) {
-        return DocProcessor.search(tokenizedQuery[0]);
+        return DocProcessor.search(tokenizedQuery[0]).getDocuments().getInOrderVec();
     }
-    // If the first word is blank, print an error message
     else {
+        // If the first word is blank, print an error message
         std::cout << "Query of incorrect format..." << std::endl << std::endl;
-        return DocProcessor.search(tokenizedQuery[0]);
     }
+    return {};
 }
 
 
