@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 
 
     // Process the documents from the input files
-    std::string inputDir("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/srch-ngn-data/");
+    std::string inputDir("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/srch-ngn-data/size-10");
     q.Load(inputDir);
 
 

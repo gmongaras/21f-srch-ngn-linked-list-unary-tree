@@ -104,6 +104,43 @@ std::vector<vectype> QueryProcessor::Union(std::vector<vectype> &vec1, std::vect
 
 
 /*****************************
+ **    Difference Method    **
+ ****************************/
+template <typename vectype>
+std::vector<vectype> QueryProcessor::Difference(std::vector<vectype> &vec1, std::vector<vectype> &vec2) {
+    // Vector to hold the difference of the two given vectors
+    std::vector<vectype> diffVec;
+
+    // Iterate over all values in vec 1
+    for (int i = 0; i < vec1.size(); i++) {
+        // Boolean to ensure the current value in vec1 isn't in vec2.
+        bool inVec2 = false;
+
+        // Iterate over all values in vec2
+        for (int j = 0; j < vec2.size(); j++) {
+            // If the values in vec1 and vec2 are the same, change
+            // the boolean to ensure the value isn't added
+            // to the new vector
+            if (vec1[i] == vec2[j]) {
+                inVec2 = true;
+                break;
+            }
+        }
+
+        // If the current value in vec1 is not in vec2, add it
+        // to the new vector
+        if (!inVec2) {
+            diffVec.emplace_back(vec1[i]);
+        }
+    }
+
+    // Return the difference vector
+    return diffVec;
+}
+
+
+
+/*****************************
  **    queryWords Method    **
  ****************************/
 std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& vec, std::string& mode) {
@@ -119,9 +156,49 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
     // Holds all queries
     std::vector<std::vector<DocumentNode>> queries;
 
+    // Initial location of NOT queries if any
+    int notLoc = -1;
+    // Initial location of ORG queries if any
+    int orgLoc = -1;
+    // Initial location of PERSON queries if any
+    int personLoc = -1;
+
 
     // Query all words
     for (int i = startIndex; i < vec.size(); i++) {
+        // If NOT is seen, change the location of the notLoc
+        if (vec[i] == "not") {
+            notLoc = i-1;
+            if (orgLoc != -1) {
+                notLoc--;
+            }
+            if (personLoc != -1) {
+                notLoc--;
+            }
+            continue;
+        }
+        // IF ORG is seen, change the location of the orgLoc
+        else if (vec[i] == "org") {
+            orgLoc = i-1;
+            if (notLoc != -1) {
+                orgLoc--;
+            }
+            if (personLoc != -1) {
+                orgLoc--;
+            }
+            continue;
+        }
+        // If PERSON is seen, change the location of the personLoc
+        else if (vec[i] == "person") {
+            personLoc = i-1;
+            if (notLoc != -1) {
+                personLoc--;
+            }
+            if (orgLoc != -1) {
+                personLoc--;
+            }
+            continue;
+        }
         queries.emplace_back(DocProcessor.search(vec[i]).getDocuments().getInOrderVec());
     }
 
@@ -136,9 +213,18 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
         // Get the intersection between the first and second elements in the vector
         interVec = Intersection<DocumentNode>(queries[0], queries[1]);
 
-        // Get the intersection for all other elements
+        // Get the intersection for all other elements keeping in mind subtraction,
+        // org, and person queries.
         for (int i = 2; i < queries.size(); i++) {
-            interVec = Intersection<DocumentNode>(interVec, queries[i]);
+            // If the current value is the location of subtractions,
+            // query by subtraction
+            if (i >= notLoc && notLoc != -1) {
+                interVec = Difference<DocumentNode>(interVec, queries[i]);
+            }
+            // If the current value is not special, query normally
+            else {
+                interVec = Intersection<DocumentNode>(interVec, queries[i]);
+            }
         }
 
         // Return the union of all words
@@ -158,7 +244,15 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
 
         // Get the union for all other elements
         for (int i = 2; i < queries.size(); i++) {
-            unionVec = Union<DocumentNode>(unionVec, queries[i]);
+            // If the current value is the location of subtractions,
+            // query by subtraction
+            if (i >= notLoc && notLoc != -1) {
+                unionVec = Difference<DocumentNode>(unionVec, queries[i]);
+            }
+            // If the current value is not special, query normally
+            else {
+                unionVec = Union<DocumentNode>(unionVec, queries[i]);
+            }
         }
 
         // Return the union of all words
@@ -166,7 +260,23 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
     }
 
 
-    // If the mode is not OR or AND, return the first vector of results
+
+    // If the second item in the query vector is NOT, query with subtraction
+    if (notLoc == 0) {
+        // The current difference
+        std::vector<DocumentNode> diffvec = queries[0];
+
+        // Takes the difference using all words after the "NOT" symbol
+        for (int i = 1; i < queries.size(); i++) {
+            diffvec = Difference<DocumentNode>(diffvec, queries[i]);
+        }
+
+        // Return the vector
+        return diffvec;
+    }
+
+    // If the mode is not 'OR' or 'AND' and subtraction isn't used,
+    // return the first vector of results
     return queries[0];
 }
 
@@ -277,7 +387,7 @@ std::vector<DocumentNode> QueryProcessor::ProcessQuery(std::string& query) {
     }
     // If the first word is not blank, query only that word
     else if (!tokenizedQuery[0].empty()) {
-        return DocProcessor.search(tokenizedQuery[0]).getDocuments().getInOrderVec();
+        return queryWords(tokenizedQuery, tokenizedQuery[0]);
     }
     else {
         // If the first word is blank, print an error message

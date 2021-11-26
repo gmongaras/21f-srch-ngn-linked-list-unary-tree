@@ -48,6 +48,18 @@ private:
 
 
     /**
+     * Difference Method
+     * Takes the Difference of two vectors
+     * @param vec1 The first vector to compare
+     * @param vec2 The second vector to compare
+     * @return A vector with the difference of the two given vectors
+     */
+    template <typename vectype>
+    std::vector<vectype> Difference(std::vector<vectype>& vec1, std::vector<vectype>& vec2);
+
+
+
+    /**
      * queryWords
      * Given a vector of strings, it queries all words in the vector on a specific mode
      * @param vec A vector of strings to query
