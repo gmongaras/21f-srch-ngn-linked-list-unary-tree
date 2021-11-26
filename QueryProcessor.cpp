@@ -282,6 +282,41 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
 
 
 
+/*******************
+ **    sortVec    **
+ ******************/
+std::vector<DocumentNode> QueryProcessor::sortVec(std::vector<DocumentNode> vec) {
+    // Algorithm from https://www.geeksforgeeks.org/insertion-sort/
+
+    int i, j;
+    DocumentNode key;
+    for (i = 1; i < vec.size(); i++)
+    {
+        key = vec[i];
+        j = i - 1;
+
+        /* Move elements of arr[0..i-1], that are
+        greater than key, to one position ahead
+        of their current position */
+        while (j >= 0 && vec[j].getRelevancyRanking() < key.getRelevancyRanking())
+        {
+            vec[j + 1] = vec[j];
+            j = j - 1;
+        }
+        vec[j + 1] = key;
+    }
+
+    // Return the sorted vector
+    return vec;
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -363,11 +398,11 @@ std::vector<DocumentNode> QueryProcessor::ProcessQuery(std::string& query) {
         }
         // If the length of the vector is 2, return a query with just one word
         else if (tokenizedQuery.size() == 2) {
-            return DocProcessor.search(tokenizedQuery[1]).getDocuments().getInOrderVec();
+            return sortVec(DocProcessor.search(tokenizedQuery[1]).getDocuments().getInOrderVec());
         }
         // If the length of the vector is greater than 2, query all given words
         else {
-            return queryWords(tokenizedQuery, tokenizedQuery[0]);
+            return sortVec(queryWords(tokenizedQuery, tokenizedQuery[0]));
         }
     }
     // If the first word is OR, query using the OR clause
@@ -378,16 +413,16 @@ std::vector<DocumentNode> QueryProcessor::ProcessQuery(std::string& query) {
         }
         // If the length of the vector is 2, return a query with just one word
         else if (tokenizedQuery.size() == 2) {
-            return DocProcessor.search(tokenizedQuery[1]).getDocuments().getInOrderVec();
+            return sortVec(DocProcessor.search(tokenizedQuery[1]).getDocuments().getInOrderVec());
         }
         // If the length of the vector is greater than 2, query all given words
         else {
-            return queryWords(tokenizedQuery, tokenizedQuery[0]);
+            return sortVec(queryWords(tokenizedQuery, tokenizedQuery[0]));
         }
     }
     // If the first word is not blank, query only that word
     else if (!tokenizedQuery[0].empty()) {
-        return queryWords(tokenizedQuery, tokenizedQuery[0]);
+        return sortVec(queryWords(tokenizedQuery, tokenizedQuery[0]));
     }
     else {
         // If the first word is blank, print an error message

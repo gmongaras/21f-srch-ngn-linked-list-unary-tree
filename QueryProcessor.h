@@ -73,7 +73,11 @@ private:
     /**
      * sortVec Method
      * Given a vector of DocumentNodes, it returns the sorted form of that vector
+     * based on the Relevancy Ranking.
+     * @param vec A vector to sort
+     * @return A sorted DocumentNode vector
      */
+    std::vector<DocumentNode> sortVec(std::vector<DocumentNode> vec);
 
 
 
