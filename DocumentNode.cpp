@@ -9,16 +9,20 @@
 DocumentNode::DocumentNode() {
     documentName = "";
     frequency = 0;
+    documentID = "";
+    docLength = 0;
 }
-DocumentNode::DocumentNode(const std::string &name, int freq, std::string ID) {
+DocumentNode::DocumentNode(const std::string &name, int freq, std::string ID, int length) {
     documentName = name;
     frequency = freq;
     documentID = std::move(ID);
+    docLength = length;
 }
 DocumentNode::DocumentNode(const DocumentNode &node) {
     documentName = node.documentName;
     frequency = node.frequency;
     documentID = node.documentID;
+    docLength = node.docLength;
 }
 
 
@@ -39,6 +43,10 @@ void DocumentNode::changeID(const std::string& ID) {
     documentID = ID;
 }
 
+void DocumentNode::changeLength(const int length) {
+    docLength = length;
+}
+
 
 
 /******************************
@@ -54,6 +62,19 @@ int DocumentNode::getFreq() const {
 
 std::string DocumentNode::getID() const {
     return documentID;
+}
+
+int DocumentNode::getLength() const {
+    return docLength;
+}
+
+
+
+/**************************************
+ **    getRelevancyRanking Method    **
+ *************************************/
+float DocumentNode::getRelevancyRanking() const {
+    return (float)frequency/(float)docLength;
 }
 
 
@@ -109,6 +130,6 @@ int DocumentNode::updateFreq() {
  **********************************************/
 std::ostream& operator<< (std::ostream& out, const DocumentNode& node) {
     //out << "Name: " << node.documentName << "   " << "Word Frequency: " << node.frequency << "   Document ID: " << node.documentID;
-    out << node.documentName << " " << node.frequency << " " << node.documentID;
+    out << node.documentName << " " << node.frequency << " " << node.documentID << " " << node.docLength;
     return out;
 }

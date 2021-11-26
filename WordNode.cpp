@@ -24,10 +24,9 @@ WordNode::WordNode() {
 WordNode::WordNode(std::string& newWord) {
     word = newWord;
 }
-WordNode::WordNode(std::string& newWord, std::string& doc, std::string& ID) {
+WordNode::WordNode(std::string& newWord, DocumentNode& doc) {
     word = newWord;
-    DocumentNode temp = DocumentNode(doc, 1, ID);
-    docs.insert(temp, &docsEqualityFunction);
+    docs.insert(doc, &docsEqualityFunction);
 }
 WordNode::WordNode(WordNode &node) {
     word = node.word;
@@ -39,9 +38,9 @@ WordNode::WordNode(WordNode &node) {
 /*************************
  **    addDoc Method    **
  ************************/
-void WordNode::addDoc(std::string &Doc, std::string& ID) {
+void WordNode::addDoc(std::string &Doc, std::string& ID, int length) {
     // Temporary node to insert
-    DocumentNode temp = DocumentNode(Doc, 1, ID);
+    DocumentNode temp = DocumentNode(Doc, 1, ID, length);
 
     // Try inserting the document, if it is already in the
     // tree, increment the value.
@@ -58,7 +57,7 @@ void WordNode::addDoc(DocumentNode &Doc) {
  *************************/
 DocumentNode& WordNode::getDoc(std::string &Doc) {
     // Temporary node to look for
-    DocumentNode temp = DocumentNode(Doc, 1, "");
+    DocumentNode temp = DocumentNode(Doc, 1, "", 0);
 
     // Try finding the document, if the node is found,
     // return the

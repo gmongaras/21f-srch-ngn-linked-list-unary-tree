@@ -55,7 +55,8 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
             }
             // If the word is fine, add it to the words tree
             else {
-                WordNode temp(word, docName, ID);
+                DocumentNode tempNode(docName, 1, ID, text.GetStringLength());
+                WordNode temp(word, tempNode);
                 //Words.insert(temp, &wordsEqualityFunction);
                 index.addWord(temp);
                 word.clear();
@@ -70,7 +71,8 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
     }
 
     // Add the final word
-    WordNode temp(word, docName, ID);
+    DocumentNode tempNode(docName, 1, ID, text.GetStringLength());
+    WordNode temp(word, tempNode);
     //Words.insert(temp, &wordsEqualityFunction);
     index.addWord(temp);
     word.clear();

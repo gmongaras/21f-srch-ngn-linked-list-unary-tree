@@ -70,6 +70,13 @@ private:
 
 
 
+    /**
+     * sortVec Method
+     * Given a vector of DocumentNodes, it returns the sorted form of that vector
+     */
+
+
+
 public:
     /**
      * Constructor
