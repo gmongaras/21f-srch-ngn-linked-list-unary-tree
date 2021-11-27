@@ -24,7 +24,7 @@ public:
     void addWord(WordNode& word);
 
     /**
-     * getDocs Method
+     * getWord Method
      * Retrieves a WordNode from the words AVLTree
      * @param word The word to search for in the tree
      * @return The WordNode that was searched for

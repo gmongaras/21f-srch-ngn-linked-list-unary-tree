@@ -19,6 +19,7 @@ int main(int argc, char** argv) {
 //    }
 
 
+
     // Create a query processor object to handle queries
     QueryProcessor q;
 
@@ -80,8 +81,5 @@ int main(int argc, char** argv) {
 
 
 
-    //std::cout << "UWU Sussy Baka" << std::endl;
     return 0;
-    //abort();
-    throw std::runtime_error("UWU Sussy Baka");
 }

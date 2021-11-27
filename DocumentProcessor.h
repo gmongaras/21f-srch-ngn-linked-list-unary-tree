@@ -42,7 +42,7 @@ private:
 
     /**
      * storeStopWords Method
-     * Given a filename
+     * Given a filename, it reads in and stores all stopwords
      * @param filename The name of the file to read the stop words from
      */
     void storeStopWords(const std::string& filename);
