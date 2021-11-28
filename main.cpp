@@ -2,6 +2,7 @@
 
 
 #include "QueryProcessor.h"
+#include "HashFunction.h"
 //#include "DocumentNode.h"
 //#include "WordNode.h"
 //#include "DocumentProcessor.h"

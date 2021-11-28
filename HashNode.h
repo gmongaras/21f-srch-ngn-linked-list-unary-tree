@@ -30,15 +30,15 @@ public:
      */
     void setKey(const K& newKey);
     void setValue(const V& newValue);
-    void setNext(const HashNode<K, V>* node);
+    void setNext(HashNode<K, V>* node);
 
 
     /**
      * Get Methods
      */
-    K& getKey() const;
-    V& getValue() const;
-    HashNode* getNext() const;
+    K& getKey();
+    V& getValue();
+    HashNode* getNext();
 
 
     /**
@@ -98,7 +98,7 @@ void HashNode<K, V>::setValue(const V &newValue) {
     value = newValue;
 }
 template <typename K, typename V>
-void HashNode<K, V>::setNext(const HashNode<K, V> *node) {
+void HashNode<K, V>::setNext(HashNode<K, V> *node) {
     next = node;
 }
 
@@ -108,15 +108,15 @@ void HashNode<K, V>::setNext(const HashNode<K, V> *node) {
  **    Get Methods    **
  **********************/
 template <typename K, typename V>
-K& HashNode<K, V>::getKey() const {
+K& HashNode<K, V>::getKey() {
     return key;
 }
 template <typename K, typename V>
-V& HashNode<K, V>::getValue() const {
+V& HashNode<K, V>::getValue() {
     return value;
 }
 template <typename K, typename V>
-HashNode<K, V>* HashNode<K, V>::getNext() const {
+HashNode<K, V>* HashNode<K, V>::getNext() {
     return next;
 }
 

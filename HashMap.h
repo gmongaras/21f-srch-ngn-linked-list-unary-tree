@@ -68,7 +68,7 @@ public:
 template<typename K, typename V, typename F>
 HashMap<K, V, F>::HashMap() {
     // Initialize the hashmap
-    tableSize = 100000;
+    tableSize = 4194304;
     table = new HashNode<K, V> *[tableSize]();
 }
 
@@ -127,7 +127,7 @@ HashMap<K, V, F>::~HashMap<K, V, F>() {
 template<typename K, typename V, typename F>
 bool HashMap<K, V, F>::getValue(const K &key, V& value) {
     // Hash the given value and get the value corresponding to it
-    unsigned long hashValue = hashFunc(key);
+    unsigned long hashValue = hashFunc.hash(key);
     HashNode<K, V>* val = table[hashValue];
 
     // Iterate till the given key is found
@@ -154,7 +154,7 @@ bool HashMap<K, V, F>::getValue(const K &key, V& value) {
 template<typename K, typename V, typename F>
 V& HashMap<K, V, F>::operator[](const K &key) {
     // Hash the given value and get the value corresponding to it
-    unsigned long hashValue = hashFunc(key);
+    unsigned long hashValue = hashFunc.hash(key);
     HashNode<K, V>* val = table[hashValue];
 
     // Iterate till the given key is found
@@ -180,7 +180,7 @@ V& HashMap<K, V, F>::operator[](const K &key) {
 template<typename K, typename V, typename F>
 V& HashMap<K, V, F>::update(const K &key, const V &value) {
     // Hash the given key
-    unsigned long hashValue = hashFunc(key);
+    unsigned long hashValue = hashFunc.hash(key);
 
     // Pointers to find the location to put the given key-value pair
     HashNode<K, V>* prev = nullptr;
