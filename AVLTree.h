@@ -16,6 +16,10 @@ template <typename nodetype>
 class AVLTree {
 private:
     TreeNode<nodetype>* root;
+    int numNodes;
+
+
+
 
 
     /**************************
@@ -354,10 +358,10 @@ void AVLTree<nodetype>::printSubtree2(TreeNode<nodetype>* const subtree) const {
  *******************************/
 template <typename nodetype>
 nodetype& AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curPtr, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
-    // If curPtr is nullptr, set the curPtr to the newItem and set the
-    // current node's height to 0
+    // If curPtr is nullptr, set the curPtr to the newItem
     if (curPtr == nullptr) {
         curPtr = new TreeNode<nodetype>(newItem);
+        numNodes++;
         return curPtr->data;
     }
 
@@ -366,6 +370,7 @@ nodetype& AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curP
     else if (newItem < (*curPtr).data) {
         nodetype& sub = insert(newItem, curPtr->left, equalityFunction);
         balance(curPtr);
+        numNodes++;
         return sub;
     }
 
@@ -374,6 +379,7 @@ nodetype& AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curP
     else if (newItem > (*curPtr).data) {
         nodetype& sub = insert(newItem, curPtr->right, equalityFunction);
         balance(curPtr);
+        numNodes++;
         return sub;
     }
 
@@ -655,6 +661,7 @@ std::vector<nodetype> &AVLTree<nodetype>::getInOrderVec(std::vector<nodetype>& v
 template <typename nodetype>
 AVLTree<nodetype>::AVLTree() {
     root = nullptr;
+    numNodes = 0;
 }
 template <typename nodetype>
 AVLTree<nodetype>::AVLTree(TreeNode<nodetype>*& r) {
@@ -664,6 +671,7 @@ AVLTree<nodetype>::AVLTree(TreeNode<nodetype>*& r) {
     }
 
     root = r;
+    numNodes = 1;
 }
 template <typename nodetype>
 AVLTree<nodetype>::AVLTree(AVLTree<nodetype> &tree) {
@@ -677,6 +685,7 @@ AVLTree<nodetype>::AVLTree(AVLTree<nodetype> &tree) {
 
     // Insert the other nodes
     CopyConstructorHelper(root, tree.root);
+    numNodes = tree.numNodes;
 }
 template <typename nodetype>
 AVLTree<nodetype>::~AVLTree<nodetype>() {

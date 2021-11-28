@@ -29,6 +29,12 @@ public:
     ~HashMap();
 
     /**
+     * clear Method
+     * Clear all contents in the hash map and frees all the memory
+     */
+    void clear();
+
+    /**
      * addPair Method
      * Adds a key-value pair to the map
      * @param newKey The key to add
@@ -38,14 +44,6 @@ public:
     void addPair(K& newKey, V& newValue, std::function<void(V& oldValue, V& newValue)> equalityFunction);
 
     /**
-     * getValue Method
-     * Retrieve a value from the map at the location of a given key
-     * @param searchKey The key used to search for the value
-     * @return The value at the given key
-     */
-    V& getValue(K& searchKey);
-
-    /**
      * Overloaded [] Operator
      * Retrieve a value from the map at the location of a given key
      * @param searchKey The key used to search for the value
@@ -53,6 +51,8 @@ public:
      */
     V& operator[](K& searchKey);
 };
+
+
 
 
 
@@ -99,6 +99,16 @@ HashMap<K, V, F>::HashMap(HashMap<K, V, F> &oldMap) {
 
 template <typename K, typename V, typename F>
 HashMap<K, V, F>::~HashMap<K, V, F>() {
+    clear();
+}
+
+
+
+/************************
+ **    clear Method    **
+ ***********************/
+template <typename K, typename V, typename F>
+void HashMap<K, V, F>::clear() {
     // Iterate over all values in the vector and delete them
     for (int i = 0; i < map.size(); i++) {
         // Iteration pointers
@@ -131,11 +141,11 @@ void HashMap<K, V, F>::addPair(K& newKey, V& newValue, std::function<void(V& old
     long keyHash = hashFunc.hash(newKey);
 
     // Get the location in the vector of the hashed key
-    HashNode<K, V>*& node = map[keyHash];
+    HashNode<K, V>* node = map[keyHash];
 
     // If the value is nullptr, add a new node to that location
     if (node == nullptr) {
-        node = new HashNode<K, V>(newKey, newValue);
+        map[keyHash] = new HashNode<K, V>(newKey, newValue);
     }
 
     // If the value is not nullptr and the current node's key contains
@@ -148,60 +158,21 @@ void HashMap<K, V, F>::addPair(K& newKey, V& newValue, std::function<void(V& old
     // the key of the given key, search for the key in the linked list
     else {
         // Iterate to the end of the linked list
+        HashNode<K, V>* prev = nullptr;
         while (node != nullptr) {
             // If the key is found, call the equality function
             if (node->key == newKey) {
-                equalityFunction(node->value, newValue);
+                //equalityFunction(node->value, newValue);
                 return;
             }
 
             // If the key is not found, move the pointer
+            prev = node;
             node = node->nextNode;
         }
 
         // If the current node is nullptr, add a new node to the end of the list
-        node = new HashNode<K, V>(newKey, newValue);
-    }
-}
-
-
-
-/***************************
- **    getValue Method    **
- **************************/
-template <typename K, typename V, typename F>
-V& HashMap<K, V, F>::getValue(K& searchKey) {
-    // Hash the given key
-    long keyHash = hashFunc.hash(searchKey);
-
-    // Get the location in the vector of the hashed key
-    HashNode<K, V>*& node = map[keyHash];
-
-    // If the value is nullptr, raise an exception
-    if (node == nullptr) {
-        throw std::runtime_error("Key has no value");
-    }
-
-    // If the node is not nullptr and the key is found, return the value
-    else if (node->key == searchKey) {
-        return node->value;
-    }
-
-    // If the key is not found, search the linked list
-    else {
-        // Iterate to the end of the linked list
-        while (node != nullptr) {
-            // If the key is found, return the value
-            if (node->key == searchKey) {
-                return node->value;
-            }
-
-            // If the key is not found, move the iterator
-            node = node->nextNode;
-        }
-
-        // If the node wasn't found, raise and error
-        throw std::runtime_error("Key has no value");
+        prev->nextNode = new HashNode<K, V>(newKey, newValue);
     }
 }
 

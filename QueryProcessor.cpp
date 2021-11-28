@@ -163,6 +163,9 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
     // Initial location of PERSON queries if any
     int personLoc = -1;
 
+    // The mode to query in
+    std::string queryMode("normal");
+
 
     // Query all words
     for (int i = startIndex; i < vec.size(); i++) {
@@ -175,6 +178,7 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
             if (personLoc != -1) {
                 notLoc--;
             }
+            queryMode = "normal";
             continue;
         }
         // IF ORG is seen, change the location of the orgLoc
@@ -186,6 +190,7 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
             if (personLoc != -1) {
                 orgLoc--;
             }
+            queryMode = "org";
             continue;
         }
         // If PERSON is seen, change the location of the personLoc
@@ -197,10 +202,37 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
             if (orgLoc != -1) {
                 personLoc--;
             }
+            queryMode = "person";
             continue;
         }
-        queries.emplace_back(DocProcessor.search(vec[i]).getDocuments().getInOrderVec());
-    }
+
+        // Query the word
+        if (queryMode == "normal") {
+            queries.emplace_back(DocProcessor.searchWord(vec[i]).getDocuments().getInOrderVec());
+        }
+        else if (queryMode == "person") {
+            // Increase i until it's greater than the words vector or until
+            // it reaches a new keyword. Continuously append to a word along the way.
+            std::string temp = vec[i];
+            i++;
+            while (i < vec.size() && vec[i] != "not" && vec[i] != "org") {
+                temp += " " + vec[i];
+                i++;
+            }
+            queries.emplace_back(DocProcessor.searchPeople(temp).getDocuments().getInOrderVec());
+        }
+        else if (queryMode == "org") {
+            // Increase i until it's greater than the words vector or until
+            // it reaches a new keyword. Continuously append to a word along the way.
+            std::string temp = vec[i];
+            i++;
+            while (i < vec.size() && vec[i] != "not" && vec[i] != "person") {
+                temp += " " + vec[i];
+                i++;
+            }
+            queries.emplace_back(DocProcessor.searchOrgs(temp).getDocuments().getInOrderVec());
+        }
+   }
 
 
 
@@ -218,9 +250,19 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
         for (int i = 2; i < queries.size(); i++) {
             // If the current value is the location of subtractions,
             // query by subtraction
-            if (i >= notLoc && notLoc != -1) {
+            if (i >= notLoc && notLoc != -1 && ((i < personLoc && personLoc > notLoc) || (i > personLoc && personLoc < notLoc && personLoc != -1) || personLoc == -1) && ((i < orgLoc && orgLoc > notLoc) || (i > orgLoc && orgLoc < notLoc && orgLoc != -1) || orgLoc == -1)) {
                 interVec = Difference<DocumentNode>(interVec, queries[i]);
             }
+            // If the current value is the location of a person, query
+            // by person
+//            else if (i >= personLoc && personLoc != -1 && ((i < notLoc && notLoc > personLoc) || (i > notLoc && notLoc < personLoc && notLoc != -1) || notLoc == -1)) {
+//                interVec = Intersection<DocumentNode>(interVec, queries[i]);
+//            }
+//            // If the current value is the location of an organization, query
+//            // by organization
+//            else if (i >= personLoc && personLoc != -1 && ((i < notLoc && notLoc > personLoc) || (i > notLoc && notLoc < personLoc && notLoc != -1) || notLoc == -1)) {
+//                interVec = Intersection<DocumentNode>(interVec, queries[i]);
+//            }
             // If the current value is not special, query normally
             else {
                 interVec = Intersection<DocumentNode>(interVec, queries[i]);
@@ -337,33 +379,11 @@ QueryProcessor::QueryProcessor() {
 
 
 
-/*****************************
- **    Initialize Method    **
- ****************************/
-void QueryProcessor::Initialize() {
-    std::cout << "┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐" << std::endl
-              << "│                                                                                                                                         │" << std::endl
-              << "│              ___  ___  ________   ________  ________      ___    ___      _________  ________  _______   _______                        │" << std::endl
-              << "│             |\\  \\|\\  \\|\\   ___  \\|\\   __  \\|\\   __  \\    |\\  \\  /  /|    |\\___   ___\\\\   __  \\|\\  ___ \\ |\\  ___ \\                       │" << std::endl
-              << "│             \\ \\  \\\\\\  \\ \\  \\\\ \\  \\ \\  \\|\\  \\ \\  \\|\\  \\   \\ \\  \\/  / /    \\|___ \\  \\_\\ \\  \\|\\  \\ \\   __/|\\ \\   __/|                      │" << std::endl
-              << "│              \\ \\  \\\\\\  \\ \\  \\\\ \\  \\ \\   __  \\ \\   _  _\\   \\ \\    / /          \\ \\  \\ \\ \\   _  _\\ \\  \\_|/_\\ \\  \\_|/__                    │" << std::endl
-              << "│               \\ \\  \\\\\\  \\ \\  \\\\ \\  \\ \\  \\ \\  \\ \\  \\\\  \\|   \\/  /  /            \\ \\  \\ \\ \\  \\\\  \\\\ \\  \\_|\\ \\ \\  \\_|\\ \\                   │" << std::endl
-              << "│                \\ \\_______\\ \\__\\\\ \\__\\ \\__\\ \\__\\ \\__\\\\ _\\ __/  / /               \\ \\__\\ \\ \\__\\\\ _\\\\ \\_______\\ \\_______\\                  │" << std::endl
-              << "│                 \\|_______|\\|__| \\|__|\\|__|\\|__|\\|__|\\|__|\\___/ /                 \\|__|  \\|__|\\|__|\\|_______|\\|_______|                  │" << std::endl
-              << "│                                                         \\|___|/                                                                         │" << std::endl
-              << "│                                                                                                                                         │" << std::endl
-              << "│                                                                                                                                         │" << std::endl
-              << "│     ________  _______   ________  ________  ________  ___  ___          _______   ________   ________  ___  ________   _______          │" << std::endl
-              << "│    |\\   ____\\|\\  ___ \\ |\\   __  \\|\\   __  \\|\\   ____\\|\\  \\|\\  \\        |\\  ___ \\ |\\   ___  \\|\\   ____\\|\\  \\|\\   ___  \\|\\  ___ \\         │" << std::endl
-              << "│    \\ \\  \\___|\\ \\   __/|\\ \\  \\|\\  \\ \\  \\|\\  \\ \\  \\___|\\ \\  \\\\\\  \\       \\ \\   __/|\\ \\  \\\\ \\  \\ \\  \\___|\\ \\  \\ \\  \\\\ \\  \\ \\   __/|        │" << std::endl
-              << "│     \\ \\_____  \\ \\  \\_|/_\\ \\   __  \\ \\   _  _\\ \\  \\    \\ \\   __  \\       \\ \\  \\_|/_\\ \\  \\\\ \\  \\ \\  \\  __\\ \\  \\ \\  \\\\ \\  \\ \\  \\_|/__      │" << std::endl
-              << "│      \\|____|\\  \\ \\  \\_|\\ \\ \\  \\ \\  \\ \\  \\\\  \\\\ \\  \\____\\ \\  \\ \\  \\       \\ \\  \\_|\\ \\ \\  \\\\ \\  \\ \\  \\|\\  \\ \\  \\ \\  \\\\ \\  \\ \\  \\_|\\ \\     │" << std::endl
-              << "│        ____\\_\\  \\ \\_______\\ \\__\\ \\__\\ \\__\\\\ _\\\\ \\_______\\ \\__\\ \\__\\       \\ \\_______\\ \\__\\\\ \\__\\ \\_______\\ \\__\\ \\__\\\\ \\__\\ \\_______\\    │" << std::endl
-              << "│       |\\_________\\|_______|\\|__|\\|__|\\|__|\\|__|\\|_______|\\|__|\\|__|        \\|_______|\\|__| \\|__|\\|_______|\\|__|\\|__| \\|__|\\|_______|    │" << std::endl
-              << "│       \\|_________|                                                                                                                      │" << std::endl
-              << "│                                                                                                                                         │" << std::endl
-              << "│                                                                                                                                         │" << std::endl
-              << "└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘" << std::endl;
+/**********************
+ **    clearIndex    **
+ *********************/
+void QueryProcessor::clearIndex() {
+    DocProcessor.clearIndex();
 }
 
 
@@ -373,9 +393,6 @@ void QueryProcessor::Initialize() {
  **********************/
 void QueryProcessor::Load(std::string& directory) {
     DocProcessor.processDocuments(directory);
-
-    // Initialize the search engine
-    Initialize();
 }
 
 
@@ -398,7 +415,7 @@ std::vector<DocumentNode> QueryProcessor::ProcessQuery(std::string& query) {
         }
         // If the length of the vector is 2, return a query with just one word
         else if (tokenizedQuery.size() == 2) {
-            return sortVec(DocProcessor.search(tokenizedQuery[1]).getDocuments().getInOrderVec());
+            return sortVec(DocProcessor.searchWord(tokenizedQuery[1]).getDocuments().getInOrderVec());
         }
         // If the length of the vector is greater than 2, query all given words
         else {
@@ -413,7 +430,7 @@ std::vector<DocumentNode> QueryProcessor::ProcessQuery(std::string& query) {
         }
         // If the length of the vector is 2, return a query with just one word
         else if (tokenizedQuery.size() == 2) {
-            return sortVec(DocProcessor.search(tokenizedQuery[1]).getDocuments().getInOrderVec());
+            return sortVec(DocProcessor.searchWord(tokenizedQuery[1]).getDocuments().getInOrderVec());
         }
         // If the length of the vector is greater than 2, query all given words
         else {

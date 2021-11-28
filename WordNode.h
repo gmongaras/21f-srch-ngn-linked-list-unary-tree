@@ -30,7 +30,7 @@ public:
      * addDoc Method
      * @param Doc The document to add to the vector
      */
-    void addDoc(std::string& Doc, std::string& ID, int length);
+    void addDoc(std::string &Doc, std::string& ID, int length, std::string& title, std::string& author, std::string& date);
     void addDoc(DocumentNode& Doc);
 
     /**

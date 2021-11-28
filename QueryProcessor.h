@@ -87,12 +87,11 @@ public:
      */
     QueryProcessor();
 
-
     /**
-     * Init
-     * Initializes the query processor and displays a prompt
+     * clearIndex
+     * Clear all items from the index
      */
-    void Initialize();
+    void clearIndex();
 
     /**
      * Load

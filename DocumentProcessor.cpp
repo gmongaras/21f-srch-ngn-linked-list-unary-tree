@@ -18,14 +18,59 @@ void stopWordsEqualityFunction(std::string& newItem, TreeNode<std::string>*& cur
 
 
 
+
+/*************************
+ **    tokStr Method    **
+ ************************/
+std::vector<std::string> DocumentProcessor::tokStr(std::string &str, char tok) {
+    // Vector to hold the tokenized string
+    std::vector<std::string> tokenizedString;
+
+    // Temporary string to hold each substring
+    std::string substr;
+
+    // Iterate over all values in the string
+    for (char i : str) {
+        // If the current character is the token, add the substring to the vector
+        if (i == tok) {
+            if (!substr.empty()) {
+                tokenizedString.emplace_back(substr);
+            }
+
+            // Clear the substring
+            substr.clear();
+            continue;
+        }
+
+        // Add the next character to the substring
+        substr += i;
+    }
+
+    // Add the final substring to the vector
+    tokenizedString.emplace_back(substr);
+
+    // Return the vector of substring
+    return tokenizedString;
+}
+
+
+
+
+
 /******************************
  **    cleanAndAdd Method    **
  *****************************/
-void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docName) {
-    // Get the text from the document
+void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docName, int& numWords) {
+    // Get the informations from the document
     rapidjson::Value& text = (*doc)["text"];
-    std::string ID = (*doc)["uuid"].GetString();
     std::string textStr = text.GetString();
+    std::string ID = (*doc)["uuid"].GetString();
+    std::string title = (*doc)["title"].GetString();
+    std::string author = (*doc)["author"].GetString();
+    std::string date = (*doc)["published"].GetString();
+
+    // Create a node holding all the document information
+    DocumentNode docNode(docName, 1, ID, text.GetStringLength(), title, author, date);
 
     // Storage used to store each word in the sequence
     std::string word;
@@ -55,8 +100,8 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
             }
             // If the word is fine, add it to the words tree
             else {
-                DocumentNode tempNode(docName, 1, ID, text.GetStringLength());
-                WordNode temp(word, tempNode);
+                numWords++;
+                WordNode temp(word, docNode);
                 //Words.insert(temp, &wordsEqualityFunction);
                 index.addWord(temp);
                 word.clear();
@@ -71,11 +116,72 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
     }
 
     // Add the final word
-    DocumentNode tempNode(docName, 1, ID, text.GetStringLength());
-    WordNode temp(word, tempNode);
+    WordNode temp(word, docNode);
     //Words.insert(temp, &wordsEqualityFunction);
     index.addWord(temp);
     word.clear();
+
+
+
+
+
+
+    // Get all people from the document
+    auto people = (*doc)["entities"]["persons"].GetArray();
+
+    // If there is information on the people in the document, store it
+    if (!people.Empty()) {
+        // Add each name to the hash map
+        for (int i = 0; i < people.Size(); i++) {
+            std::string person = people[i]["name"].GetString();
+            WordNode temp(person, docNode);
+            index.addPerson(person, temp);
+        }
+    }
+
+
+
+
+
+
+    // Get all organizations from the document
+    auto orgs = (*doc)["entities"]["organizations"].GetArray();
+
+    // If there is information on the organizations in the document, store it
+    if (!orgs.Empty()) {
+        // Add each organization to the hash map
+        for (int i = 0; i < orgs.Size(); i++) {
+            std::string org = orgs[i]["name"].GetString();
+            WordNode temp(org, docNode);
+            index.addOrg(org, temp);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+//    // Store the information on the organizations from the document
+//    std::string organizations = (*doc)["organizations"].GetString();
+//
+//    // If there is information on the people in the document, store it
+//    if (!people.empty()) {
+//        // Breakup the people string into a vector of each person
+//        std::vector<std::string> peopleVec = tokStr(people, ',');
+//
+//        // Iterate over all values in the vector
+//        for (std::string person : peopleVec) {
+//            // Add the person to the HashMap
+//            DocumentNode tempNode(docName, 1, ID, text.GetStringLength());
+//            WordNode temp(person, tempNode);
+//            index.addPerson(person, temp);
+//        }
+//    }
 }
 
 
@@ -116,7 +222,7 @@ void DocumentProcessor::storeStopWords(const std::string &filename) {
 /*****************************************
  **    processDocumentsHelper Method    **
  ****************************************/
-int DocumentProcessor::processDocumentsHelper(const std::string &directory, int numFiles) {
+int DocumentProcessor::processDocumentsHelper(const std::string &directory, int& numFiles, int& numWords) {
     FILE* filePointer; // Holds each file
 
 
@@ -131,12 +237,12 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
     int readBufferSize = sizeof(readBuffer);
 
     // If the file isn't open, stop the program
-    if (dir == NULL) {
+    if (dir == nullptr) {
         throw std::runtime_error("File not open");
     }
 
     // Iterate over all documents in the directory
-    while ((ent = readdir(dir)) != NULL) {
+    while ((ent = readdir(dir)) != nullptr) {
         // Increase the counter and update the display
         numFiles++;
         if (numFiles%1000 == 0) {
@@ -157,7 +263,7 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
             continue;
         else if ((st.st_mode & S_IFDIR) != 0) {
             // If the file is a directory, iterate over all those files
-            numFiles = processDocumentsHelper(directory+"/"+fileName, numFiles);
+            numFiles = processDocumentsHelper(directory+"/"+fileName, numFiles, numWords);
             continue;
         }
 
@@ -182,7 +288,7 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
 
         // If the file is open, clean and add the word to the tree
         if (doc->IsNull() == false){
-            cleanAndAdd(doc, fileName);
+            cleanAndAdd(doc, fullFileName, numWords);
         }
 
 
@@ -191,7 +297,6 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
         delete doc;
         delete inputStream;
         fclose(filePointer);
-        //delete filePointer;
         memset(readBuffer, 0, readBufferSize);
     }
 
@@ -203,7 +308,8 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
 
 
     // Return the number of files read in
-    return numFiles;
+    NUMFILES = numFiles;
+    return NUMFILES;
 }
 
 
@@ -219,6 +325,15 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int 
 
 
 
+
+
+
+/*****************************
+ **    clearIndex Method    **
+ ****************************/
+void DocumentProcessor::clearIndex() {
+    index.clearIndex();
+}
 
 
 
@@ -233,30 +348,64 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
 
 
     // Process the documents
-    processDocumentsHelper(directory, 0);
+    processDocumentsHelper(directory, NUMFILES, NUMWORDS);
 }
 
 
 
-/******************
- **    search    **
- *****************/
-WordNode DocumentProcessor::search(std::string word) {
+/**********************
+ **    searchWord    **
+ *********************/
+WordNode DocumentProcessor::searchWord(std::string word) {
     // Stem and lowercase the word
     Porter2Stemmer::trim(word);
     Porter2Stemmer::stem(word);
     std::transform(word.begin(), word.end(), word.begin(), ::tolower);
 
-    // If the word is "", return an empty WordNode and display an error message
+    // If the word is "", return an empty WordNode to display an error message
     if (word.empty()) {
         WordNode temp;
         return temp;
     }
 
-    // Return the word
+    // Return the results of the query
     return index.getWord(word);
+
+
     //stopWords.saveTree(std::string("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/21f-srch-ngn-linked-list-unary-tree/storage/stop.csv"));
     //Words.saveTree(std::string("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/21f-srch-ngn-linked-list-unary-tree/storage/tree.csv"));
     //WordNode temp(word);
     //return Words.getNode(temp);
+}
+
+
+
+/************************
+ **    searchPeople    **
+ ***********************/
+WordNode DocumentProcessor::searchPeople(std::string person) {
+    // If the person is "", return an empty WordNode to display an error message
+    if (person.empty()) {
+        WordNode temp;
+        return temp;
+    }
+
+    // Return the results of the query
+    return index.getPeopleDocs(person);
+}
+
+
+
+/**********************
+ **    searchOrgs    **
+ *********************/
+WordNode DocumentProcessor::searchOrgs(std::string org) {
+    // If the person is "", return an empty WordNode to display an error message
+    if (org.empty()) {
+        WordNode temp;
+        return temp;
+    }
+
+    // Return the results of the query
+    return index.getOrgDocs(org);
 }

@@ -4,6 +4,7 @@
 
 #include "AVLTree.h"
 #include "WordNode.h"
+#include "HashMap.h"
 
 
 
@@ -11,11 +12,24 @@
 class Index {
 private:
     AVLTree<WordNode> words;
-    // HashMap<long, PeopleNode> people;
-    // HashMap<long, OrgNode> Orgs
+    HashMap<std::string, WordNode> people; //HashMap<long, PeopleNode> people;
+    HashMap<std::string, WordNode> orgs; //HashMap<long, OrgNode> Orgs
 
 
 public:
+    /**
+     * clearIndex Method
+     * Clears all information from the index
+     */
+    void clearIndex();
+
+
+
+
+
+
+
+
     /**
      * addWord Method
      * Adds a word to the words AVL Tree
@@ -35,9 +49,12 @@ public:
 
     /**
      * addPerson Method
-     * Adds a person to the hashmap given a key
+     * Adds a person to the hashmap
+     * @param person The person to add to the hash map
+     * @param node The node to add with the information about the person
      */
     //void addPerson(long key, std::string person);
+    void addPerson(std::string& person, WordNode& node);
 
     /**
      * addPeople Method
@@ -47,9 +64,40 @@ public:
 
     /**
      * getPeople Method
-     * Retrieves a set of people given a key
+     * @return A WordNode mapping the searched person to document they're found in
      */
+    WordNode& getPeopleDocs(std::string& person);
     //PeopleNode& getPeople(long key);
+
+
+
+
+
+    /**
+     * addOrg Method
+     * Adds a org to the hashmap
+     * @param org The organization to add to the hash map
+     * @param node The node to add with the information about the organization
+     */
+    void addOrg(std::string& org, WordNode& node);
+
+    /**
+     * getOrg Method
+     * @return A WordNode mapping the searched organization to document they're found in
+     */
+    WordNode& getOrgDocs(std::string& org);
+
+
+
+
+//
+//    /**
+//     * addOrg Method
+//     * Adds an organization to the hashmap
+//     * @param organization The organization to add to the hash map
+//     * @param node The node to add with the information about the organization
+//     */
+//    void addOrg(std::string& person, WordNode& node);
 };
 
 

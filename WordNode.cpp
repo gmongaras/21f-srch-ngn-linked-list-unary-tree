@@ -38,9 +38,9 @@ WordNode::WordNode(WordNode &node) {
 /*************************
  **    addDoc Method    **
  ************************/
-void WordNode::addDoc(std::string &Doc, std::string& ID, int length) {
+void WordNode::addDoc(std::string &Doc, std::string& ID, int length, std::string& title, std::string& author, std::string& date) {
     // Temporary node to insert
-    DocumentNode temp = DocumentNode(Doc, 1, ID, length);
+    DocumentNode temp = DocumentNode(Doc, 1, ID, length, title, author, date);
 
     // Try inserting the document, if it is already in the
     // tree, increment the value.
@@ -57,7 +57,8 @@ void WordNode::addDoc(DocumentNode &Doc) {
  *************************/
 DocumentNode& WordNode::getDoc(std::string &Doc) {
     // Temporary node to look for
-    DocumentNode temp = DocumentNode(Doc, 1, "", 0);
+    std::string t;
+    DocumentNode temp = DocumentNode(Doc, 1, t, 0, t, t, t);
 
     // Try finding the document, if the node is found,
     // return the

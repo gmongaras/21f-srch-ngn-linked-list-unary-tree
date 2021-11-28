@@ -9,10 +9,13 @@
 
 class DocumentNode {
 private:
-    std::string documentName; // The name of this document
+    std::string fileName; // The file name of this document (the path of the document)
     int frequency; // The number of times a word shows up in this document
     std::string documentID; // The ID of the document
     int docLength; // The length of the document
+    std::string title; // The title of the document
+    std::string author; // The author of the article
+    std::string date; // The date the document was published
 
 
 
@@ -21,7 +24,7 @@ public:
      * Constructors
      */
     DocumentNode();
-    DocumentNode(const std::string& name, int freq, std::string ID, int length);
+    DocumentNode(const std::string& name, int freq, std::string ID, int length, std::string& Title, std::string& Author, std::string& Date);
     DocumentNode(const DocumentNode& node);
 
 
@@ -32,6 +35,9 @@ public:
     void changeFrequency(const int freq);
     void changeID(const std::string& ID);
     void changeLength(const int length);
+    void changeTitle(const std::string& Title);
+    void changeAuthor(const std::string& Author);
+    void changeDate(const std::string& Date);
 
 
     /**
@@ -41,6 +47,9 @@ public:
     int getFreq() const;
     std::string getID() const;
     int getLength() const;
+    std::string getTitle() const;
+    std::string getAuthor() const;
+    std::string getDate() const;
 
 
     /**
