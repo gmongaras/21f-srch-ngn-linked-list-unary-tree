@@ -1,23 +1,22 @@
-// Some methods were implemented from the link below to get started on the class/
-// https://aozturk.medium.com/simple-hash-map-hash-table-implementation-in-c-931965904250
-
-
-
-
-
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_HASHMAP_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_HASHMAP_H
 
+
+
+
 #include "HashNode.h"
 #include "HashFunction.h"
+#include <vector>
+#include <functional>
+
 
 
 template <typename K, typename V, typename F = KeyHash<K>>
 class HashMap {
 private:
-    HashNode<K, V>** table; // The hashmap
+    int size; // The size of the hashmaps
+    std::vector<HashNode<K, V>*> map; // The hashmap
     F hashFunc; // The hash function
-    long tableSize; // The size of the hash table
 
 
 
@@ -26,36 +25,34 @@ public:
      * Constructors and Destructor
      */
     HashMap();
-    HashMap(const HashMap<K, V, F>& map);
+    HashMap(HashMap& oldMap);
     ~HashMap();
 
     /**
-     * getValue Function
-     * Get the value at a given key hash value
-     * @param key The key to search for
-     * @param val A variable passed in to store the value at the key if found
-     * @return True if the key is found, false otherwise
+     * addPair Method
+     * Adds a key-value pair to the map
+     * @param newKey The key to add
+     * @param newVal The value to add
+     * @param equalityFunc The function to use if the key was found in the map.
      */
-    bool getValue(const K& key, V& value);
+    void addPair(K& newKey, V& newValue, std::function<void(V& oldValue, V& newValue)> equalityFunction);
+
+    /**
+     * getValue Method
+     * Retrieve a value from the map at the location of a given key
+     * @param searchKey The key used to search for the value
+     * @return The value at the given key
+     */
+    V& getValue(K& searchKey);
 
     /**
      * Overloaded [] Operator
-     * Returns the value at a given key hash value
-     * @param key The key to search for
+     * Retrieve a value from the map at the location of a given key
+     * @param searchKey The key used to search for the value
      * @return The value at the given key
      */
-    V& operator[](const K& key);
-
-    /**
-     * update Method
-     * Updates the map given a key and value
-     * @param key The key to search for
-     * @param value The value to set at that key
-     * @return The value at the given key
-     */
-    V& update(const K& key, const V& value);
+    V& operator[](K& searchKey);
 };
-
 
 
 
@@ -65,58 +62,106 @@ public:
 /***************************************
  **    Constructors and Destructor    **
  **************************************/
-template<typename K, typename V, typename F>
+template <typename K, typename V, typename F>
 HashMap<K, V, F>::HashMap() {
-    // Initialize the hashmap
-    tableSize = 4194304;
-    table = new HashNode<K, V> *[tableSize]();
+    size = 4194304;
+    map.resize(size);
 }
+template <typename K, typename V, typename F>
+HashMap<K, V, F>::HashMap(HashMap<K, V, F> &oldMap) {
+    // Set the size
+    size = 4194304;
 
-template<typename K, typename V, typename F>
-HashMap<K, V, F>::HashMap(const HashMap<K, V, F> &map) {
-    // Set the hashmap size and initialize it
-    tableSize = map.tableSize;
-    table = new HashNode<K, V> *[tableSize]();
+    // Resize the vector map
+    map.resize(size);
 
-    // Copy all hashmap values
-    for (int i = 0; i < tableSize; i++) {
-        // If the current value in the table to copy is nullptr, skip
-        // this iteration
-        if (map.table[i].next == nullptr) {
-            table[i] = nullptr;
-            continue;
-        }
+    // Iterate over all values in the vector and add it to this map
+    for (int i = 0; i < oldMap.map.size(); i++) {
+        // Add a new node to this map
+        map[i] = new HashNode<K, V>(oldMap[i]);
 
-        // Iterate over all values in the current HashNode to copy
-        // the concurrent values
-        table[i] = new HashNode<K, V>(map.table[i]);
-        HashNode<K, V>* currNew = table[i]->getNext();
-        HashNode<K, V>* currOld = map.table[i].getNext();
-        while (currOld->next != nullptr) {
-            currNew->next = new HashNode<K, V>(currOld->next);
-            currOld = currOld->getNext();
-            currNew = currNew->getNext();
+        // Iteration pointer
+        HashNode<K, V>* newCurr = map[i];
+        HashNode<K, V>* oldCurr = oldMap[i];
+
+        // Iterate over all nodes in the old map for this specific index
+        // and add those values to this map
+        while (oldCurr->nextNode != nullptr) {
+            // Create a new node and add it to the new map's linked list
+            newCurr->nextNode = new HashNode<K, V>(oldCurr);
+
+            // Iterate to the next nodes in the list
+            newCurr = newCurr->nextNode;
+            oldCurr = oldCurr->nextNode;
         }
     }
 }
 
-template<typename K, typename V, typename F>
+template <typename K, typename V, typename F>
 HashMap<K, V, F>::~HashMap<K, V, F>() {
-    // Destroy all hashmap values
-    for (int i = 0; i < tableSize; i++) {
-        // Iterate over all values in the current HashNode to delete
-        // the concurrent values
-        HashNode<K, V>* curr = table[i];
+    // Iterate over all values in the vector and delete them
+    for (int i = 0; i < map.size(); i++) {
+        // Iteration pointers
+        HashNode<K, V>* curr = map[i];
+
+        // Iterate over all nodes in the old map for this specific index
+        // and delete the values
         while (curr != nullptr) {
+            // Get the current node
             HashNode<K, V>* temp = curr;
-            curr = curr->getNext();
+
+            // Iterate to the next nodes in the list
+            curr = curr->nextNode;
+
+            // Delete the temp pointer
             delete temp;
         }
-        table[i] = nullptr;
+    }
+}
+
+
+
+
+/*******************
+ **    addPair    **
+ ******************/
+template <typename K, typename V, typename F>
+void HashMap<K, V, F>::addPair(K& newKey, V& newValue, std::function<void(V& oldValue, V& newValue)> equalityFunction) {
+    // Hash the given key
+    long keyHash = hashFunc.hash(newKey);
+
+    // Get the location in the vector of the hashed key
+    HashNode<K, V>*& node = map[keyHash];
+
+    // If the value is nullptr, add a new node to that location
+    if (node == nullptr) {
+        node = new HashNode<K, V>(newKey, newValue);
     }
 
-    // Destroy the hashmap
-    delete [] table;
+    // If the value is not nullptr and the current node's key contains
+    // the key of the given key, call the equality function
+    else if (node->key == newKey) {
+        equalityFunction(node->value, newValue);
+    }
+
+    // If the value is not nullptr and the current node's key does not contain
+    // the key of the given key, search for the key in the linked list
+    else {
+        // Iterate to the end of the linked list
+        while (node != nullptr) {
+            // If the key is found, call the equality function
+            if (node->key == newKey) {
+                equalityFunction(node->value, newValue);
+                return;
+            }
+
+            // If the key is not found, move the pointer
+            node = node->nextNode;
+        }
+
+        // If the current node is nullptr, add a new node to the end of the list
+        node = new HashNode<K, V>(newKey, newValue);
+    }
 }
 
 
@@ -124,26 +169,40 @@ HashMap<K, V, F>::~HashMap<K, V, F>() {
 /***************************
  **    getValue Method    **
  **************************/
-template<typename K, typename V, typename F>
-bool HashMap<K, V, F>::getValue(const K &key, V& value) {
-    // Hash the given value and get the value corresponding to it
-    unsigned long hashValue = hashFunc.hash(key);
-    HashNode<K, V>* val = table[hashValue];
+template <typename K, typename V, typename F>
+V& HashMap<K, V, F>::getValue(K& searchKey) {
+    // Hash the given key
+    long keyHash = hashFunc.hash(searchKey);
 
-    // Iterate till the given key is found
-    while (val != nullptr) {
-        // If the key is found, return true and store the value
-        if (val->key == key) {
-            value = val->getValue();
-            return true;
-        }
+    // Get the location in the vector of the hashed key
+    HashNode<K, V>*& node = map[keyHash];
 
-        // If the key is not found, move the iterator
-        val = val->getNext();
+    // If the value is nullptr, raise an exception
+    if (node == nullptr) {
+        throw std::runtime_error("Key has no value");
     }
 
-    // Return false if the key wasn't found
-    return false;
+    // If the node is not nullptr and the key is found, return the value
+    else if (node->key == searchKey) {
+        return node->value;
+    }
+
+    // If the key is not found, search the linked list
+    else {
+        // Iterate to the end of the linked list
+        while (node != nullptr) {
+            // If the key is found, return the value
+            if (node->key == searchKey) {
+                return node->value;
+            }
+
+            // If the key is not found, move the iterator
+            node = node->nextNode;
+        }
+
+        // If the node wasn't found, raise and error
+        throw std::runtime_error("Key has no value");
+    }
 }
 
 
@@ -151,67 +210,39 @@ bool HashMap<K, V, F>::getValue(const K &key, V& value) {
 /**********************************
  **    Overloaded [] Operator    **
  *********************************/
-template<typename K, typename V, typename F>
-V& HashMap<K, V, F>::operator[](const K &key) {
-    // Hash the given value and get the value corresponding to it
-    unsigned long hashValue = hashFunc.hash(key);
-    HashNode<K, V>* val = table[hashValue];
-
-    // Iterate till the given key is found
-    while (val != nullptr) {
-        // If the key is found, return the value
-        if (val->key == key) {
-            return val->getValue();
-        }
-
-        // If the key is not found, move the iterator
-        val = val->getNext();
-    }
-
-    // Throw an error if the key wasn't found
-    throw std::runtime_error("Key not found");
-}
-
-
-
-/*************************
- **    update Method    **
- ************************/
-template<typename K, typename V, typename F>
-V& HashMap<K, V, F>::update(const K &key, const V &value) {
+template <typename K, typename V, typename F>
+V& HashMap<K, V, F>::operator[](K& searchKey) {
     // Hash the given key
-    unsigned long hashValue = hashFunc.hash(key);
+    long keyHash = hashFunc.hash(searchKey);
 
-    // Pointers to find the location to put the given key-value pair
-    HashNode<K, V>* prev = nullptr;
-    HashNode<K, V>* curr = table[hashValue];
+    // Get the location in the vector of the hashed key
+    HashNode<K, V>*& node = map[keyHash];
 
-    // Iterate until the location for the node is found
-    while (curr != nullptr && curr->getKey() != key) {
-        prev = curr;
-        curr = curr->getNext();
+    // If the value is nullptr, raise an exception
+    if (node == nullptr) {
+        throw std::runtime_error("Key has no value");
     }
 
-    // If the current pointer is nullptr, then there is either nothing at this
-    // index in the hash table or we reached the end of the linked list
-    if (curr == nullptr) {
-        // If prev is nullptr, put the node at the hashed value in the hashmap
-        if (prev == nullptr) {
-            table[hashValue] = new HashNode<K, V>(key, value);
-            return table[hashValue]->value;
-        }
-        // If prev is not nullptr, set the next value to nullptr
-        // as the value wasn't found in the linked list
-        else {
-            prev->setNext(new HashNode<K, V>(key, value));
-            return prev->next->value;
-        }
+    // If the node is not nullptr and the key is found, return the value
+    else if (node->key == searchKey) {
+        return node->value;
     }
 
-    // If the key was found, update the node
+    // If the key is not found, search the linked list
     else {
-        curr->setValue(value);
-        return curr->value;
+        // Iterate to the end of the linked list
+        while (node != nullptr) {
+            // If the key is found, return the value
+            if (node->key == searchKey) {
+                return node->value;
+            }
+
+            // If the key is not found, move the iterator
+            node = node->nextNode;
+        }
+
+        // If the node wasn't found, raise and error
+        throw std::runtime_error("Key has no value");
     }
 }
 

@@ -13,55 +13,33 @@ private:
     K key;
     V value;
 
-    HashNode* next; // The next value with the same key to deal with overlap
+    // The next hashnode in the linked list
+    HashNode<K, V>* nextNode;
 
 
 public:
     /**
      * Constructors
      */
-    HashNode(const K& newKey, const V& newValue);
-    HashNode(const HashNode<K,V>& node);
-
+    HashNode();
+    HashNode(K& newKey, V& newValue);
+    HashNode(HashNode<K, V>& node);
 
 
     /**
      * Set Methods
      */
     void setKey(const K& newKey);
-    void setValue(const V& newValue);
-    void setNext(HashNode<K, V>* node);
-
+    void setValue(V& newVal);
+    void setNext(const HashNode<K, V>* node);
 
     /**
      * Get Methods
      */
     K& getKey();
     V& getValue();
-    HashNode* getNext();
-
-
-    /**
-     * Overload Assignment Operator
-     */
-    HashNode& operator=(const HashNode<K,V>& node);
-    HashNode& operator=(const V& newValue);
-
-
-    /**
-     * Overload ostream insertion operator to print the contents of this list
-     * to ostream's output stream in the first argument.
-     */
-    template <typename K2, typename V2>
-    friend std::ostream& operator<< (std::ostream&, const HashNode<K2, V2>&);
-    template <typename K2, typename V2>
-    friend std::ostream& operator<< (std::ostream&, const HashNode<K2, V2>*&);
+    HashNode<K, V>*& getNext();
 };
-
-
-
-
-
 
 
 
@@ -72,34 +50,40 @@ public:
  **    Constructors    **
  ***********************/
 template <typename K, typename V>
-HashNode<K,V>::HashNode(const K& newKey, const V& newValue) {
-    key = newKey;
-    value = newValue;
-    next = nullptr;
+HashNode<K, V>::HashNode() {
+    nextNode = nullptr;
 }
 template <typename K, typename V>
-HashNode<K,V>::HashNode(const HashNode<K,V> &node) {
+HashNode<K, V>::HashNode(K& newKey, V& newVal) {
+    key = newKey;
+    value = newVal;
+    nextNode = nullptr;
+}
+template <typename K, typename V>
+HashNode<K, V>::HashNode(HashNode<K, V>& node) {
     key = node.key;
     value = node.value;
-    next = node.next;
+    nextNode = nullptr;
 }
 
 
 
-/**********************
- **    Set Method    **
- *********************/
+/***********************
+ **    Set Methods    **
+ **********************/
 template <typename K, typename V>
-void HashNode<K, V>::setKey(const K &newKey) {
+void HashNode<K, V>::setKey(const K& newKey) {
     key = newKey;
 }
+
 template <typename K, typename V>
-void HashNode<K, V>::setValue(const V &newValue) {
-    value = newValue;
+void HashNode<K, V>::setValue(V& newVal) {
+    value = newVal;
 }
+
 template <typename K, typename V>
-void HashNode<K, V>::setNext(HashNode<K, V> *node) {
-    next = node;
+void HashNode<K, V>::setNext(const HashNode<K, V>* node) {
+    nextNode = node;
 }
 
 
@@ -111,69 +95,20 @@ template <typename K, typename V>
 K& HashNode<K, V>::getKey() {
     return key;
 }
+
 template <typename K, typename V>
 V& HashNode<K, V>::getValue() {
     return value;
 }
+
 template <typename K, typename V>
-HashNode<K, V>* HashNode<K, V>::getNext() {
-    return next;
+HashNode<K, V>*& HashNode<K, V>::getNext() {
+    return nextNode;
 }
 
 
 
-/****************************************
- **    Overload Assignment Operator    **
- ***************************************/
-template <typename K, typename V>
-HashNode<K, V>& HashNode<K, V>::operator=(const HashNode<K, V> &node) {
-    key = node.key;
-    value = node.value;
-    next = node.next;
 
-    return *this;
-}
-template <typename K, typename V>
-HashNode<K, V>& HashNode<K, V>::operator=(const V &newValue) {
-    value = newValue;
-
-    return *this;
-}
-
-
-
-/***********************************************
- **    Overload OStream Insertion Operator    **
- **********************************************/
-template <typename K2, typename V2>
-std::ostream& operator<<(std::ostream& out, const HashNode<K2, V2>& node) {
-    // Display this node's value
-    out << node.key << ": " << node.value;
-
-    // Display the rest of the node's with the same value
-    HashNode<K2, V2>* temp = node.getNext();
-    while (temp != nullptr) {
-        out << ", " << temp;
-        temp = temp->getNext();
-    }
-
-    return out;
-}
-template <typename K2, typename V2>
-std::ostream& operator<<(std::ostream& out, const HashNode<K2, V2>*& node) {
-    // Display this node's value
-    out << node->key << ": " << node->value;
-
-    // Display the rest of the node's with the same value
-    HashNode<K2, V2>* temp = node->getNext();
-    while (temp != nullptr) {
-        out << ", " << temp;
-        temp = temp->getNext();
-    }
-
-
-    return out;
-}
 
 
 #endif //INC_21F_FINAL_PROJ_TEMPLATE_HASHNODE_H
