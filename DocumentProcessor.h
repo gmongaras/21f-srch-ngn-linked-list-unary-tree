@@ -66,8 +66,8 @@ private:
     AVLTree<std::string> stopWords;
     AVLTree<wordToCount> wordCounts;
     Index index;
-    int NUMFILES;
-    int NUMWORDS;
+    long NUMFILES;
+    long NUMWORDS;
     std::chrono::duration<float> timeToParse;
 
 
@@ -90,7 +90,7 @@ private:
      * @param docName The name of the document to store
      * @param numWords The number of words read in
      */
-    void cleanAndAdd(rapidjson::Document*& doc, std::string& docName, int& numWords);
+    void cleanAndAdd(rapidjson::Document*& doc, std::string& docName, long& numWords);
 
 
     /**
@@ -108,7 +108,7 @@ private:
      * @param numFiles THe number of files read in
      * @param numWords The number of words read in
      */
-    void processDocumentsHelper(const std::string& directory, int& numFiles, int& numWords);
+    void processDocumentsHelper(const std::string& directory, long& numFiles, long& numWords);
 
 
 

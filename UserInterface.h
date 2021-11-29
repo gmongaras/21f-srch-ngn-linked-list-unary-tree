@@ -7,6 +7,7 @@
 class UserInterface {
 private:
     QueryProcessor QP;
+    bool indexClear;
 
 
 

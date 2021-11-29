@@ -118,6 +118,11 @@ HashMap<K, V, F>::~HashMap<K, V, F>() {
  ***********************/
 template <typename K, typename V, typename F>
 void HashMap<K, V, F>::clear() {
+    // If the map is already cleared, don't clear the map
+    if (size == 0) {
+        return;
+    }
+
     // Iterate over all values in the vector and delete them
     for (int i = 0; i < map.size(); i++) {
         // Iteration pointers
@@ -136,6 +141,7 @@ void HashMap<K, V, F>::clear() {
             delete temp;
         }
     }
+    size = 0;
     numUnique = 0;
 }
 

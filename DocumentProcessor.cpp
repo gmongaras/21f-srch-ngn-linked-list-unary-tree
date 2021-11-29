@@ -75,7 +75,7 @@ std::vector<std::string> DocumentProcessor::tokStr(std::string &str, char tok) {
 /******************************
  **    cleanAndAdd Method    **
  *****************************/
-void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docName, int& numWords) {
+void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docName, long& numWords) {
     // Get the informations from the document
     rapidjson::Value& text = (*doc)["text"];
     std::string textStr = text.GetString();
@@ -95,9 +95,9 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
         // Store the character
         char c = textStr[i];
 
-        // If the character is a space and not another type of punctuation,
+        // If the character is a space or punctuation,
         // clean it and add it to the AVL tree.
-        if (c == ' ') {
+        if (c == ' ' || ispunct(c)) {
             // If the word is empty, continue the loop
             if (word.empty()) {
                 continue;
@@ -109,7 +109,7 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
             std::transform(word.begin(), word.end(), word.begin(), ::tolower);
 
             // If the word is a stop word or whitespace, don't add it to the words tree
-            if (stopWords.hasNode(word) == true || (int)word[0] < 32) {
+            if (stopWords.hasNode(word) || (int)word[0] < 32) {
                 word.clear();
                 continue;
             }
@@ -239,7 +239,7 @@ void DocumentProcessor::storeStopWords(const std::string &filename) {
 /*****************************************
  **    processDocumentsHelper Method    **
  ****************************************/
-void DocumentProcessor::processDocumentsHelper(const std::string &directory, int& numFiles, int& numWords) {
+void DocumentProcessor::processDocumentsHelper(const std::string &directory, long& numFiles, long& numWords) {
     FILE* filePointer; // Holds each file
 
 
@@ -370,11 +370,21 @@ std::vector<float> DocumentProcessor::getStats() {
 /******************************
  **    getTopFifty Method    **
  *****************************/
+bool sortFunc (DocumentProcessor::wordToCount a, DocumentProcessor::wordToCount b) {return (a.count > b.count);};
 std::vector<DocumentProcessor::wordToCount> DocumentProcessor::getTopFifty() {
     // Get all words from the wordCounts tree
     std::vector<DocumentProcessor::wordToCount> counts = wordCounts.getInOrderVec();
 
-    return std::vector<DocumentProcessor::wordToCount>(counts.begin(), counts.begin() + std::min((int)counts.size(), 50));
+    // Sort the vector
+    std::sort(counts.begin(), counts.end(), sortFunc);
+
+    // Get the top 50 words from the vector
+    std::vector<DocumentProcessor::wordToCount> topCounts = std::vector<DocumentProcessor::wordToCount>(counts.begin(), counts.begin() + std::min((int)counts.size(), 50));
+
+    // Reverse the top values
+    std::reverse(topCounts.begin(), topCounts.begin());
+
+    return topCounts;
 }
 
 
