@@ -53,21 +53,19 @@ public:
      * @param person The person to add to the hash map
      * @param node The node to add with the information about the person
      */
-    //void addPerson(long key, std::string person);
     void addPerson(std::string& person, WordNode& node);
-
-    /**
-     * addPeople Method
-     * Adds people to the hashmap given a PersonNode
-     */
-    //void addPeople(long key, PersonNode& people);
 
     /**
      * getPeople Method
      * @return A WordNode mapping the searched person to document they're found in
      */
     WordNode& getPeopleDocs(std::string& person);
-    //PeopleNode& getPeople(long key);
+
+    /**
+     * getNumUniquePeople Method
+     * @return The number of unique people entered into the map
+     */
+    int getNumUniquePeople();
 
 
 
@@ -86,6 +84,12 @@ public:
      * @return A WordNode mapping the searched organization to document they're found in
      */
     WordNode& getOrgDocs(std::string& org);
+
+    /**
+     * getNumUniqueOrgs Method
+     * @return The number of unique organizations entered into the map
+     */
+    int getNumUniqueOrgs();
 
 
 

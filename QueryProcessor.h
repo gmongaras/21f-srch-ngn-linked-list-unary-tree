@@ -94,6 +94,18 @@ public:
     void clearIndex();
 
     /**
+     * getStats
+     * @return A vector of stats to display
+     */
+    std::vector<float> getStats();
+
+    /**
+     * getTop50
+     * @return A vector of the top 50 most common words
+     */
+    std::vector<DocumentProcessor::wordToCount> getTopFifty();
+
+    /**
      * Load
      * Load the search engine
      * @param directory The directory used to load the documents from

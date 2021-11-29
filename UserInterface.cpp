@@ -105,6 +105,15 @@ void UserInterface::handleAction(int action) {
 
         // If the action is 4, output statistics
         case 4: {
+            std::vector<float> stats = QP.getStats();
+            std::cout << "Stats:" << std::endl
+                      << "      Total articles read:                  " << stats[0] << std::endl
+                      << "      Average words per article:            " << stats[1] << std::endl
+                      << "      Total number of unique words indexed: " << stats[2] << std::endl
+                      << "      Total number of unique organizations: " << stats[3] << std::endl
+                      << "      Total number of unique people:        " << stats[4] << std::endl
+                      << "      Total time to parse files:            " << stats[5] << " seconds" << std::endl
+                      << "      Top 50 most frequent words:           " << QP.getTopFifty()[0].word << " " << QP.getTopFifty()[0].count << std::endl;
             break;// output stats
         }
 

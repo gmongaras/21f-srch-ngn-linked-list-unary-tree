@@ -25,11 +25,50 @@
 
 
 class DocumentProcessor {
+public:
+    // Struct to hold information on the word counts in an AVL tree. It holds a single
+    // word and the word count for that word. This will be used to store the number
+    // of times each words appears in all the documents
+    struct wordToCount {
+        std::string word;
+        int count;
+
+        wordToCount() {
+            word = "";
+            count = 0;
+        }
+
+        wordToCount(std::string& s) {
+            word = s;
+            count = 1;
+        }
+
+        bool operator<(wordToCount& w) {
+            return word < w.word;
+        }
+
+        bool operator>(wordToCount& w) {
+            return word > w.word;
+        }
+
+        bool operator==(wordToCount& w) {
+            return word == w.word;
+        }
+
+        void increaseCount() {
+            count++;
+        }
+    };
+
+
+
 private:
     AVLTree<std::string> stopWords;
+    AVLTree<wordToCount> wordCounts;
     Index index;
     int NUMFILES;
     int NUMWORDS;
+    std::chrono::duration<float> timeToParse;
 
 
 
@@ -68,18 +107,35 @@ private:
      * @param directory The name of the directory to parse files from
      * @param numFiles THe number of files read in
      * @param numWords The number of words read in
-     * @return The number of files read in total.
      */
-    int processDocumentsHelper(const std::string& directory, int& numFiles, int& numWords);
+    void processDocumentsHelper(const std::string& directory, int& numFiles, int& numWords);
 
 
 
 public:
     /**
+     * Default Constructor
+     */
+    DocumentProcessor();
+
+
+    /**
      * clearIndex
      * Clears all items from the index
      */
     void clearIndex();
+
+    /**
+     * getStats
+     * @return A vector of stats to display
+     */
+    std::vector<float> getStats();
+
+    /**
+     * getTop50
+     * @return A vector of the top 50 most common words
+     */
+    std::vector<DocumentProcessor::wordToCount> getTopFifty();
 
     /**
      * processDocuments Method

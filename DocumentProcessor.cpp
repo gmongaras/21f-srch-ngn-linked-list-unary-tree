@@ -1,4 +1,6 @@
 #include "DocumentProcessor.h"
+#include <chrono>
+#include <algorithm>
 
 
 
@@ -12,6 +14,19 @@
  */
 void stopWordsEqualityFunction(std::string& newItem, TreeNode<std::string>*& curPtr) {
     return;
+}
+
+
+
+/**
+ * wordCountsEqualityFunction
+ * Function to pass into the insert method in the wordCounts AVL tree.
+ * This function increases
+ * @param newItem The item to insert
+ * @param curPtr The pointer to the current subtree
+ */
+void wordCountsEqualityFunction(DocumentProcessor::wordToCount& newItem, TreeNode<DocumentProcessor::wordToCount>*& curPtr) {
+    curPtr->getData().increaseCount();
 }
 
 
@@ -93,17 +108,19 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
             Porter2Stemmer::stem(word);
             std::transform(word.begin(), word.end(), word.begin(), ::tolower);
 
-            // If the word is a stop word, don't add it to the words tree
-            if (stopWords.hasNode(word) == true) {
+            // If the word is a stop word or whitespace, don't add it to the words tree
+            if (stopWords.hasNode(word) == true || (int)word[0] < 32) {
                 word.clear();
                 continue;
             }
-            // If the word is fine, add it to the words tree
+            // If the word is fine, add it to the words tree and the wordToCount tree
             else {
                 numWords++;
                 WordNode temp(word, docNode);
                 //Words.insert(temp, &wordsEqualityFunction);
                 index.addWord(temp);
+                DocumentProcessor::wordToCount temp2(word);
+                wordCounts.insert(temp2, &wordCountsEqualityFunction);
                 word.clear();
             }
         }
@@ -222,7 +239,7 @@ void DocumentProcessor::storeStopWords(const std::string &filename) {
 /*****************************************
  **    processDocumentsHelper Method    **
  ****************************************/
-int DocumentProcessor::processDocumentsHelper(const std::string &directory, int& numFiles, int& numWords) {
+void DocumentProcessor::processDocumentsHelper(const std::string &directory, int& numFiles, int& numWords) {
     FILE* filePointer; // Holds each file
 
 
@@ -243,13 +260,6 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int&
 
     // Iterate over all documents in the directory
     while ((ent = readdir(dir)) != nullptr) {
-        // Increase the counter and update the display
-        numFiles++;
-        if (numFiles%1000 == 0) {
-            std::cout << "Files read: " << numFiles << std::endl;
-        }
-
-
         // Get the file name
         std::string fileName = std::string(ent->d_name);
         std::string fullFileName = directory + "/" + fileName;
@@ -263,8 +273,14 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int&
             continue;
         else if ((st.st_mode & S_IFDIR) != 0) {
             // If the file is a directory, iterate over all those files
-            numFiles = processDocumentsHelper(directory+"/"+fileName, numFiles, numWords);
+            processDocumentsHelper(directory+"/"+fileName, numFiles, numWords);
             continue;
+        }
+
+        // Increase the counter and update the display
+        numFiles++;
+        if (numFiles%1000 == 0) {
+            std::cout << "Files read: " << numFiles << std::endl;
         }
 
 
@@ -305,11 +321,6 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int&
     delete [] readBuffer;
     closedir(dir);
     delete ent;
-
-
-    // Return the number of files read in
-    NUMFILES = numFiles;
-    return NUMFILES;
 }
 
 
@@ -328,11 +339,42 @@ int DocumentProcessor::processDocumentsHelper(const std::string &directory, int&
 
 
 
+/*******************************
+ **    Default Constructor    **
+ ******************************/
+DocumentProcessor::DocumentProcessor() {
+    NUMFILES = 0;
+    NUMWORDS = 0;
+}
+
+
+
 /*****************************
  **    clearIndex Method    **
  ****************************/
 void DocumentProcessor::clearIndex() {
     index.clearIndex();
+}
+
+
+
+/***************************
+ **    getStats Method    **
+ **************************/
+std::vector<float> DocumentProcessor::getStats() {
+    return std::vector<float>({(float)NUMFILES, (float)NUMWORDS/(float)NUMFILES, (float)NUMWORDS, (float)index.getNumUniqueOrgs(), (float)index.getNumUniquePeople(), (float)timeToParse.count()});
+}
+
+
+
+/******************************
+ **    getTopFifty Method    **
+ *****************************/
+std::vector<DocumentProcessor::wordToCount> DocumentProcessor::getTopFifty() {
+    // Get all words from the wordCounts tree
+    std::vector<DocumentProcessor::wordToCount> counts = wordCounts.getInOrderVec();
+
+    return std::vector<DocumentProcessor::wordToCount>(counts.begin(), counts.begin() + std::min((int)counts.size(), 50));
 }
 
 
@@ -347,8 +389,19 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
     storeStopWords(stopWordFilename);
 
 
+    // Start timing the time it takes to read all files
+    auto start = std::chrono::high_resolution_clock::now();
+
+
     // Process the documents
     processDocumentsHelper(directory, NUMFILES, NUMWORDS);
+
+
+    // Get the end time
+    auto stop = std::chrono::high_resolution_clock::now();
+
+    // Store the final difference in time
+    timeToParse = stop - start;
 }
 
 

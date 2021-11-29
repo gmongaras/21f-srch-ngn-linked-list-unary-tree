@@ -75,10 +75,6 @@ void Index::addWord(WordNode &word) {
 
 
 
-
-
-
-
 /**************************
  **    getWord Method    **
  *************************/
@@ -86,6 +82,16 @@ WordNode &Index::getWord(std::string &word) {
     WordNode temp(word);
     return words.getNode(temp);
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -103,6 +109,15 @@ void Index::addPerson(std::string &person, WordNode &node) {
  *******************************/
 WordNode& Index::getPeopleDocs(std::string& person) {
     return people[person];
+}
+
+
+
+/*************************************
+ **    getNumUniquePeople Method    **
+ ************************************/
+int Index::getNumUniquePeople() {
+    return people.getUnique();
 }
 
 
@@ -127,4 +142,13 @@ void Index::addOrg(std::string &org, WordNode &node) {
  ****************************/
 WordNode &Index::getOrgDocs(std::string &org) {
     return orgs[org];
+}
+
+
+
+/****************************
+ **    getNumUniqueOrgs    **
+ ***************************/
+int Index::getNumUniqueOrgs() {
+    return orgs.getUnique();
 }

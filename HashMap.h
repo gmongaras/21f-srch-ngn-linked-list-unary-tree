@@ -17,6 +17,7 @@ private:
     int size; // The size of the hashmaps
     std::vector<HashNode<K, V>*> map; // The hashmap
     F hashFunc; // The hash function
+    int numUnique; // The number of unique items entered
 
 
 
@@ -50,6 +51,12 @@ public:
      * @return The value at the given key
      */
     V& operator[](K& searchKey);
+
+    /**
+     * getUnique Method
+     * @return The number of unique items entered into this hash map
+     */
+    int getUnique();
 };
 
 
@@ -66,11 +73,13 @@ template <typename K, typename V, typename F>
 HashMap<K, V, F>::HashMap() {
     size = 4194304;
     map.resize(size);
+    numUnique = 0;
 }
 template <typename K, typename V, typename F>
 HashMap<K, V, F>::HashMap(HashMap<K, V, F> &oldMap) {
     // Set the size
     size = 4194304;
+    numUnique = oldMap.numUnique;
 
     // Resize the vector map
     map.resize(size);
@@ -127,6 +136,7 @@ void HashMap<K, V, F>::clear() {
             delete temp;
         }
     }
+    numUnique = 0;
 }
 
 
@@ -145,6 +155,7 @@ void HashMap<K, V, F>::addPair(K& newKey, V& newValue, std::function<void(V& old
 
     // If the value is nullptr, add a new node to that location
     if (node == nullptr) {
+        numUnique++;
         map[keyHash] = new HashNode<K, V>(newKey, newValue);
     }
 
@@ -158,11 +169,11 @@ void HashMap<K, V, F>::addPair(K& newKey, V& newValue, std::function<void(V& old
     // the key of the given key, search for the key in the linked list
     else {
         // Iterate to the end of the linked list
-        HashNode<K, V>* prev = nullptr;
+        HashNode<K, V>* prev;
         while (node != nullptr) {
             // If the key is found, call the equality function
             if (node->key == newKey) {
-                //equalityFunction(node->value, newValue);
+                equalityFunction(node->value, newValue);
                 return;
             }
 
@@ -173,6 +184,7 @@ void HashMap<K, V, F>::addPair(K& newKey, V& newValue, std::function<void(V& old
 
         // If the current node is nullptr, add a new node to the end of the list
         prev->nextNode = new HashNode<K, V>(newKey, newValue);
+        numUnique++;
     }
 }
 
@@ -215,6 +227,16 @@ V& HashMap<K, V, F>::operator[](K& searchKey) {
         // If the node wasn't found, raise and error
         throw std::runtime_error("Key has no value");
     }
+}
+
+
+
+/****************************
+ **    getUnique Method    **
+ ***************************/
+template <typename K, typename V, typename F>
+int HashMap<K, V, F>::getUnique() {
+    return numUnique;
 }
 
 

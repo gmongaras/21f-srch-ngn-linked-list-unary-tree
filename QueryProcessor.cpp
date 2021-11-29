@@ -388,6 +388,25 @@ void QueryProcessor::clearIndex() {
 
 
 
+/********************
+ **    getStats    **
+ *******************/
+std::vector<float> QueryProcessor::getStats() {
+    return DocProcessor.getStats();
+}
+
+
+
+/******************************
+ **    getTopFifty Method    **
+ *****************************/
+std::vector<DocumentProcessor::wordToCount> QueryProcessor::getTopFifty() {
+    // Get all words from the wordCounts tree
+    return DocProcessor.getTopFifty();
+}
+
+
+
 /***********************
  **    Load Method    **
  **********************/
