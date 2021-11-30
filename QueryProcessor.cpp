@@ -73,7 +73,7 @@ std::vector<vectype> QueryProcessor::Intersection(std::vector<vectype> &vec1, st
 template <typename vectype>
 std::vector<vectype> QueryProcessor::Union(std::vector<vectype> &vec1, std::vector<vectype> &vec2) {
     // Vector to hold the union of the two vectors
-    std::vector<vectype> unionVec = vec1;
+    std::vector<vectype> unionVec(vec1);
 
     // Iterate over all values in vec2
     for (int i = 0; i < vec2.size(); i++) {
@@ -169,68 +169,76 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
 
     // Query all words
     for (int i = startIndex; i < vec.size(); i++) {
-        // If NOT is seen, change the location of the notLoc
-        if (vec[i] == "not") {
-            notLoc = i-1;
-            if (orgLoc != -1) {
-                notLoc--;
+        try {
+            // If NOT is seen, change the location of the notLoc
+            if (vec[i] == "not") {
+                notLoc = i-1;
+                if (orgLoc != -1) {
+                    notLoc--;
+                }
+                if (personLoc != -1) {
+                    notLoc--;
+                }
+                queryMode = "normal";
+                continue;
             }
-            if (personLoc != -1) {
-                notLoc--;
+            // IF ORG is seen, change the location of the orgLoc
+            else if (vec[i] == "org") {
+                orgLoc = i-1;
+                if (notLoc != -1) {
+                    orgLoc--;
+                }
+                if (personLoc != -1) {
+                    orgLoc--;
+                }
+                queryMode = "org";
+                continue;
             }
-            queryMode = "normal";
-            continue;
-        }
-        // IF ORG is seen, change the location of the orgLoc
-        else if (vec[i] == "org") {
-            orgLoc = i-1;
-            if (notLoc != -1) {
-                orgLoc--;
+            // If PERSON is seen, change the location of the personLoc
+            else if (vec[i] == "person") {
+                personLoc = i-1;
+                if (notLoc != -1) {
+                    personLoc--;
+                }
+                if (orgLoc != -1) {
+                    personLoc--;
+                }
+                queryMode = "person";
+                continue;
             }
-            if (personLoc != -1) {
-                orgLoc--;
-            }
-            queryMode = "org";
-            continue;
-        }
-        // If PERSON is seen, change the location of the personLoc
-        else if (vec[i] == "person") {
-            personLoc = i-1;
-            if (notLoc != -1) {
-                personLoc--;
-            }
-            if (orgLoc != -1) {
-                personLoc--;
-            }
-            queryMode = "person";
-            continue;
-        }
 
-        // Query the word
-        if (queryMode == "normal") {
-            queries.emplace_back(DocProcessor.searchWord(vec[i]).getDocuments().getInOrderVec());
-        }
-        else if (queryMode == "person") {
-            // Increase i until it's greater than the words vector or until
-            // it reaches a new keyword. Continuously append to a word along the way.
-            std::string temp = vec[i];
-            i++;
-            while (i < vec.size() && vec[i] != "not" && vec[i] != "org") {
-                temp += " " + vec[i];
-                i++;
+            // Query the word
+            if (queryMode == "normal") {
+                queries.emplace_back(DocProcessor.searchWord(vec[i]).getDocuments().getInOrderVec());
             }
-            queries.emplace_back(DocProcessor.searchPeople(temp).getDocuments().getInOrderVec());
-        }
-        else if (queryMode == "org") {
-            // Increase i until it's greater than the words vector or until
-            // it reaches a new keyword. Continuously append to a word along the way.
-            std::string temp = vec[i];
-            i++;
-            while (i < vec.size() && vec[i] != "not" && vec[i] != "person") {
-                temp += " " + vec[i];
+            else if (queryMode == "person") {
+                // Increase i until it's greater than the words vector or until
+                // it reaches a new keyword. Continuously append to a word along the way.
+                std::string temp = vec[i];
                 i++;
+                while (i < vec.size() && vec[i] != "not" && vec[i] != "org") {
+                    temp += " " + vec[i];
+                    i++;
+                }
+                queries.emplace_back(DocProcessor.searchPeople(temp).getDocuments().getInOrderVec());
             }
-            queries.emplace_back(DocProcessor.searchOrgs(temp).getDocuments().getInOrderVec());
+            else if (queryMode == "org") {
+                // Increase i until it's greater than the words vector or until
+                // it reaches a new keyword. Continuously append to a word along the way.
+                std::string temp = vec[i];
+                i++;
+                while (i < vec.size() && vec[i] != "not" && vec[i] != "person") {
+                    temp += " " + vec[i];
+                    i++;
+                }
+                queries.emplace_back(DocProcessor.searchOrgs(temp).getDocuments().getInOrderVec());
+            }
+
+        }
+        // If a node wasn't found, add a node with no elements
+        catch (std::runtime_error e) {
+            std::vector<DocumentNode> temp;
+            queries.emplace_back(temp);
         }
    }
 
@@ -255,12 +263,12 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
             }
             // If the current value is the location of a person, query
             // by person
-//            else if (i >= personLoc && personLoc != -1 && ((i < notLoc && notLoc > personLoc) || (i > notLoc && notLoc < personLoc && notLoc != -1) || notLoc == -1)) {
+            // else if (i >= personLoc && personLoc != -1 && ((i < notLoc && notLoc > personLoc) || (i > notLoc && notLoc < personLoc && notLoc != -1) || notLoc == -1) && ((i < orgLoc && orgLoc > personLoc) || (i > orgLoc && orgLoc < personLoc && orgLoc != -1) || orgLoc == -1)) {
 //                interVec = Intersection<DocumentNode>(interVec, queries[i]);
 //            }
 //            // If the current value is the location of an organization, query
 //            // by organization
-//            else if (i >= personLoc && personLoc != -1 && ((i < notLoc && notLoc > personLoc) || (i > notLoc && notLoc < personLoc && notLoc != -1) || notLoc == -1)) {
+//            else if (i >= orgLoc && orgLoc != -1 && ((i < personLoc && personLoc > orgLoc) || (i > personLoc && personLoc < orgLoc && personLoc != -1) || personLoc == -1) && ((i < notLoc && notLoc > orgLoc) || (i > notLoc && notLoc < orgLoc && notLoc != -1) || notLoc == -1)) {
 //                interVec = Intersection<DocumentNode>(interVec, queries[i]);
 //            }
             // If the current value is not special, query normally
@@ -282,6 +290,8 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
         std::vector<DocumentNode> unionVec;
 
         // Get the union between the first and second elements in the vector
+        std::cout << queries[0].size() << std::endl;
+        std::cout << queries[1].size() << std::endl;
         unionVec = Union<DocumentNode>(queries[0], queries[1]);
 
         // Get the union for all other elements
@@ -290,6 +300,16 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
             // query by subtraction
             if (i >= notLoc && notLoc != -1) {
                 unionVec = Difference<DocumentNode>(unionVec, queries[i]);
+            }
+            // If the current value is the location of a person, query
+            // by person
+            else if (i >= personLoc && personLoc != -1 && ((i < notLoc && notLoc > personLoc) || (i > notLoc && notLoc < personLoc && notLoc != -1) || notLoc == -1) && ((i < orgLoc && orgLoc > personLoc) || (i > orgLoc && orgLoc < personLoc && orgLoc != -1) || orgLoc == -1)) {
+                unionVec = Intersection<DocumentNode>(unionVec, queries[i]);
+            }
+            // If the current value is the location of an organization, query
+            // by organization
+            else if (i >= orgLoc && orgLoc != -1 && ((i < personLoc && personLoc > orgLoc) || (i > personLoc && personLoc < orgLoc && personLoc != -1) || personLoc == -1) && ((i < notLoc && notLoc > orgLoc) || (i > notLoc && notLoc < orgLoc && notLoc != -1) || notLoc == -1)) {
+                unionVec = Intersection<DocumentNode>(unionVec, queries[i]);
             }
             // If the current value is not special, query normally
             else {
