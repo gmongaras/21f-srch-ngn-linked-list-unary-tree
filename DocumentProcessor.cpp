@@ -89,10 +89,6 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
             Porter2Stemmer::stem(word);
             std::transform(word.begin(), word.end(), word.begin(), ::tolower);
 
-            if (docName == "/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/srch-ngn-data/size-10/news_0010154.json") {
-                std::cout << std::endl;
-            }
-
             // If the word is a stop word or whitespace, don't add it to the words tree
             if (stopWords.hasNode(word) || (int)word[0] < 32 || word.empty()) {
                 word.clear();
@@ -100,6 +96,11 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
             }
             // If the word is fine, add it to the words tree and the wordToCount tree
             else {
+                // Clear newlines from the word
+                word.erase(std::remove(word.begin(), word.end(), '\n'), word.end());
+
+
+                // Add the word
                 WordNode temp(word, docNode);
                 //Words.insert(temp, &wordsEqualityFunction);
                 index.addWord(temp);
@@ -117,9 +118,23 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
     }
 
     // Add the final word if it's a word worth adding
-    WordNode temp(word, docNode);
+
+    // Stem the word
+    Porter2Stemmer::trim(word);
+    Porter2Stemmer::stem(word);
+    std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+
     if (!(stopWords.hasNode(word) || (int)word[0] < 32 || word.empty())) {
+        // Remove new lines
+        word.erase(std::remove(word.begin(), word.end(), '\n'), word.end());
+
+        // Add the word
+        WordNode temp(word, docNode);
+        //Words.insert(temp, &wordsEqualityFunction);
         index.addWord(temp);
+        DocumentProcessor::wordToCount temp2(word);
+        wordCounts.insert(temp2, &wordCountsEqualityFunction);
+        word.clear();
     }
     word.clear();
 
@@ -350,7 +365,7 @@ void DocumentProcessor::clearIndex() {
  **************************/
 std::vector<float> DocumentProcessor::getStats() {
     long numWords = index.getNumUniqueWords();
-    return std::vector<float>({(float)NUMFILES, (float)numWords/(float)NUMFILES, (float)numWords, (float)index.getNumUniqueOrgs(), (float)index.getNumUniquePeople(), (float)timeToParse.count()});
+    return std::vector<float>({(float)NUMFILES, (float)numWords/(float)NUMFILES, (float)numWords+1, (float)index.getNumUniqueOrgs(), (float)index.getNumUniquePeople(), (float)timeToParse.count()});
 }
 
 

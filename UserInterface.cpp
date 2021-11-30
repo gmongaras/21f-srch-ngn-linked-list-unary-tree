@@ -288,9 +288,6 @@ bool UserInterface::readFiles() {
 
         // Load the files
         QP.LoadFiles(f1, f2, f3);
-
-
-        return true;
     }
 
     return false;
