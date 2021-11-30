@@ -35,6 +35,26 @@ void UserInterface::handleAction(int action) {
                 break;
             }
 
+            // Get three filename from the user
+            std::string f1;
+            std::string f2;
+            std::string f3;
+            std::cout << "Please enter a filename to save the Words AVL Tree:" << std::endl;
+            getline(std::cin, f1);
+            std::cout << std::endl;
+
+            std::cout << "Please enter a filename to save the People Hash Table:" << std::endl;
+            getline(std::cin, f2);
+            std::cout << std::endl;
+
+            std::cout << "Please enter a filename to save the Organizations Hash Table:" << std::endl;
+            getline(std::cin, f3);
+            std::cout << std::endl;
+
+
+            // Save the files
+            QP.saveFiles(f1, f2, f3);
+
             break;
         }
 
@@ -42,14 +62,30 @@ void UserInterface::handleAction(int action) {
 
         // If the action is 3, parse a dataset
         case 3: {
-            //
+            // If the index is not cleared, clear the index
+            if (!indexClear) {
+                std::cout << "Clearing index..." << std::endl;
+                QP.clearIndex();
+                indexClear = true;
+                std::cout << "Index cleared" << std::endl;
+                std::cout << std::endl << std::endl;
+            }
 
+            // Read in the data
+            bool fail = readFiles();
 
+            // If the files were not successfully read in, break the case
+            if (fail) {
+                std::cout << "Files could not be read in." << std::endl;
+                break;
+            }
 
             // The index is no longer cleared
             indexClear = false;
 
-            break;// parse dataset
+            std::cout << std::endl << std::endl;
+
+            break;
         }
 
 
@@ -187,25 +223,10 @@ void UserInterface::handleAction(int action) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-/*****************************
- **    Initialize Method    **
- ****************************/
-void UserInterface::Initialize() {
-    // Initialize the query processor
-    indexClear = false;
-
-
+/****************************
+ **    readFiles Method    **
+ ***************************/
+bool UserInterface::readFiles() {
     // Ask which mode the user wants to read data
     std::string choice;
     while (choice != "1" && choice != "2") {
@@ -232,7 +253,7 @@ void UserInterface::Initialize() {
             getline(std::cin, inputDir);
             try {
                 std::cout << "Reading data..." << std::endl;
-                QP.Load(inputDir);
+                QP.LoadDir(inputDir);
                 dataRead = true;
             } catch (std::runtime_error e) {
                 if (inputDir != "~W~") {
@@ -241,15 +262,71 @@ void UserInterface::Initialize() {
             }
         }
 
-        // If the exit key was used, don't start the program.
+        // If the exit key was used, return true as the file reading was unsuccessful
         if (inputDir == "~W~") {
-            QP.Shutdown();
-            return;
+            return true;
         }
     }
     // If the choice is 2, read data from a few premade datafiles
     else {
+        // Get three filename from the user
+        std::string f1;
+        std::string f2;
+        std::string f3;
+        std::cout << "Please enter a filename to read the Words AVL Tree from:" << std::endl;
+        getline(std::cin, f1);
+        std::cout << std::endl;
+
+        std::cout << "Please enter a filename to read the People Hash Table from:" << std::endl;
+        getline(std::cin, f2);
+        std::cout << std::endl;
+
+        std::cout << "Please enter a filename to read the Organizations Hash Table from:" << std::endl;
+        getline(std::cin, f3);
+        std::cout << std::endl;
+
+
+        // Load the files
+        QP.LoadFiles(f1, f2, f3);
+
+
+        return true;
+    }
+
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*****************************
+ **    Initialize Method    **
+ ****************************/
+void UserInterface::Initialize() {
+    // Initialize the query processor
+    indexClear = false;
+
+    // Read the data
+    bool fail = readFiles();
+
+    // If files reading failed, don't do anything
+    if (fail) {
         QP.Shutdown();
+        return;
     }
 
     std::cout << "┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐" << std::endl

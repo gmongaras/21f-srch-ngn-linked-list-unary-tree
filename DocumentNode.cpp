@@ -14,6 +14,8 @@ DocumentNode::DocumentNode() {
     title = "";
     author = "";
     date = "";
+
+    partDel = "~";
 }
 DocumentNode::DocumentNode(const std::string& name, int freq, std::string ID, int length, std::string& Title, std::string& Author, std::string& Date) {
     fileName = name;
@@ -23,6 +25,8 @@ DocumentNode::DocumentNode(const std::string& name, int freq, std::string ID, in
     title = Title;
     author = Author;
     date = Date;
+
+    partDel = "~";
 }
 DocumentNode::DocumentNode(const DocumentNode &node) {
     fileName = node.fileName;
@@ -32,6 +36,8 @@ DocumentNode::DocumentNode(const DocumentNode &node) {
     title = node.title;
     author = node.author;
     date = node.date;
+
+    partDel = "~";
 }
 
 
@@ -148,6 +154,27 @@ bool DocumentNode::operator>(const std::string &name) {
 
 
 
+/******************************************
+ **    Overloaded Assignment Operator    **
+ *****************************************/
+DocumentNode &DocumentNode::operator=(std::string &str) {
+    // tokenize the given string into document node parts
+    std::vector<std::string> tokenizedParts = tokStr(str, partDel[0], 6);
+
+    // Add the values to the document node
+    fileName = std::string(tokenizedParts[0]);
+    frequency = stoi(tokenizedParts[1]);
+    documentID = std::string(tokenizedParts[2]);
+    docLength = stoi(tokenizedParts[3]);
+    title = std::string(tokenizedParts[4]);
+    author = std::string(tokenizedParts[5]);
+    date = std::string(tokenizedParts[6]);
+
+    return *this;
+}
+
+
+
 /*****************************
  **    updateFreq Method    **
  ****************************/
@@ -158,12 +185,24 @@ int DocumentNode::updateFreq() {
 
 
 
-/**********************************************
- **    Overload Stream Insertion Operator    **
- **********************************************/
+/***********************************************
+ **    Overload OStream Insertion Operator    **
+ ***********************************************/
 std::ostream& operator<< (std::ostream& out, const DocumentNode& node) {
     //out << "Name: " << node.documentName << "   " << "Word Frequency: " << node.frequency << "   Document ID: " << node.documentID;
     out << node.title << " " << node.author << " " << node.date;
+    //out << node.fileName << " " << node.frequency << " " << node.documentID << " " << node.docLength << " " << node.getRelevancyRanking();
+    return out;
+}
+
+
+
+/***********************************************
+ **    Overload FStream Insertion Operator    **
+ ***********************************************/
+std::fstream& operator<< (std::fstream& out, const DocumentNode& node) {
+    //out << "Name: " << node.documentName << "   " << "Word Frequency: " << node.frequency << "   Document ID: " << node.documentID;
+    out << node.fileName << node.partDel << node.frequency << node.partDel << node.documentID << node.partDel << node.docLength << node.partDel << node.title << node.partDel << node.author << node.partDel << node.date;
     //out << node.fileName << " " << node.frequency << " " << node.documentID << " " << node.docLength << " " << node.getRelevancyRanking();
     return out;
 }

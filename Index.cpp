@@ -58,6 +58,29 @@ void Index::clearIndex() {
 
 
 
+/****************************
+ **    saveFiles Method    **
+ ***************************/
+void Index::saveFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName) {
+    words.saveTree(wordsFileName);
+    people.saveTable(peopleFileName);
+    orgs.saveTable(orgsFileName);
+}
+
+
+
+/*********************
+ **    LoadFiles    **
+ ********************/
+void Index::LoadFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName) {
+    // Unload the old words data and load in the new data
+    words.clearTree();
+    words.loadTree(wordsFileName, '\n', &wordsEqualityFunction);
+    std::cout << std::endl;
+}
+
+
+
 
 
 
@@ -81,6 +104,15 @@ void Index::addWord(WordNode &word) {
 WordNode &Index::getWord(std::string &word) {
     WordNode temp(word);
     return words.getNode(temp);
+}
+
+
+
+/************************************
+ **    getNumUniqueWords Method    **
+ ***********************************/
+int Index::getNumUniqueWords() {
+    return words.getNumNodes();
 }
 
 

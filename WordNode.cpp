@@ -1,5 +1,4 @@
 #include "WordNode.h"
-#include <fstream>
 #include <iostream>
 
 /**
@@ -20,17 +19,25 @@ void docsEqualityFunction(DocumentNode& newItem, TreeNode<DocumentNode>*& curPtr
  ***********************/
 WordNode::WordNode() {
     word = "";
+    wordDocDel = ":";
+    docDel = "`";
 }
 WordNode::WordNode(std::string& newWord) {
     word = newWord;
+    wordDocDel = ":";
+    docDel = "`";
 }
 WordNode::WordNode(std::string& newWord, DocumentNode& doc) {
     word = newWord;
     docs.insert(doc, &docsEqualityFunction);
+    wordDocDel = ":";
+    docDel = "`";
 }
 WordNode::WordNode(WordNode &node) {
     word = node.word;
     docs = node.docs;
+    wordDocDel = ":";
+    docDel = "`";
 }
 
 
@@ -137,6 +144,32 @@ WordNode &WordNode::operator=(WordNode &w) {
 
     return *this;
 }
+WordNode& WordNode::operator=(std::string& str) {
+    // Breakup the string into word and documents
+    std::vector<std::string> tokenizedWordDocs = tokStr(str, wordDocDel[0], 1);
+
+    // Store the word from the vector
+    word = std::string(tokenizedWordDocs[0]);
+
+    // If the tokenized string has more than 1 value, store the other values
+    // as documents
+    if (tokenizedWordDocs.size() > 1) {
+        // Store the second part of the tokenized string
+        std::string documents = tokenizedWordDocs[1];
+
+        // Split up the documents by the docDel delimiter
+        std::vector<std::string> tokenizedDocs = tokStr(documents, docDel[0], -1);
+
+        // Add and store each document
+        for (std::string& doc : tokenizedDocs) {
+            DocumentNode temp;
+            temp = doc;
+            docs.insert(temp, &docsEqualityFunction);
+        }
+    }
+
+    return *this;
+}
 
 
 
@@ -157,9 +190,9 @@ std::ostream& operator<< (std::ostream& out, const WordNode& node) {
  **    Overload FStream Insertion Operator    **
  **********************************************/
 std::fstream& operator<< (std::fstream& out, const WordNode& node) {
-    out << node.word.c_str() << ":";
+    out << node.word.c_str() << node.wordDocDel;
 
-    node.docs.fstreamLevelOrder(out, ",");
+    node.docs.fstreamLevelOrder(out, node.docDel);
     //node.docs.printTree2();
 
     return out;

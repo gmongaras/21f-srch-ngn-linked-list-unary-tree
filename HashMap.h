@@ -36,6 +36,13 @@ public:
     void clear();
 
     /**
+     * saveTable Method
+     * Saves all contents to a given files in a rereadable format
+     * @param filename The file to save the table to
+     */
+    void saveTable(std::string& filename);
+
+    /**
      * addPair Method
      * Adds a key-value pair to the map
      * @param newKey The key to add
@@ -119,7 +126,7 @@ HashMap<K, V, F>::~HashMap<K, V, F>() {
 template <typename K, typename V, typename F>
 void HashMap<K, V, F>::clear() {
     // If the map is already cleared, don't clear the map
-    if (size == 0) {
+    if (numUnique == 0) {
         return;
     }
 
@@ -141,8 +148,19 @@ void HashMap<K, V, F>::clear() {
             delete temp;
         }
     }
-    size = 0;
+    map.clear();
+    map.resize(size);
     numUnique = 0;
+}
+
+
+
+/****************************
+ **    saveTable Method    **
+ ***************************/
+template <typename K, typename V, typename F>
+void HashMap<K, V, F>::saveTable(std::string &filename) {
+    ;
 }
 
 

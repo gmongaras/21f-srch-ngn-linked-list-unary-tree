@@ -18,6 +18,15 @@ private:
     void handleAction(int action);
 
 
+
+    /**
+     * readFiles Method
+     * Prompts the user to enter info to read files
+     * @return true if successful, false otherwise
+     */
+    bool readFiles();
+
+
 public:
     /**
      * Initialize

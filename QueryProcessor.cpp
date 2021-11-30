@@ -407,11 +407,29 @@ std::vector<DocumentProcessor::wordToCount> QueryProcessor::getTopFifty() {
 
 
 
-/***********************
- **    Load Method    **
- **********************/
-void QueryProcessor::Load(std::string& directory) {
-    DocProcessor.processDocuments(directory);
+/****************************
+ **    saveFiles Method    **
+ ***************************/
+void QueryProcessor::saveFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName) {
+    DocProcessor.saveFiles(wordsFileName, peopleFileName, orgsFileName);
+}
+
+
+
+/**************************
+ **    LoadDir Method    **
+ *************************/
+void QueryProcessor::LoadDir(std::string& directory) {
+    DocProcessor.processDocumentsDir(directory);
+}
+
+
+
+/****************************
+ **    LoadFiles Method    **
+ ***************************/
+void QueryProcessor::LoadFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName) {
+    DocProcessor.processDocumentsFiles(wordsFileName, peopleFileName, orgsFileName);
 }
 
 

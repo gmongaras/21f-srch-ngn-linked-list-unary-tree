@@ -74,7 +74,7 @@ private:
      * @param equalityFunction The function to run if the given item is already in the tree
      * @return The value at the inserted node.
      */
-    nodetype& insert(nodetype& newItem, TreeNode<nodetype>*& curPtr,
+    nodetype& insertHelper(nodetype& newItem, TreeNode<nodetype>*& curPtr,
                 std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction);
 
     /**
@@ -178,6 +178,12 @@ public:
     std::vector<nodetype> getInOrderVec();
 
     /**
+     * getNumNodes Method
+     * @return The number of unique nodes on the tree
+     */
+    int getNumNodes();
+
+    /**
      * Overloaded Assignment Operator
      */
     AVLTree<nodetype>& operator=(AVLTree<nodetype>& tree);
@@ -225,8 +231,10 @@ public:
      * Loads a tree from a given file
      * @param filename The file use to lead in
      * @param delimiter The delimiter used when leading in the tree
+     * @param equalityFunction The function to use when inserting a node and equality is
+     *                         found between two nodes
      */
-    void loadTree(const std::string& filename, char delimiter = ',');
+    void loadTree(const std::string& filename, char delimiter, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction);
 };
 
 
@@ -357,7 +365,7 @@ void AVLTree<nodetype>::printSubtree2(TreeNode<nodetype>* const subtree) const {
  **    insert Helper Method    **
  *******************************/
 template <typename nodetype>
-nodetype& AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curPtr, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
+nodetype& AVLTree<nodetype>::insertHelper(nodetype& newItem, TreeNode<nodetype>*& curPtr, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
     // If curPtr is nullptr, set the curPtr to the newItem
     if (curPtr == nullptr) {
         curPtr = new TreeNode<nodetype>(newItem);
@@ -368,18 +376,16 @@ nodetype& AVLTree<nodetype>::insert(nodetype& newItem, TreeNode<nodetype>*& curP
     // If the new item is less than the current node to insert the node into,
     // add the node to the left of that node
     else if (newItem < (*curPtr).data) {
-        nodetype& sub = insert(newItem, curPtr->left, equalityFunction);
+        nodetype& sub = insertHelper(newItem, curPtr->left, equalityFunction);
         balance(curPtr);
-        numNodes++;
         return sub;
     }
 
     // If the new item is greater than the current node to insert the node into,
     // add the node to the right of that node
     else if (newItem > (*curPtr).data) {
-        nodetype& sub = insert(newItem, curPtr->right, equalityFunction);
+        nodetype& sub = insertHelper(newItem, curPtr->right, equalityFunction);
         balance(curPtr);
-        numNodes++;
         return sub;
     }
 
@@ -707,7 +713,7 @@ nodetype& AVLTree<nodetype>::insert(nodetype &newItem, std::function<void(nodety
         return root->data;
     }
 
-    return insert(newItem, root, equalityFunction);
+    return insertHelper(newItem, root, equalityFunction);
 }
 
 
@@ -753,6 +759,16 @@ std::vector<nodetype> AVLTree<nodetype>::getInOrderVec() {
 
 
 
+/******************************
+ **    getNumNodes Method    **
+ *****************************/
+template <typename nodetype>
+int AVLTree<nodetype>::getNumNodes() {
+    return numNodes;
+}
+
+
+
 /******************************************
  **    Overloaded Assignment Operator    **
  *****************************************/
@@ -790,6 +806,7 @@ void AVLTree<nodetype>::clearTree() {
     // Frees the root
     delete root;
     root = nullptr;
+    numNodes = 0;
 }
 
 
@@ -836,7 +853,7 @@ std::fstream &AVLTree<nodetype>::fstreamLevelOrder(std::fstream &out, const std:
         return out;
     }
 
-    // Create queue for level traversial
+    // Create queue for level traversal
     std::queue<TreeNode<nodetype>*> q;
 
     // Enqueue the subtree and initialize the height
@@ -885,23 +902,38 @@ void AVLTree<nodetype>::saveTree(const std::string &filename) {
  **    loadTree Method    **
  **************************/
 template <typename nodetype>
-void AVLTree<nodetype>::loadTree(const std::string &filename, char delimiter) {
-//    // Open a file for reading
-//    std::fstream file(filename.c_str(), std::fstream::in);
-//
-//    // Check if the file is open
-//    if (file.is_open()) {
-//        // Iterate over all lines in the file
-//        while (!file.eof()) {
-//            // Create a temporary node to read in the line
-//            TreeNode<nodetype> newNode;
-//            newNode << file.getline();
-//        }
-//    }
-//    // If the file isn't open, throw and error
-//    else {
-//        throw std::runtime_error("AVLTree file could not open");
-//    }
+void AVLTree<nodetype>::loadTree(const std::string &filename, char delimiter, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
+    // Open a file for reading
+    std::ifstream file(filename.c_str(), std::fstream::in);
+
+    // Check if the file is open
+    if (file.is_open()) {
+        // Iterate over all lines in the file
+        while (!file.eof()) {
+            // Read in a line
+            std::string buff;
+            std::getline(file, buff);
+
+            // If the buffer is empty, go to the next line
+            if (buff.empty()) {
+                continue;
+            }
+
+            // Create a temporary node to read in the line
+            TreeNode<nodetype> newNode;
+            newNode.data = buff;
+
+            // Add the node to the tree
+            insert(newNode.data, equalityFunction);
+        }
+
+        // Close the file
+        file.close();
+    }
+    // If the file isn't open, throw and error
+    else {
+        throw std::runtime_error("Could not open AVL Tree file for reading");
+    }
 }
 
 

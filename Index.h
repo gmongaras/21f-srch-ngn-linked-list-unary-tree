@@ -23,6 +23,24 @@ public:
      */
     void clearIndex();
 
+    /**
+     * saveFiles
+     * Saves the info in index given three file names
+     * @param wordsFileName The name of the file to save the words AVL Tree
+     * @param peopleFileName The name of the file to save the people Hash Table
+     * @param orgsFileName The name of the file to save the organizations Hash Table
+     */
+    void saveFiles(std::string& wordsFileName, std::string& peopleFileName, std::string& orgsFileName);
+
+    /**
+     * LoadFiles Method
+     * Accepts a few files to parse the indices from
+     * @param wordsFileName The name of the file to load the words AVL Tree from
+     * @param peopleFileName The name of the file to load the people Hash Table from
+     * @param orgsFileName The name of the file to load the organizations Hash Table from
+     */
+    void LoadFiles(std::string& wordsFileName, std::string& peopleFileName, std::string& orgsFileName);
+
 
 
 
@@ -44,6 +62,14 @@ public:
      * @return The WordNode that was searched for
      */
     WordNode& getWord(std::string& word);
+
+    /**
+     * getNumUniqueWords Method
+     * @return The number of unique words read in
+     */
+    int getNumUniqueWords();
+
+
 
 
 

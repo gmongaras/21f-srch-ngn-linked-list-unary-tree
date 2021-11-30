@@ -4,6 +4,9 @@
 
 
 #include <string>
+#include <vector>
+#include <fstream>
+#include "tokStr.h"
 
 
 
@@ -16,6 +19,10 @@ private:
     std::string title; // The title of the document
     std::string author; // The author of the article
     std::string date; // The date the document was published
+
+
+
+    std::string partDel; // Delimiter between each part of a document node when in a file
 
 
 
@@ -80,6 +87,12 @@ public:
 
 
     /**
+     * Overloaded Assignment Operator
+     */
+    DocumentNode& operator=(std::string& str);
+
+
+    /**
      * updateFreq Method
      * Adds 1 to the frequency
      * @return The stored value of the frequency
@@ -91,6 +104,11 @@ public:
      * Overloaded Stream Insertion Operator
      */
     friend std::ostream& operator<< (std::ostream&, const DocumentNode&);
+
+    /**
+     * Overloaded Stream Insertion Operator
+     */
+    friend std::fstream& operator<< (std::fstream&, const DocumentNode&);
 };
 
 

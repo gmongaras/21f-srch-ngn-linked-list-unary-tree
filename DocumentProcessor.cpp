@@ -34,40 +34,6 @@ void wordCountsEqualityFunction(DocumentProcessor::wordToCount& newItem, TreeNod
 
 
 
-/*************************
- **    tokStr Method    **
- ************************/
-std::vector<std::string> DocumentProcessor::tokStr(std::string &str, char tok) {
-    // Vector to hold the tokenized string
-    std::vector<std::string> tokenizedString;
-
-    // Temporary string to hold each substring
-    std::string substr;
-
-    // Iterate over all values in the string
-    for (char i : str) {
-        // If the current character is the token, add the substring to the vector
-        if (i == tok) {
-            if (!substr.empty()) {
-                tokenizedString.emplace_back(substr);
-            }
-
-            // Clear the substring
-            substr.clear();
-            continue;
-        }
-
-        // Add the next character to the substring
-        substr += i;
-    }
-
-    // Add the final substring to the vector
-    tokenizedString.emplace_back(substr);
-
-    // Return the vector of substring
-    return tokenizedString;
-}
-
 
 
 
@@ -75,14 +41,29 @@ std::vector<std::string> DocumentProcessor::tokStr(std::string &str, char tok) {
 /******************************
  **    cleanAndAdd Method    **
  *****************************/
-void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docName, long& numWords) {
+void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docName) {
     // Get the informations from the document
     rapidjson::Value& text = (*doc)["text"];
     std::string textStr = text.GetString();
+    if (textStr.empty()) {
+        textStr = "None";
+    }
     std::string ID = (*doc)["uuid"].GetString();
+    if (ID.empty()) {
+        ID = "None";
+    }
     std::string title = (*doc)["title"].GetString();
+    if (title.empty()) {
+        title = "None";
+    }
     std::string author = (*doc)["author"].GetString();
+    if (author.empty()) {
+        author = "None";
+    }
     std::string date = (*doc)["published"].GetString();
+    if (date.empty()) {
+        date = "None";
+    }
 
     // Create a node holding all the document information
     DocumentNode docNode(docName, 1, ID, text.GetStringLength(), title, author, date);
@@ -108,14 +89,17 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
             Porter2Stemmer::stem(word);
             std::transform(word.begin(), word.end(), word.begin(), ::tolower);
 
+            if (docName == "/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/srch-ngn-data/size-10/news_0010154.json") {
+                std::cout << std::endl;
+            }
+
             // If the word is a stop word or whitespace, don't add it to the words tree
-            if (stopWords.hasNode(word) || (int)word[0] < 32) {
+            if (stopWords.hasNode(word) || (int)word[0] < 32 || word.empty()) {
                 word.clear();
                 continue;
             }
             // If the word is fine, add it to the words tree and the wordToCount tree
             else {
-                numWords++;
                 WordNode temp(word, docNode);
                 //Words.insert(temp, &wordsEqualityFunction);
                 index.addWord(temp);
@@ -132,10 +116,11 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
         }
     }
 
-    // Add the final word
+    // Add the final word if it's a word worth adding
     WordNode temp(word, docNode);
-    //Words.insert(temp, &wordsEqualityFunction);
-    index.addWord(temp);
+    if (!(stopWords.hasNode(word) || (int)word[0] < 32 || word.empty())) {
+        index.addWord(temp);
+    }
     word.clear();
 
 
@@ -239,7 +224,7 @@ void DocumentProcessor::storeStopWords(const std::string &filename) {
 /*****************************************
  **    processDocumentsHelper Method    **
  ****************************************/
-void DocumentProcessor::processDocumentsHelper(const std::string &directory, long& numFiles, long& numWords) {
+void DocumentProcessor::processDocumentsHelper(const std::string &directory, long& numFiles) {
     FILE* filePointer; // Holds each file
 
 
@@ -273,7 +258,7 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory, lon
             continue;
         else if ((st.st_mode & S_IFDIR) != 0) {
             // If the file is a directory, iterate over all those files
-            processDocumentsHelper(directory+"/"+fileName, numFiles, numWords);
+            processDocumentsHelper(directory+"/"+fileName, numFiles);
             continue;
         }
 
@@ -304,7 +289,7 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory, lon
 
         // If the file is open, clean and add the word to the tree
         if (doc->IsNull() == false){
-            cleanAndAdd(doc, fullFileName, numWords);
+            cleanAndAdd(doc, fullFileName);
         }
 
 
@@ -344,7 +329,6 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory, lon
  ******************************/
 DocumentProcessor::DocumentProcessor() {
     NUMFILES = 0;
-    NUMWORDS = 0;
 }
 
 
@@ -353,7 +337,10 @@ DocumentProcessor::DocumentProcessor() {
  **    clearIndex Method    **
  ****************************/
 void DocumentProcessor::clearIndex() {
+    wordCounts.clearTree();
+    NUMFILES = 0;
     index.clearIndex();
+
 }
 
 
@@ -362,7 +349,8 @@ void DocumentProcessor::clearIndex() {
  **    getStats Method    **
  **************************/
 std::vector<float> DocumentProcessor::getStats() {
-    return std::vector<float>({(float)NUMFILES, (float)NUMWORDS/(float)NUMFILES, (float)NUMWORDS, (float)index.getNumUniqueOrgs(), (float)index.getNumUniquePeople(), (float)timeToParse.count()});
+    long numWords = index.getNumUniqueWords();
+    return std::vector<float>({(float)NUMFILES, (float)numWords/(float)NUMFILES, (float)numWords, (float)index.getNumUniqueOrgs(), (float)index.getNumUniquePeople(), (float)timeToParse.count()});
 }
 
 
@@ -390,9 +378,18 @@ std::vector<DocumentProcessor::wordToCount> DocumentProcessor::getTopFifty() {
 
 
 /****************************
- **    processDocuments    **
+ **    saveFiles Method    **
  ***************************/
-void DocumentProcessor::processDocuments(const std::string& directory) {
+void DocumentProcessor::saveFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName) {
+    index.saveFiles(wordsFileName, peopleFileName, orgsFileName);
+}
+
+
+
+/********************************
+ **    processDocumentsDir    **
+ ******************************/
+void DocumentProcessor::processDocumentsDir(const std::string& directory) {
     // Read in the stop words.
     // Note the stop words list was found at: https://www.link-assistant.com/seo-stop-words.html
     std::string stopWordFilename = "../storage/stopWords2.txt";
@@ -404,7 +401,7 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
 
 
     // Process the documents
-    processDocumentsHelper(directory, NUMFILES, NUMWORDS);
+    processDocumentsHelper(directory, NUMFILES);
 
 
     // Get the end time
@@ -412,6 +409,15 @@ void DocumentProcessor::processDocuments(const std::string& directory) {
 
     // Store the final difference in time
     timeToParse = stop - start;
+}
+
+
+
+/*********************************
+ **    processDocumentsFiles    **
+ ********************************/
+void DocumentProcessor::processDocumentsFiles(std::string& wordsFileName, std::string& peopleFileName, std::string& orgsFileName) {
+    index.LoadFiles(wordsFileName, peopleFileName, orgsFileName);
 }
 
 

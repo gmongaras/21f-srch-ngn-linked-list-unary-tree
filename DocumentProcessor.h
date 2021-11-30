@@ -67,19 +67,7 @@ private:
     AVLTree<wordToCount> wordCounts;
     Index index;
     long NUMFILES;
-    long NUMWORDS;
     std::chrono::duration<float> timeToParse;
-
-
-
-    /**
-     * tokStr
-     * Tokenizes a string given a token
-     * @param str The string to tokenize
-     * @param tok The token used to tokenize the string
-     * @return A vector holding the tokenized string
-     */
-    std::vector<std::string> tokStr(std::string& str, char tok = ' ');
 
 
 
@@ -88,9 +76,8 @@ private:
      * Cleans and adds data to the AVL tree
      * @param doc The document to clean and store
      * @param docName The name of the document to store
-     * @param numWords The number of words read in
      */
-    void cleanAndAdd(rapidjson::Document*& doc, std::string& docName, long& numWords);
+    void cleanAndAdd(rapidjson::Document*& doc, std::string& docName);
 
 
     /**
@@ -106,9 +93,8 @@ private:
      * Reads in the files given a directory
      * @param directory The name of the directory to parse files from
      * @param numFiles THe number of files read in
-     * @param numWords The number of words read in
      */
-    void processDocumentsHelper(const std::string& directory, long& numFiles, long& numWords);
+    void processDocumentsHelper(const std::string& directory, long& numFiles);
 
 
 
@@ -138,13 +124,29 @@ public:
     std::vector<DocumentProcessor::wordToCount> getTopFifty();
 
     /**
-     * processDocuments Method
+     * saveFiles
+     * Saves the info in index given three file names
+     * @param wordsFileName The name of the file to save the words AVL Tree
+     * @param peopleFileName The name of the file to save the people Hash Table
+     * @param orgsFileName The name of the file to save the organizations Hash Table
+     */
+    void saveFiles(std::string& wordsFileName, std::string& peopleFileName, std::string& orgsFileName);
+
+    /**
+     * processDocumentsDir Method
      * Accepts a directory name to parse .json documents from
      * @param directory The name of the directory to parse files from
-     * @return The stored index object containing the information from
-     *         the parsed datafiles
      */
-    void processDocuments(const std::string& directory);
+    void processDocumentsDir(const std::string& directory);
+
+    /**
+     * processDocumentsFiles Method
+     * Accepts a few files to parse the indices from
+     * @param wordsFileName The name of the file to load the words AVL Tree from
+     * @param peopleFileName The name of the file to load the people Hash Table from
+     * @param orgsFileName The name of the file to load the organizations Hash Table from
+     */
+    void processDocumentsFiles(std::string& wordsFileName, std::string& peopleFileName, std::string& orgsFileName);
 
     /**
      * searchWord Method

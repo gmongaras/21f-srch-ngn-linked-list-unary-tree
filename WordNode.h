@@ -5,6 +5,7 @@
 //#include <string>
 #include "AVLTree.h"
 #include "DocumentNode.h"
+#include "tokStr.h"
 
 
 
@@ -15,6 +16,9 @@ private:
 
     std::string word; // The word stored in this node
     AVLTree<DocumentNode> docs; // Stores the document name and corresponding information
+
+    std::string wordDocDel; // The delimiter between the word and docs in a file
+    std::string docDel; // The delimiter between the docs in a file
 
 
 public:
@@ -78,6 +82,7 @@ public:
      * Overloaded Assignment Operator
      */
     WordNode& operator=(WordNode& w);
+    WordNode& operator=(std::string& str);
 
     /**
      * Overload ostream insertion operator to print the contents of this list
