@@ -170,8 +170,8 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
     // Query all words
     for (int i = startIndex; i < vec.size(); i++) {
         try {
-            // If NOT is seen the first time, change the location of the notLoc
-            if (vec[i] == "not" && notLoc == -1) {
+            // If NOT is seen, change the location of the notLoc
+            if (vec[i] == "not") {
                 notLoc = i-1;
                 if (orgLoc != -1) {
                     notLoc--;
@@ -182,13 +182,8 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
                 queryMode = "normal";
                 continue;
             }
-            // If NOT is seen a second time, given an error message
-            else if (vec[i] == "not" && notLoc != -1) {
-                std::cout << "There can only be one NOT keyword in a query." << std::endl << std::endl;
-                return {};
-            }
             // IF ORG is seen, change the location of the orgLoc
-            else if (vec[i] == "org" && orgLoc == -1) {
+            else if (vec[i] == "org") {
                 orgLoc = i-1;
                 if (notLoc != -1) {
                     orgLoc--;
@@ -199,13 +194,8 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
                 queryMode = "org";
                 continue;
             }
-            // If ORG is seen a second time, given an error message
-            else if (vec[i] == "org" && orgLoc != -1) {
-                std::cout << "There can only be one ORG keyword in a query." << std::endl << std::endl;
-                return {};
-            }
             // If PERSON is seen, change the location of the personLoc
-            else if (vec[i] == "person" && personLoc == -1) {
+            else if (vec[i] == "person") {
                 personLoc = i-1;
                 if (notLoc != -1) {
                     personLoc--;
@@ -216,40 +206,29 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
                 queryMode = "person";
                 continue;
             }
-            // If PERSON is seen a second time, given an error message
-            else if (vec[i] == "person" && personLoc != -1) {
-                std::cout << "There can only be one PERSON keyword in a query." << std::endl << std::endl;
-                return {};
-            }
 
             // Query the word
             if (queryMode == "normal") {
                 queries.emplace_back(DocProcessor.searchWord(vec[i]).getDocuments().getInOrderVec());
             }
             else if (queryMode == "person") {
-                // Increase i until i+1 is greater than the words vector or until
-                // it reaches a new keyword. Continuously append to the temp word along the way.
+                // Increase i until it's greater than the words vector or until
+                // it reaches a new keyword. Continuously append to a word along the way.
                 std::string temp = vec[i];
-                while (i+1 < vec.size()) {
-                    if (vec[i+1] == std::string("not") || vec[i+1] == std::string("org")) {
-                        break;
-                    }
-
-                    temp += " " + vec[i+1];
+                i++;
+                while (i < vec.size() && vec[i] != "not" && vec[i] != "org") {
+                    temp += " " + vec[i];
                     i++;
                 }
                 queries.emplace_back(DocProcessor.searchPeople(temp).getDocuments().getInOrderVec());
             }
             else if (queryMode == "org") {
-                // Increase i until i+1 is greater than the words vector or until
-                // it reaches a new keyword. Continuously append to the temp word along the way.
+                // Increase i until it's greater than the words vector or until
+                // it reaches a new keyword. Continuously append to a word along the way.
                 std::string temp = vec[i];
-                while (i+1 < vec.size()) {
-                    if (vec[i+1] == std::string("not") || vec[i+1] == std::string("person")) {
-                        break;
-                    }
-
-                    temp += " " + vec[i+1];
+                i++;
+                while (i < vec.size() && vec[i] != "not" && vec[i] != "person") {
+                    temp += " " + vec[i];
                     i++;
                 }
                 queries.emplace_back(DocProcessor.searchOrgs(temp).getDocuments().getInOrderVec());
@@ -257,7 +236,7 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
 
         }
         // If a node wasn't found, add a node with no elements
-        catch (std::runtime_error& e) {
+        catch (std::runtime_error e) {
             std::vector<DocumentNode> temp;
             queries.emplace_back(temp);
         }
@@ -311,6 +290,8 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
         std::vector<DocumentNode> unionVec;
 
         // Get the union between the first and second elements in the vector
+        std::cout << queries[0].size() << std::endl;
+        std::cout << queries[1].size() << std::endl;
         unionVec = Union<DocumentNode>(queries[0], queries[1]);
 
         // Get the union for all other elements

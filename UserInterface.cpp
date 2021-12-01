@@ -231,9 +231,8 @@ bool UserInterface::readFiles() {
     std::string choice;
     while (choice != "1" && choice != "2") {
         std::cout << "How would you like to read data?" << std::endl
-                  << "1. From scratch using a directory of data files" << std::endl
-                  << "2. Using several files with preloaded data" << std::endl;
-
+        << "1. From scratch using a directory of data files" << std::endl
+        << "2. Using several files with preloaded data" << std::endl;
         getline(std::cin, choice);
 
         // Error checking
@@ -374,16 +373,55 @@ void UserInterface::promptUser() {
                   << "      6. Shutdown search engine" << std::endl;
         getline(std::cin, action);
 
-        std::cin.clear();                              //clear errors/bad flags on cin
-        std::cin.ignore(std::cin.rdbuf()->in_avail(), '\n');//precise amount of ignoring
-        std::cin.rdbuf()->in_avail(); //returns the exact number of characters in the cin buffer.
-
         // Handle the action from the user
         try {
             handleAction(stoi(action));
         } catch (std::invalid_argument& e) {
             std::cout << "Invalid action" << std::endl << std::endl;
         }
+
+
+
+
+//        // Prompt the user for input
+//        std::cout << "Enter a query to be handled. Enter ~W~ to exit:" << std::endl;
+//        getline(std::cin, query);
+//
+//        // If the query is ~W~, stop the query
+//        if (query == std::string("~W~")) {
+//            QP.Shutdown();
+//        }
+//        // If the query is not ~W~, search
+//        else {
+//
+//            // Try to find a result given the query
+//            std::vector<DocumentNode> results;
+//            try {
+//                //results = p.search(std::string(argv[2]));
+//                results = QP.ProcessQuery(query);
+//
+//                // If a result was found, display it
+//                if (!results.empty()) {
+//                    std::cout << "Results: " << std::endl;
+//                    for (int i = 0; i < results.size(); i++) {
+//                        std::cout << results[i] << std::endl;
+//                    }
+//                }
+//                // If a result wasn't found, display an error message
+//                else {
+//                    std::cout << "No results for query" << std::endl;
+//                }
+//
+//            } catch (std::logic_error& e) {
+//                // If a result wasn't found, display an error message
+//                std::cout << "No results for query" << std::endl;
+//            } catch (std::runtime_error& e) {
+//                // If a result wasn't found, display an error message
+//                std::cout << "No results for query" << std::endl;
+//            }
+//
+//            std::cout << std::endl << std::endl;
+//        }
     }
 
 
