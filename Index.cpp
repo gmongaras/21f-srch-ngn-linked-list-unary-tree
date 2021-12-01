@@ -84,7 +84,6 @@ void Index::LoadFiles(std::string &wordsFileName, std::string &peopleFileName, s
     // Unload the old organization data and load in the new data
     orgs.clear();
     orgs.loadTable(orgsFileName, &orgsEqualityFunction);
-    return;
 }
 
 

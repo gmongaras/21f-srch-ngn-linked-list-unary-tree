@@ -73,21 +73,21 @@ public:
 template <typename K, typename V>
 HashNode<K, V>::HashNode() {
     nextNode = nullptr;
-    keyValSplit = "„";
+    keyValSplit = "|||";
 }
 template <typename K, typename V>
 HashNode<K, V>::HashNode(K& newKey, V& newVal) {
     key = newKey;
     value = newVal;
     nextNode = nullptr;
-    keyValSplit = "„";
+    keyValSplit = "|||";
 }
 template <typename K, typename V>
 HashNode<K, V>::HashNode(HashNode<K, V>& node) {
     key = node.key;
     value = node.value;
     nextNode = nullptr;
-    keyValSplit = "„";
+    keyValSplit = "|||";
 }
 
 

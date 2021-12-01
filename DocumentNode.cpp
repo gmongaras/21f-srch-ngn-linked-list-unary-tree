@@ -15,7 +15,7 @@ DocumentNode::DocumentNode() {
     author = "";
     date = "";
 
-    partDel = "~";
+    partDel = "~~";
 }
 DocumentNode::DocumentNode(const std::string& name, int freq, std::string ID, int length, std::string& Title, std::string& Author, std::string& Date) {
     fileName = name;
@@ -26,7 +26,7 @@ DocumentNode::DocumentNode(const std::string& name, int freq, std::string ID, in
     author = Author;
     date = Date;
 
-    partDel = "~";
+    partDel = "~~";
 }
 DocumentNode::DocumentNode(const DocumentNode &node) {
     fileName = node.fileName;
@@ -37,7 +37,7 @@ DocumentNode::DocumentNode(const DocumentNode &node) {
     author = node.author;
     date = node.date;
 
-    partDel = "~";
+    partDel = "~~";
 }
 
 
@@ -171,7 +171,7 @@ bool DocumentNode::operator>(const std::string &name) const {
  *****************************************/
 DocumentNode &DocumentNode::operator=(std::string &str) {
     // tokenize the given string into document node parts
-    std::vector<std::string> tokenizedParts = tokStr(str, partDel[0], 6);
+    std::vector<std::string> tokenizedParts = tokStr(str, partDel, 6);
 
     // Add the values to the document node
     fileName = std::string(tokenizedParts[0]);

@@ -99,14 +99,14 @@ HashMap<K, V, F>::HashMap() {
     size = 4194304;
     map.resize(size);
     numUnique = 0;
-    splitChar = "|";
+    splitChar = "-~|";
 }
 template <typename K, typename V, typename F>
 HashMap<K, V, F>::HashMap(HashMap<K, V, F> &oldMap) {
     // Set the size
     size = 4194304;
     numUnique = oldMap.numUnique;
-    splitChar = "|";
+    splitChar = "-~|";
 
     // Resize the vector map
     map.resize(size);
@@ -198,7 +198,7 @@ void HashMap<K, V, F>::saveTable(std::string &filename) {
                 // Add the node to the file
                 file << temp;
                 if (temp->nextNode != nullptr) {
-                    file << splitChar[0];
+                    file << splitChar;
                 }
 
                 // Move to the next node
@@ -242,7 +242,7 @@ void HashMap<K, V, F>::loadTable(std::string &filename, std::function<void(V& ol
             }
 
             // Get the key and value from the buffer
-            std::vector<std::string> keyVal = tokStr(buff, t.keyValSplit[0], 1);
+            std::vector<std::string> keyVal = tokStr(buff, t.keyValSplit, 1);
             std::string key = keyVal[0];
             std::string value = keyVal[1];
             K keyK;

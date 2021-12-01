@@ -15,7 +15,7 @@
  *              The number of times doesn't matter.
  * @return A vector holding the tokenized string
  */
-std::vector<std::string> tokStr(std::string& str, char tok = ' ', int times = -1);
+std::vector<std::string> tokStr(std::string& str, std::string tok = " ", int times = -1);
 
 
 

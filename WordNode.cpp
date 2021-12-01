@@ -19,25 +19,25 @@ void docsEqualityFunction(DocumentNode& newItem, TreeNode<DocumentNode>*& curPtr
  ***********************/
 WordNode::WordNode() {
     word = "";
-    wordDocDel = ":";
-    docDel = "`";
+    wordDocDel = "::";
+    docDel = "`|`";
 }
 WordNode::WordNode(std::string& newWord) {
     word = newWord;
-    wordDocDel = ":";
-    docDel = "`";
+    wordDocDel = "::";
+    docDel = "`|`";
 }
 WordNode::WordNode(std::string& newWord, DocumentNode& doc) {
     word = newWord;
     docs.insert(doc, &docsEqualityFunction);
-    wordDocDel = ":";
-    docDel = "`";
+    wordDocDel = "::";
+    docDel = "`|`";
 }
 WordNode::WordNode(WordNode &node) {
     word = node.word;
     docs = node.docs;
-    wordDocDel = ":";
-    docDel = "`";
+    wordDocDel = "::";
+    docDel = "`|`";
 }
 
 
@@ -146,7 +146,7 @@ WordNode &WordNode::operator=(WordNode &w) {
 }
 WordNode& WordNode::operator=(std::string& str) {
     // Breakup the string into word and documents
-    std::vector<std::string> tokenizedWordDocs = tokStr(str, wordDocDel[0], 1);
+    std::vector<std::string> tokenizedWordDocs = tokStr(str, wordDocDel, 1);
 
     // Store the word from the vector
     word = std::string(tokenizedWordDocs[0]);
@@ -158,7 +158,7 @@ WordNode& WordNode::operator=(std::string& str) {
         std::string documents = tokenizedWordDocs[1];
 
         // Split up the documents by the docDel delimiter
-        std::vector<std::string> tokenizedDocs = tokStr(documents, docDel[0], -1);
+        std::vector<std::string> tokenizedDocs = tokStr(documents, docDel, -1);
 
         // Add and store each document
         for (std::string& doc : tokenizedDocs) {
