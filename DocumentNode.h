@@ -84,6 +84,10 @@ public:
     bool operator<(const std::string& name);
     bool operator>(const DocumentNode& node);
     bool operator>(const std::string& name);
+    bool operator<(const DocumentNode& node) const;
+    bool operator<(const std::string& name) const;
+    bool operator>(const DocumentNode& node) const;
+    bool operator>(const std::string& name) const;
 
 
     /**

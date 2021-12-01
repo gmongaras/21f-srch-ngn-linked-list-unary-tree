@@ -3,6 +3,7 @@
 
 
 #include "DocumentProcessor.h"
+#include <set>
 
 
 
@@ -78,6 +79,24 @@ private:
      * @return A sorted DocumentNode vector
      */
     std::vector<DocumentNode> sortVec(std::vector<DocumentNode> vec);
+
+    /**
+     * vecToSet Method
+     * Convert a given vector to a set
+     * @param vec A vector to convert
+     * @return a set with the contents of the vector
+     */
+    template <typename vectype>
+    std::set<vectype> vecToSet(std::vector<vectype>& vec);
+
+    /**
+     * setToVec Method
+     * Convert a given set to a vector
+     * @param s A set to convert
+     * @return a vector with the contents of the set
+     */
+    template <typename settype>
+    std::vector<settype> setToVec(std::set<settype>& s);
 
 
 

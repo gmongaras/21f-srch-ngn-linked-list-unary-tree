@@ -151,6 +151,18 @@ bool DocumentNode::operator>(const DocumentNode &node) {
 bool DocumentNode::operator>(const std::string &name) {
     return fileName > name;
 }
+bool DocumentNode::operator<(const DocumentNode &node) const {
+    return fileName < node.fileName;
+}
+bool DocumentNode::operator<(const std::string &name) const {
+    return fileName < name;
+}
+bool DocumentNode::operator>(const DocumentNode &node) const {
+    return fileName > node.fileName;
+}
+bool DocumentNode::operator>(const std::string &name) const {
+    return fileName > name;
+}
 
 
 

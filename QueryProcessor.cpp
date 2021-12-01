@@ -1,5 +1,6 @@
 #include <iostream>
 #include "QueryProcessor.h"
+#include <set>
 
 
 
@@ -45,24 +46,16 @@ std::vector<std::string> QueryProcessor::tokStr(std::string &str, char tok) {
  ******************************/
 template <typename vectype>
 std::vector<vectype> QueryProcessor::Intersection(std::vector<vectype> &vec1, std::vector<vectype> &vec2) {
-    // Vector to hold the intersection of the two vectors
-    std::vector<vectype> interVec;
+    // Turn the vectors into sets
+    std::set<vectype> s1 = vecToSet(vec1);
+    std::set<vectype> s2 = vecToSet(vec2);
 
-    // Iterate over all values in vec1
-    for (int i = 0; i < vec1.size(); i++) {
-        // Iterate over all values in vec2 to check if the same value was found.
-        for (int j = 0; j < vec2.size(); j++) {
-            // If the current value being looked at in vec1 is the same as the
-            // current value being looked at in vec2, add it to the unionVec
-            if (vec1[i] == vec2[j]) {
-                interVec.emplace_back(vec1[i]);
-                break;
-            }
-        }
-    }
+    // Get the intersections of the sets
+    std::set<vectype> intersect;
+    std::set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(), std::inserter(intersect, intersect.begin()));
 
-    // Return the intersection vector
-    return interVec;
+    // Return a vector of the intersection
+    return setToVec(intersect);
 }
 
 
@@ -72,33 +65,16 @@ std::vector<vectype> QueryProcessor::Intersection(std::vector<vectype> &vec1, st
  ***********************/
 template <typename vectype>
 std::vector<vectype> QueryProcessor::Union(std::vector<vectype> &vec1, std::vector<vectype> &vec2) {
-    // Vector to hold the union of the two vectors
-    std::vector<vectype> unionVec(vec1);
+    // Turn the vectors into sets
+    std::set<vectype> s1 = vecToSet(vec1);
+    std::set<vectype> s2 = vecToSet(vec2);
 
-    // Iterate over all values in vec2
-    for (int i = 0; i < vec2.size(); i++) {
-        // True if the current value is in the unionVec, false otherwise
-        bool repeat = false;
+    // Get the union of the sets
+    std::set<vectype> unionOp;
+    std::set_union(s1.begin(), s1.end(), s2.begin(), s2.end(), std::inserter(unionOp, unionOp.begin()));
 
-        // Iterate over all values in unionVec to check if the same value was found.
-        for (int j = 0; j < unionVec.size(); j++) {
-            // If the current value being looked at in vec2 is the same as the
-            // current value being looked at in unionVec, set the boolean to
-            // true as the value should not be added again
-            if (vec2[i] == unionVec[j]) {
-                repeat = true;
-                break;
-            }
-        }
-
-        // If the item is not a repeat, add it to the unionVec
-        if (!repeat) {
-            unionVec.emplace_back(vec2[i]);
-        }
-    }
-
-    // Return the union vector
-    return unionVec;
+    // Return a vector of the union
+    return setToVec(unionOp);
 }
 
 
@@ -108,34 +84,16 @@ std::vector<vectype> QueryProcessor::Union(std::vector<vectype> &vec1, std::vect
  ****************************/
 template <typename vectype>
 std::vector<vectype> QueryProcessor::Difference(std::vector<vectype> &vec1, std::vector<vectype> &vec2) {
-    // Vector to hold the difference of the two given vectors
-    std::vector<vectype> diffVec;
+    // Turn the vectors into sets
+    std::set<vectype> s1 = vecToSet(vec1);
+    std::set<vectype> s2 = vecToSet(vec2);
 
-    // Iterate over all values in vec 1
-    for (int i = 0; i < vec1.size(); i++) {
-        // Boolean to ensure the current value in vec1 isn't in vec2.
-        bool inVec2 = false;
+    // Get the difference of the sets
+    std::set<vectype> diff;
+    std::set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), std::inserter(diff, diff.begin()));
 
-        // Iterate over all values in vec2
-        for (int j = 0; j < vec2.size(); j++) {
-            // If the values in vec1 and vec2 are the same, change
-            // the boolean to ensure the value isn't added
-            // to the new vector
-            if (vec1[i] == vec2[j]) {
-                inVec2 = true;
-                break;
-            }
-        }
-
-        // If the current value in vec1 is not in vec2, add it
-        // to the new vector
-        if (!inVec2) {
-            diffVec.emplace_back(vec1[i]);
-        }
-    }
-
-    // Return the difference vector
-    return diffVec;
+    // Return a vector of the difference
+    return setToVec(diff);
 }
 
 
@@ -366,28 +324,33 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
 /*******************
  **    sortVec    **
  ******************/
+bool crit(DocumentNode a, DocumentNode b) {return a.getRelevancyRanking() > b.getRelevancyRanking();}
 std::vector<DocumentNode> QueryProcessor::sortVec(std::vector<DocumentNode> vec) {
-    // Algorithm from https://www.geeksforgeeks.org/insertion-sort/
+    std::sort(vec.begin(), vec.end(), &crit);
+    return vec;
+}
 
-    int i, j;
-    DocumentNode key;
-    for (i = 1; i < vec.size(); i++)
-    {
-        key = vec[i];
-        j = i - 1;
 
-        /* Move elements of arr[0..i-1], that are
-        greater than key, to one position ahead
-        of their current position */
-        while (j >= 0 && vec[j].getRelevancyRanking() < key.getRelevancyRanking())
-        {
-            vec[j + 1] = vec[j];
-            j = j - 1;
-        }
-        vec[j + 1] = key;
-    }
 
-    // Return the sorted vector
+
+/***************************
+ **    vecToSet Method    **
+ **************************/
+template <typename vectype>
+std::set<vectype> QueryProcessor::vecToSet(std::vector<vectype> &vec) {
+    std::set<vectype> s(vec.begin(), vec.end());
+    return s;
+}
+
+
+
+/***************************
+ **    setToVec Method    **
+ **************************/
+template <typename settype>
+std::vector<settype> QueryProcessor::setToVec(std::set<settype>& s) {
+    std::vector<settype> vec(s.size());
+    std::copy(s.begin(), s.end(), vec.begin());
     return vec;
 }
 
