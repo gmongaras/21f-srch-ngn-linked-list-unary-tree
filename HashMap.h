@@ -8,6 +8,7 @@
 #include "HashFunction.h"
 #include <vector>
 #include <functional>
+#include <fstream>
 
 
 
@@ -18,6 +19,7 @@ private:
     std::vector<HashNode<K, V>*> map; // The hashmap
     F hashFunc; // The hash function
     int numUnique; // The number of unique items entered
+    std::string splitChar; // Character used to split each part of a bucket
 
 
 
@@ -43,6 +45,14 @@ public:
     void saveTable(std::string& filename);
 
     /**
+     * loadTable Method
+     * Loads all contents from a given files into this table
+     * @param filename The file to read from
+     * @param equalityFunc The function to use if the key was found in the map.
+     */
+    void loadTable(std::string& filename, std::function<void(V& oldValue, V& newValue)> equalityFunction);
+
+    /**
      * addPair Method
      * Adds a key-value pair to the map
      * @param newKey The key to add
@@ -50,6 +60,14 @@ public:
      * @param equalityFunc The function to use if the key was found in the map.
      */
     void addPair(K& newKey, V& newValue, std::function<void(V& oldValue, V& newValue)> equalityFunction);
+
+    /**
+     * addNode Method
+     * Adds a hash node to the map
+     * @param node The node to add
+     * @param equalityFunc The function to use if the key was found in the map.
+     */
+    void addNode(HashNode<K, V>*& newNode, std::function<void(V& oldValue, V& newValue)> equalityFunction);
 
     /**
      * Overloaded [] Operator
@@ -81,12 +99,14 @@ HashMap<K, V, F>::HashMap() {
     size = 4194304;
     map.resize(size);
     numUnique = 0;
+    splitChar = "|";
 }
 template <typename K, typename V, typename F>
 HashMap<K, V, F>::HashMap(HashMap<K, V, F> &oldMap) {
     // Set the size
     size = 4194304;
     numUnique = oldMap.numUnique;
+    splitChar = "|";
 
     // Resize the vector map
     map.resize(size);
@@ -160,7 +180,88 @@ void HashMap<K, V, F>::clear() {
  ***************************/
 template <typename K, typename V, typename F>
 void HashMap<K, V, F>::saveTable(std::string &filename) {
-    ;
+    // Open a file for writing
+    std::fstream file(filename.c_str(), std::fstream::out);
+
+
+
+    // Iterate over all values in the linked list and add all non-empty buckets
+    // to the files
+    for (int i = 0; i < map.size(); i++) {
+        // If the current value is not empty, add it to the file
+        if (map[i] != nullptr) {
+            // Holds each node in the bucket
+            HashNode<K, V>* temp = map[i];
+
+            // Iterate over each part of the bucket
+            while (temp != nullptr) {
+                // Add the node to the file
+                file << temp;
+                if (temp->nextNode != nullptr) {
+                    file << splitChar[0];
+                }
+
+                // Move to the next node
+                temp = temp->nextNode;
+            }
+
+            // Go to the next line
+            file << std::endl;
+        }
+    }
+
+
+
+    // Close the file
+    file.close();
+}
+
+
+
+/****************************
+ **    loadTable Method    **
+ ***************************/
+template <typename K, typename V, typename F>
+void HashMap<K, V, F>::loadTable(std::string &filename, std::function<void(V& oldValue, V& newValue)> equalityFunction) {
+    // Open a file for reading
+    std::ifstream file(filename.c_str(), std::fstream::in);
+    HashNode<K, V> t;
+
+
+    // If the file is open, read it
+    if (file) {
+        // Iterate until the end of the file is met
+        while (!file.eof()) {
+            // Get a line from the file
+            std::string buff;
+            std::getline(file, buff);
+
+            // If the buffer is empty, go to the next line
+            if (buff.empty()) {
+                continue;
+            }
+
+            // Get the key and value from the buffer
+            std::vector<std::string> keyVal = tokStr(buff, t.keyValSplit[0], 1);
+            std::string key = keyVal[0];
+            std::string value = keyVal[1];
+            K keyK;
+            keyK = key;
+            V valueV;
+            valueV = value;
+
+            // Add the node to the map
+            addPair(keyK, valueV, equalityFunction);
+        }
+    }
+    // If the file is not open, throw an error
+    else {
+        throw std::runtime_error("File not open");
+    }
+
+
+    // Close the file
+    file.close();
 }
 
 
@@ -172,7 +273,7 @@ void HashMap<K, V, F>::saveTable(std::string &filename) {
 template <typename K, typename V, typename F>
 void HashMap<K, V, F>::addPair(K& newKey, V& newValue, std::function<void(V& oldValue, V& newValue)> equalityFunction) {
     // Hash the given key
-    long keyHash = hashFunc.hash(newKey);
+    long keyHash = hashFunc.hash(newKey, size);
 
     // Get the location in the vector of the hashed key
     HashNode<K, V>* node = map[keyHash];
@@ -214,13 +315,61 @@ void HashMap<K, V, F>::addPair(K& newKey, V& newValue, std::function<void(V& old
 
 
 
+/*******************
+ **    addNode    **
+ ******************/
+template <typename K, typename V, typename F>
+void HashMap<K, V, F>::addNode(HashNode<K, V>*& newNode, std::function<void(V& oldValue, V& newValue)> equalityFunction) {
+    // Hash the given key
+    long keyHash = hashFunc.hash(newNode->key, size);
+
+    // Get the location in the vector of the hashed key
+    HashNode<K, V>* node = map[keyHash];
+
+    // If the value is nullptr, add a new node to that location
+    if (node == nullptr) {
+        numUnique++;
+        map[keyHash] = newNode;
+    }
+
+    // If the value is not nullptr and the current node's key contains
+    // the key of the given key, call the equality function
+    else if (node->key == newNode->key) {
+        equalityFunction(node->value, newNode->value);
+    }
+
+    // If the value is not nullptr and the current node's key does not contain
+    // the key of the given key, search for the key in the linked list
+    else {
+        // Iterate to the end of the linked list
+        HashNode<K, V>* prev;
+        while (node != nullptr) {
+            // If the key is found, call the equality function
+            if (node->key == newNode->key) {
+                equalityFunction(node->value, newNode->value);
+                return;
+            }
+
+            // If the key is not found, move the pointer
+            prev = node;
+            node = node->nextNode;
+        }
+
+        // If the current node is nullptr, add a new node to the end of the list
+        prev->nextNode = newNode;
+        numUnique++;
+    }
+}
+
+
+
 /**********************************
  **    Overloaded [] Operator    **
  *********************************/
 template <typename K, typename V, typename F>
 V& HashMap<K, V, F>::operator[](K& searchKey) {
     // Hash the given key
-    long keyHash = hashFunc.hash(searchKey);
+    long keyHash = hashFunc.hash(searchKey, size);
 
     // Get the location in the vector of the hashed key
     HashNode<K, V>*& node = map[keyHash];

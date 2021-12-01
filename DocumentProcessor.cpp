@@ -373,7 +373,7 @@ std::vector<float> DocumentProcessor::getStats() {
 /******************************
  **    getTopFifty Method    **
  *****************************/
-bool sortFunc (DocumentProcessor::wordToCount a, DocumentProcessor::wordToCount b) {return (a.count > b.count);};
+bool sortFunc (DocumentProcessor::wordToCount& a, DocumentProcessor::wordToCount& b) {return (a.count > b.count);};
 std::vector<DocumentProcessor::wordToCount> DocumentProcessor::getTopFifty() {
     // Get all words from the wordCounts tree
     std::vector<DocumentProcessor::wordToCount> counts = wordCounts.getInOrderVec();
