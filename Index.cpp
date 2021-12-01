@@ -76,15 +76,7 @@ void Index::LoadFiles(std::string &wordsFileName, std::string &peopleFileName, s
     // Unload the old words data and load in the new data
     words.clearTree();
     words.loadTree(wordsFileName, '\n', &wordsEqualityFunction);
-
-    // Unload the old people data and load in the new data
-    people.clear();
-    people.loadTable(peopleFileName, &peopleEqualityFunction);
-
-    // Unload the old organization data and load in the new data
-    orgs.clear();
-    orgs.loadTable(orgsFileName, &orgsEqualityFunction);
-    return;
+    std::cout << std::endl;
 }
 
 
