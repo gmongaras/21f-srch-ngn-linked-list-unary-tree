@@ -275,7 +275,7 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
         for (int i = 2; i < queries.size(); i++) {
             // If the current value is the location of subtractions,
             // query by subtraction
-            if (i >= notLoc && notLoc != -1) {
+            if (i >= notLoc && notLoc != -1 && ((i < personLoc && personLoc > notLoc) || (i > personLoc && personLoc < notLoc && personLoc != -1) || personLoc == -1) && ((i < orgLoc && orgLoc > notLoc) || (i > orgLoc && orgLoc < notLoc && orgLoc != -1) || orgLoc == -1)) {
                 unionVec = Difference<DocumentNode>(unionVec, queries[i]);
             }
             // If the current value is the location of a person, query
@@ -300,21 +300,49 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
 
 
 
-    // If the second item in the query vector is NOT, query with subtraction
-    if (notLoc == 0) {
-        // The current difference
-        std::vector<DocumentNode> diffvec = queries[0];
+    // If "ORG" "NOT" or "PERSON" is in the query, handle those
+    if (notLoc == 0 || personLoc == 0 || orgLoc == 0) {
+        // Store the current query results
+        std::vector<DocumentNode> queryResults = queries[0];
 
-        // Takes the difference using all words after the "NOT" symbol
+        // Get the results for all other elements
         for (int i = 1; i < queries.size(); i++) {
-            diffvec = Difference<DocumentNode>(diffvec, queries[i]);
+            // If the current value is the location of subtractions,
+            // query by subtraction
+            if (i >= notLoc && notLoc != -1 && ((i < personLoc && personLoc > notLoc) || (i > personLoc && personLoc < notLoc && personLoc != -1) || personLoc == -1) && ((i < orgLoc && orgLoc > notLoc) || (i > orgLoc && orgLoc < notLoc && orgLoc != -1) || orgLoc == -1)) {
+                queryResults = Difference<DocumentNode>(queryResults, queries[i]);
+            }
+            // If the current value is the location of a person, query
+            // by person
+            else if (i >= personLoc && personLoc != -1 && ((i < notLoc && notLoc > personLoc) || (i > notLoc && notLoc < personLoc && notLoc != -1) || notLoc == -1) && ((i < orgLoc && orgLoc > personLoc) || (i > orgLoc && orgLoc < personLoc && orgLoc != -1) || orgLoc == -1)) {
+                queryResults = Intersection<DocumentNode>(queryResults, queries[i]);
+            }
+            // If the current value is the location of an organization, query
+            // by organization
+            else if (i >= orgLoc && orgLoc != -1 && ((i < personLoc && personLoc > orgLoc) || (i > personLoc && personLoc < orgLoc && personLoc != -1) || personLoc == -1) && ((i < notLoc && notLoc > orgLoc) || (i > notLoc && notLoc < orgLoc && notLoc != -1) || notLoc == -1)) {
+                queryResults = Intersection<DocumentNode>(queryResults, queries[i]);
+            }
+            // If the current value is not special, do nothing
         }
 
-        // Return the vector
-        return diffvec;
+        // Return the union of all words
+        return queryResults;
+
+
+
+//        // The current difference
+//        std::vector<DocumentNode> diffvec = queries[0];
+//
+//        // Takes the difference using all words after the "NOT" symbol
+//        for (int i = 1; i < queries.size(); i++) {
+//            diffvec = Difference<DocumentNode>(diffvec, queries[i]);
+//        }
+//
+//        // Return the vector
+//        return diffvec;
     }
 
-    // If the mode is not 'OR' or 'AND' and subtraction isn't used,
+    // If the mode is not 'OR' or 'AND' and a keyword isn't used,
     // return the first vector of results
     return queries[0];
 }
