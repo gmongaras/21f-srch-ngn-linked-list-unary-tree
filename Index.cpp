@@ -115,6 +115,15 @@ WordNode &Index::getWord(std::string &word) {
 
 
 
+/******************************
+ **    getNumWords Method    **
+ *****************************/
+long long Index::getNumWords() {
+    return words.getNumAdded();
+}
+
+
+
 /************************************
  **    getNumUniqueWords Method    **
  ***********************************/

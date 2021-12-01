@@ -364,8 +364,9 @@ void DocumentProcessor::clearIndex() {
  **    getStats Method    **
  **************************/
 std::vector<float> DocumentProcessor::getStats() {
-    long numWords = index.getNumUniqueWords();
-    return std::vector<float>({(float)NUMFILES, (float)numWords/(float)NUMFILES, (float)numWords+1, (float)index.getNumUniqueOrgs(), (float)index.getNumUniquePeople(), (float)timeToParse.count()});
+    long numUniqueWords = index.getNumUniqueWords();
+    long long numWords = index.getNumWords();
+    return std::vector<float>({(float)NUMFILES, (float)((double)numWords/(double)NUMFILES), (float)numWords, (float)numUniqueWords, (float)index.getNumUniqueOrgs(), (float)index.getNumUniquePeople(), (float)timeToParse.count()});
 }
 
 

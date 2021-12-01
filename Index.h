@@ -64,6 +64,12 @@ public:
     WordNode& getWord(std::string& word);
 
     /**
+     * getNumWords Method
+     * @return The number of words read in
+     */
+    long long getNumWords();
+
+    /**
      * getNumUniqueWords Method
      * @return The number of unique words read in
      */

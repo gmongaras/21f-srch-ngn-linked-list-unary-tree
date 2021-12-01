@@ -17,6 +17,7 @@ class AVLTree {
 private:
     TreeNode<nodetype>* root;
     int numNodes;
+    long long numAdded;
 
 
 
@@ -176,6 +177,12 @@ public:
      * @return A vector storing the contents of the tree in order
      */
     std::vector<nodetype> getInOrderVec();
+
+    /**
+     * getNumAdded Method
+     * @return The number of nodes that were attempted to be added to the tree
+     */
+    long long getNumAdded();
 
     /**
      * getNumNodes Method
@@ -668,6 +675,7 @@ template <typename nodetype>
 AVLTree<nodetype>::AVLTree() {
     root = nullptr;
     numNodes = 0;
+    numAdded = 0;
 }
 template <typename nodetype>
 AVLTree<nodetype>::AVLTree(TreeNode<nodetype>*& r) {
@@ -678,6 +686,7 @@ AVLTree<nodetype>::AVLTree(TreeNode<nodetype>*& r) {
 
     root = r;
     numNodes = 1;
+    numAdded = 1;
 }
 template <typename nodetype>
 AVLTree<nodetype>::AVLTree(AVLTree<nodetype> &tree) {
@@ -692,6 +701,7 @@ AVLTree<nodetype>::AVLTree(AVLTree<nodetype> &tree) {
     // Insert the other nodes
     CopyConstructorHelper(root, tree.root);
     numNodes = tree.numNodes;
+    numAdded = tree.numAdded;
 }
 template <typename nodetype>
 AVLTree<nodetype>::~AVLTree<nodetype>() {
@@ -707,8 +717,11 @@ AVLTree<nodetype>::~AVLTree<nodetype>() {
  ************************/
 template <typename nodetype>
 nodetype& AVLTree<nodetype>::insert(nodetype &newItem, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
+    numAdded++;
+
     // If the head is nullptr, make the given node head
     if (root == nullptr) {
+        numNodes++;
         root = new TreeNode<nodetype>(newItem);
         return root->data;
     }
@@ -755,6 +768,16 @@ template <typename nodetype>
 std::vector<nodetype> AVLTree<nodetype>::getInOrderVec() {
     std::vector<nodetype> vec;
     return getInOrderVec(vec, root);
+}
+
+
+
+/******************************
+ **    getNumAdded Method    **
+ *****************************/
+template <typename nodetype>
+long long AVLTree<nodetype>::getNumAdded() {
+    return numAdded;
 }
 
 

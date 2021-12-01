@@ -187,18 +187,19 @@ void UserInterface::handleAction(int action) {
             std::vector<DocumentProcessor::wordToCount> top = QP.getTopFifty();
 
             std::vector<float> stats = QP.getStats();
-            std::cout << "Stats:" << std::endl
-                      << "      Total articles read:                       " << stats[0] << std::endl
-                      << "      Average words per article:                 " << stats[1] << std::endl
-                      << "      Total number of unique words indexed:      " << stats[2] << std::endl
-                      << "      Total number of unique organizations:      " << stats[3] << std::endl
-                      << "      Total number of unique people:             " << stats[4] << std::endl
-                      << "      Total time to parse files:                 " << stats[5] << " seconds" << std::endl
+            std::cout << "Stats:" << std::endl << std::setprecision(19)
+                      << "      Total articles read:                       " << stats[0] << " articles" << std::endl << std::fixed << std::setprecision(5)
+                      << "      Average words per article:                 " << stats[1] << " words/article" << std::endl << std::defaultfloat << std::setprecision(19)
+                      << "      Total number of words indexed:             " << stats[2] << " words" << std::endl
+                      << "      Total number of unique words indexed:      " << stats[3] << " unique words" << std::endl
+                      << "      Total number of unique organizations:      " << stats[4] << " unique organization" << std::endl
+                      << "      Total number of unique people:             " << stats[5] << " unique people" << std::endl << std::fixed << std::setprecision(5)
+                      << "      Total time to parse files:                 " << stats[6] << " seconds" << std::defaultfloat << std::endl
                       << "      Top " << std::min((int)top.size(), 50) << " most frequent words after cleaning:           " << std::endl;
 
             // Display all top words
             for (int i = 0; i < top.size(); i++) {
-                std::cout << "          " << i+1 << ": " << "Word: " << top[i].word << " " << "Count: " << top[i].count << std::endl;
+                std::cout << "          " << i+1 << ": " << "Word: " << top[i].word << "    " << "Count: " << top[i].count << std::endl;
             }
             std::cout << std::endl << std::endl;
             break;// output stats

@@ -1,5 +1,6 @@
 #include "DocumentNode.h"
 #include <iostream>
+#include <math.h>
 
 
 
@@ -113,7 +114,7 @@ std::string DocumentNode::getDate() const {
  **    getRelevancyRanking Method    **
  *************************************/
 float DocumentNode::getRelevancyRanking() const {
-    return (float)frequency/(float)docLength;
+    return std::pow(((float)frequency), (float)1)/(float)docLength;
 }
 
 
