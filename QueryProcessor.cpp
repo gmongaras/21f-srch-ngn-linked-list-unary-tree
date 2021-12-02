@@ -102,6 +102,12 @@ std::vector<vectype> QueryProcessor::Difference(std::vector<vectype> &vec1, std:
  **    queryWords Method    **
  ****************************/
 std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& vec, std::string& mode) {
+    // If the first word is "NOT", "PERSON", or "ORG", return an empty vector
+    if (vec[0] == "not" || vec[0] == "person" || vec[0] == "org") {
+        return std::vector<DocumentNode>();
+    }
+
+
     // The index to start at
     int startIndex = 0;
 
@@ -219,7 +225,7 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
             std::vector<DocumentNode> temp;
             queries.emplace_back(temp);
         }
-   }
+    }
 
 
 
