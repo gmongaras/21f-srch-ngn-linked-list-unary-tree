@@ -19,24 +19,24 @@ void docsEqualityFunction(DocumentNode& newItem, TreeNode<DocumentNode>*& curPtr
  ***********************/
 WordNode::WordNode() {
     word = "";
-    wordDocDel = "::";
+    wordDocDel = "::|";
     docDel = "`|`";
 }
 WordNode::WordNode(std::string& newWord) {
     word = newWord;
-    wordDocDel = "::";
+    wordDocDel = "::|";
     docDel = "`|`";
 }
 WordNode::WordNode(std::string& newWord, DocumentNode& doc) {
     word = newWord;
     docs.insert(doc, &docsEqualityFunction);
-    wordDocDel = "::";
+    wordDocDel = "::|";
     docDel = "`|`";
 }
 WordNode::WordNode(WordNode &node) {
     word = node.word;
     docs = node.docs;
-    wordDocDel = "::";
+    wordDocDel = "::|";
     docDel = "`|`";
 }
 
