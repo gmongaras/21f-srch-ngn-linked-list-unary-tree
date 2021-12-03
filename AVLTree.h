@@ -240,7 +240,8 @@ public:
      * Saves a tree to a given filename
      * @param filename The filename to save to
      */
-    void saveTree(const std::string& filename = std::string("storage/AVLTree.csv"));
+    void saveTree(const std::string& filename);
+    std::fstream& saveTree(std::fstream& out);
 
     /**
      * loadTree Method
@@ -251,6 +252,7 @@ public:
      *                         found between two nodes
      */
     void loadTree(const std::string& filename, char delimiter, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction);
+    std::fstream& loadTree(std::fstream& file, char delimiter, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction);
 };
 
 
@@ -970,11 +972,26 @@ void AVLTree<nodetype>::saveTree(const std::string &filename) {
     // Open a file for writing
     std::fstream file(filename.c_str(), std::fstream::out);
 
+    // Save the number of nodes added for future use
+    file << numAdded << std::endl;
+
     // Save the tree to the file
     fstreamLevelOrder(file, "\n");
 
     // Close the file
     file.close();
+}
+
+template <typename nodetype>
+std::fstream& AVLTree<nodetype>::saveTree(std::fstream& out) {
+    // Save the number of nodes added for future use
+    out << numAdded << std::endl;
+
+    // Save the tree to the file
+    fstreamLevelOrder(out, "\n");
+
+    // Return the stream
+    return out;
 }
 
 
@@ -989,6 +1006,10 @@ void AVLTree<nodetype>::loadTree(const std::string &filename, char delimiter, st
 
     // Check if the file is open
     if (file.is_open()) {
+        // Get the number of nodes previously added
+        std::string temp;
+        std::getline(file, temp);
+
         // Iterate over all lines in the file
         while (!file.eof()) {
             // Read in a line
@@ -1008,6 +1029,9 @@ void AVLTree<nodetype>::loadTree(const std::string &filename, char delimiter, st
             insert(newNode.data, equalityFunction);
         }
 
+        // Set the number of nodes added
+        numAdded = stoll(temp);
+
         // Close the file
         file.close();
     }
@@ -1015,6 +1039,47 @@ void AVLTree<nodetype>::loadTree(const std::string &filename, char delimiter, st
     else {
         throw std::runtime_error("Could not open AVL Tree file for reading");
     }
+}
+
+template <typename nodetype>
+std::fstream& AVLTree<nodetype>::loadTree(std::fstream& file, char delimiter, std::function<void(nodetype& newItem, TreeNode<nodetype>*& curPtr)> equalityFunction) {
+    // Check if the file is open
+    if (file.is_open()) {
+        // Get the number of nodes previously added
+        std::string temp;
+        std::getline(file, temp);
+
+        // Iterate over all lines in the file
+        while (!file.eof()) {
+            // Read in a line
+            std::string buff;
+            std::getline(file, buff);
+
+            // If the buffer is empty, go to the next line
+            if (buff.empty()) {
+                continue;
+            }
+
+            // Create a temporary node to read in the line
+            TreeNode<nodetype> newNode;
+            newNode.data = buff;
+
+            // Add the node to the tree
+            insert(newNode.data, equalityFunction);
+        }
+
+        // Set the number of nodes added
+        numAdded = stoll(temp);
+
+        // Close the file
+        file.close();
+    }
+    // If the file isn't open, throw and error
+    else {
+        throw std::runtime_error("Could not open AVL Tree file for reading");
+    }
+
+    return file;
 }
 
 

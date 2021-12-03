@@ -44,8 +44,9 @@ public:
      * @param wordsFileName The name of the file to save the words AVL Tree
      * @param peopleFileName The name of the file to save the people Hash Table
      * @param orgsFileName The name of the file to save the organizations Hash Table
+     * @param NUMFILES The number of files read in
      */
-    void saveFiles(std::string& wordsFileName, std::string& peopleFileName, std::string& orgsFileName);
+    void saveFiles(std::string& wordsFileName, std::string& peopleFileName, std::string& orgsFileName, long& NUMFILES);
 
     /**
      * LoadFiles Method
@@ -53,8 +54,9 @@ public:
      * @param wordsFileName The name of the file to load the words AVL Tree from
      * @param peopleFileName The name of the file to load the people Hash Table from
      * @param orgsFileName The name of the file to load the organizations Hash Table from
+     * @param NUMFILES The number of files read in
      */
-    void LoadFiles(std::string& wordsFileName, std::string& peopleFileName, std::string& orgsFileName);
+    void LoadFiles(std::string& wordsFileName, std::string& peopleFileName, std::string& orgsFileName, long& NUMFILES);
 
 
 

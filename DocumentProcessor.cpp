@@ -403,7 +403,7 @@ std::vector<WordNode> DocumentProcessor::getTopFifty() {
  **    saveFiles Method    **
  ***************************/
 void DocumentProcessor::saveFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName) {
-    index.saveFiles(wordsFileName, peopleFileName, orgsFileName);
+    index.saveFiles(wordsFileName, peopleFileName, orgsFileName, NUMFILES);
 }
 
 
@@ -446,7 +446,7 @@ void DocumentProcessor::processDocumentsFiles(std::string& wordsFileName, std::s
     auto start = std::chrono::high_resolution_clock::now();
 
     // Load the files
-    index.LoadFiles(wordsFileName, peopleFileName, orgsFileName);
+    index.LoadFiles(wordsFileName, peopleFileName, orgsFileName, NUMFILES);
 
     // Get the end time
     auto stop = std::chrono::high_resolution_clock::now();

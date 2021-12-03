@@ -87,8 +87,23 @@ void Index::clearIndex() {
 /****************************
  **    saveFiles Method    **
  ***************************/
-void Index::saveFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName) {
-    words.saveTree(wordsFileName);
+void Index::saveFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName, long& NUMFILES) {
+    // Save the number of files read in to the AVL tree file for future use
+    // Open a file for writing
+    std::fstream file(wordsFileName.c_str(), std::fstream::out);
+
+    // Send the number of files read in
+    file << NUMFILES << std::endl;
+
+    // Save the AVL tree
+    words.saveTree(file);
+
+    // Close the file
+    file.close();
+
+
+
+    // Save the hash maps
     people.saveTable(peopleFileName);
     orgs.saveTable(orgsFileName);
 }
@@ -98,10 +113,20 @@ void Index::saveFiles(std::string &wordsFileName, std::string &peopleFileName, s
 /*********************
  **    LoadFiles    **
  ********************/
-void Index::LoadFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName) {
+void Index::LoadFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName, long& NUMFILES) {
     // Unload the old words data and load in the new data
     words.clearTree();
-    words.loadTree(wordsFileName, '\n', &wordsEqualityFunction);//, wordCounts);
+    std::fstream file(wordsFileName.c_str(), std::fstream::in); // Open a file for reading
+    // If the file is not open, given an error
+    if (!file.is_open()) {
+        std::cout << "File not open" << std::endl;
+        return;
+    }
+    std::string temp;
+    getline(file, temp); // Read in the first line
+    NUMFILES = stol(temp); // Store the first line as the number of files read in
+    words.loadTree(file, '\n', &wordsEqualityFunction); // Load the AVL Tree
+    file.close(); // Close the file
 
     // Unload the old people data and load in the new data
     people.clear();
