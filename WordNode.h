@@ -16,6 +16,7 @@ private:
 
     std::string word; // The word stored in this node
     AVLTree<DocumentNode> docs; // Stores the document name and corresponding information
+    long count; // The number of times the word has appeared
 
     std::string wordDocDel; // The delimiter between the word and docs in a file
     std::string docDel; // The delimiter between the docs in a file
@@ -29,6 +30,8 @@ public:
     WordNode(std::string& newWord);
     WordNode(std::string& newWord, DocumentNode& doc);
     WordNode(WordNode& node);
+    WordNode(const WordNode& node);
+
 
     /**
      * addDoc Method
@@ -69,6 +72,19 @@ public:
     AVLTree<DocumentNode>& getDocuments();
 
     /**
+     * incrementCount Method
+     * Increases the count of the word by 1.
+     */
+    void incrementCount();
+
+    /**
+     * getCount Method
+     * @return The count of the word
+     */
+    long getCount();
+    long getCount() const;
+
+    /**
      * Comparison Operators
      */
     bool operator==(WordNode& w);
@@ -82,6 +98,7 @@ public:
      * Overloaded Assignment Operator
      */
     WordNode& operator=(WordNode& w);
+    WordNode& operator=(const WordNode& w);
     WordNode& operator=(std::string& str);
 
     /**

@@ -34,6 +34,7 @@ public:
     TreeNode(datatype newData);
     TreeNode(TreeNode<datatype>& oldData);
     TreeNode(TreeNode<datatype>* oldData);
+    TreeNode(const TreeNode<datatype>* oldData);
 
 
     /**
@@ -186,16 +187,24 @@ TreeNode<datatype>::TreeNode(datatype newData) {
 template <typename datatype>
 TreeNode<datatype>::TreeNode(TreeNode<datatype>& oldData) {
     data = oldData.data;
-    left = oldData.left;
-    right = oldData.right;
+    left = nullptr;
+    right = nullptr;
     height = oldData.height;
 }
 
 template <typename datatype>
 TreeNode<datatype>::TreeNode(TreeNode<datatype>* oldData) {
     data = oldData->data;
-    left = oldData->left;
-    right = oldData->right;
+    left = nullptr;
+    right = nullptr;
+    height = oldData->height;
+}
+
+template <typename datatype>
+TreeNode<datatype>::TreeNode(const TreeNode<datatype>* oldData) {
+    data = oldData->data;
+    left = nullptr;
+    right = nullptr;
     height = oldData->height;
 }
 

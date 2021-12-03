@@ -374,21 +374,27 @@ std::vector<float> DocumentProcessor::getStats() {
 /******************************
  **    getTopFifty Method    **
  *****************************/
-bool sortFunc (DocumentProcessor::wordToCount& a, DocumentProcessor::wordToCount& b) {return (a.count > b.count);};
-std::vector<DocumentProcessor::wordToCount> DocumentProcessor::getTopFifty() {
-    // Get all words from the wordCounts tree
-    std::vector<DocumentProcessor::wordToCount> counts = wordCounts.getInOrderVec();
+//bool sortFunc (DocumentProcessor::wordToCount& a, DocumentProcessor::wordToCount& b) {return (a.count > b.count);};
+std::vector<WordNode> DocumentProcessor::getTopFifty() {
+    // Get all the words and return them
+    return index.getTop50WordCounts();
 
-    // Sort the vector
-    std::sort(counts.begin(), counts.end(), sortFunc);
 
-    // Get the top 50 words from the vector
-    std::vector<DocumentProcessor::wordToCount> topCounts = std::vector<DocumentProcessor::wordToCount>(counts.begin(), counts.begin() + std::min((int)counts.size(), 50));
 
-    // Reverse the top values
-    std::reverse(topCounts.begin(), topCounts.begin());
 
-    return topCounts;
+//    // Get all words from the wordCounts tree
+//    std::vector<DocumentProcessor::wordToCount> counts = wordCounts.getInOrderVec();
+//
+//    // Sort the vector
+//    std::sort(counts.begin(), counts.end(), sortFunc);
+//
+//    // Get the top 50 words from the vector
+//    std::vector<DocumentProcessor::wordToCount> topCounts = std::vector<DocumentProcessor::wordToCount>(counts.begin(), counts.begin() + std::min((int)counts.size(), 50));
+//
+//    // Reverse the top values
+//    std::reverse(topCounts.begin(), topCounts.begin());
+//
+//    return topCounts;
 }
 
 
@@ -433,7 +439,17 @@ void DocumentProcessor::processDocumentsDir(const std::string& directory) {
  **    processDocumentsFiles    **
  ********************************/
 void DocumentProcessor::processDocumentsFiles(std::string& wordsFileName, std::string& peopleFileName, std::string& orgsFileName) {
+    // Start timing the time it takes to read all files
+    auto start = std::chrono::high_resolution_clock::now();
+
+    // Load the files
     index.LoadFiles(wordsFileName, peopleFileName, orgsFileName);
+
+    // Get the end time
+    auto stop = std::chrono::high_resolution_clock::now();
+
+    // Store the final difference in time
+    timeToParse = stop - start;
 }
 
 

@@ -27,6 +27,8 @@ private:
      **    Helper Methods    **
      *************************/
 
+    const TreeNode<nodetype>*& getRoot() {return root;};
+
     /**
      * AssignmentOperatorHelper Method
      * Inserts the nodes of a given subtree in an order so that sorting isn't needed
@@ -34,6 +36,7 @@ private:
      * @param subtree The subtree to add to this tree
      */
     void AssignmentOperatorHelper(TreeNode<nodetype>*& newSubtree, TreeNode<nodetype>*& oldSubtree);
+    void AssignmentOperatorHelperConst(TreeNode<nodetype>*& newSubtree, const TreeNode<nodetype>*& oldSubtree);
 
     /**
      * clearSubtree Helper Method
@@ -144,6 +147,9 @@ public:
     ~AVLTree();
 
 
+
+
+
     /**
      * Insert Method
      * Inserts a node into the tree keeping the AVL tree balanced
@@ -174,8 +180,10 @@ public:
     /**
      * getInOrderVec Method
      * Get an inorder traversal of the tree in a vector
+     * @param vec The vector to store the contents of the tree
      * @return A vector storing the contents of the tree in order
      */
+    std::vector<nodetype>& getInOrderVec(std::vector<nodetype>& vec);
     std::vector<nodetype> getInOrderVec();
 
     /**
@@ -194,6 +202,7 @@ public:
      * Overloaded Assignment Operator
      */
     AVLTree<nodetype>& operator=(AVLTree<nodetype>& tree);
+    AVLTree<nodetype>& operator=(const AVLTree<nodetype>& tree);
 
     /**
      * clearTree Method
@@ -272,8 +281,24 @@ void AVLTree<nodetype>::AssignmentOperatorHelper(TreeNode<nodetype>*& newSubtree
     if (oldSubtree->right != nullptr) {newSubtree->right = new TreeNode<nodetype>(oldSubtree->right);}
 
     // Add the left and right subtrees
-    CopyConstructorHelper(newSubtree->left, oldSubtree->left);
-    CopyConstructorHelper(newSubtree->right, oldSubtree->right);
+    AssignmentOperatorHelper(newSubtree->left, oldSubtree->left);
+    AssignmentOperatorHelper(newSubtree->right, oldSubtree->right);
+}
+
+template <typename nodetype>
+void AVLTree<nodetype>::AssignmentOperatorHelperConst(TreeNode<nodetype>*& newSubtree, const TreeNode<nodetype>*& oldSubtree) {
+    // If the old subtree is nullptr, go back up the stack
+    if (oldSubtree == nullptr) {
+        return;
+    }
+
+    // Add the left and right nodes from the old subtree to the new one
+    if (oldSubtree->left != nullptr) {newSubtree->left = new TreeNode<nodetype>(oldSubtree->left);}
+    if (oldSubtree->right != nullptr) {newSubtree->right = new TreeNode<nodetype>(oldSubtree->right);}
+
+    // Add the left and right subtrees
+    AssignmentOperatorHelper(newSubtree->left, oldSubtree->left);
+    AssignmentOperatorHelper(newSubtree->right, oldSubtree->right);
 }
 
 
@@ -712,6 +737,7 @@ AVLTree<nodetype>::~AVLTree<nodetype>() {
 
 
 
+
 /*************************
  **    Insert Method    **
  ************************/
@@ -765,9 +791,15 @@ nodetype& AVLTree<nodetype>::getNode(TreeNode<nodetype>& node) {
  **    getInOrderVec Method    **
  *******************************/
 template <typename nodetype>
+std::vector<nodetype>& AVLTree<nodetype>::getInOrderVec(std::vector<nodetype>& vec) {
+    getInOrderVec(vec, root);
+    return vec;
+}
+template <typename nodetype>
 std::vector<nodetype> AVLTree<nodetype>::getInOrderVec() {
     std::vector<nodetype> vec;
-    return getInOrderVec(vec, root);
+    getInOrderVec(vec, root);
+    return vec;
 }
 
 
@@ -797,6 +829,9 @@ int AVLTree<nodetype>::getNumNodes() {
  *****************************************/
 template <typename nodetype>
 AVLTree<nodetype> &AVLTree<nodetype>::operator=(AVLTree<nodetype> &tree) {
+    // Clear the tree
+    clearTree();
+
     // If the given tree is nullptr, do nothing.
     if (tree.root == nullptr) {
         return *this;
@@ -804,9 +839,31 @@ AVLTree<nodetype> &AVLTree<nodetype>::operator=(AVLTree<nodetype> &tree) {
 
     // Insert the root node
     root = new TreeNode<nodetype>(tree.root);
+    return *this;
 
     // Insert the other nodes
     AssignmentOperatorHelper(root, tree.root);
+
+    return *this;
+}
+
+template <typename nodetype>
+AVLTree<nodetype> &AVLTree<nodetype>::operator=(const AVLTree<nodetype> &tree) {
+    // Clear the tree
+    clearTree();
+
+    // If the given tree is nullptr, do nothing.
+    if (tree.root == nullptr) {
+        return *this;
+    }
+
+    // Insert the root node
+    root = new TreeNode<nodetype>(tree.root);
+    return *this;
+
+    // Insert the other nodes
+    TreeNode<nodetype>*& temp = reinterpret_cast<TreeNode<nodetype>*&>(const_cast<TreeNode<nodetype>*&>(tree.root));
+    AssignmentOperatorHelper(root, temp);
 
     return *this;
 }
@@ -830,6 +887,7 @@ void AVLTree<nodetype>::clearTree() {
     delete root;
     root = nullptr;
     numNodes = 0;
+    numAdded = 0;
 }
 
 

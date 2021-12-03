@@ -184,7 +184,7 @@ void UserInterface::handleAction(int action) {
             }
 
             // Get the top 50 words
-            std::vector<DocumentProcessor::wordToCount> top = QP.getTopFifty();
+            std::vector<WordNode> top = QP.getTopFifty();
 
             std::vector<float> stats = QP.getStats();
             std::cout << "Stats:" << std::endl << std::setprecision(19)
@@ -199,7 +199,7 @@ void UserInterface::handleAction(int action) {
 
             // Display all top words
             for (int i = 0; i < top.size(); i++) {
-                std::cout << "          " << i+1 << ": " << "Word: " << top[i].word << "    " << "Count: " << top[i].count << std::endl;
+                std::cout << "          " << i+1 << ": " << "Word: " << top[i].getWord() << "    " << "Count: " << top[i].getCount() << std::endl;
             }
             std::cout << std::endl << std::endl;
             break;// output stats

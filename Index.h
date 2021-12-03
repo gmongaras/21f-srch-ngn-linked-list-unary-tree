@@ -16,6 +16,21 @@ private:
     HashMap<std::string, WordNode> orgs; //HashMap<long, OrgNode> Orgs
 
 
+
+
+
+//    /**
+//     * loadTree Helper Method
+//     * Loads a tree from a given file
+//     * @param filename The file use to lead in
+//     * @param delimiter The delimiter used when leading in the tree
+//     * @param equalityFunction The function to use when inserting a node and equality is
+//     *                         found between two nodes
+//     * @param wordsCountsTree A tree to map each unique word to the number of times it's found.
+//     */
+//    void loadTree(const std::string& filename, char delimiter, std::function<void(WordNode& newItem, TreeNode<WordNode>*& curPtr)> equalityFunction);
+
+
 public:
     /**
      * clearIndex Method
@@ -74,6 +89,12 @@ public:
      * @return The number of unique words read in
      */
     int getNumUniqueWords();
+
+    /**
+     * getTop50WordCounts Method
+     * @return The top 50 word counts in order in a vector
+     */
+    std::vector<WordNode> getTop50WordCounts();
 
 
 

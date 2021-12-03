@@ -19,23 +19,34 @@ void docsEqualityFunction(DocumentNode& newItem, TreeNode<DocumentNode>*& curPtr
  ***********************/
 WordNode::WordNode() {
     word = "";
+    count = 1;
     wordDocDel = "::|";
     docDel = "`|`";
 }
 WordNode::WordNode(std::string& newWord) {
     word = newWord;
+    count = 1;
     wordDocDel = "::|";
     docDel = "`|`";
 }
 WordNode::WordNode(std::string& newWord, DocumentNode& doc) {
     word = newWord;
     docs.insert(doc, &docsEqualityFunction);
+    count = 1;
     wordDocDel = "::|";
     docDel = "`|`";
 }
 WordNode::WordNode(WordNode &node) {
     word = node.word;
     docs = node.docs;
+    count = node.count;
+    wordDocDel = "::|";
+    docDel = "`|`";
+}
+WordNode::WordNode(const WordNode &node) {
+    word = node.word;
+    docs = node.docs;
+    count = node.count;
     wordDocDel = "::|";
     docDel = "`|`";
 }
@@ -111,6 +122,27 @@ AVLTree<DocumentNode>& WordNode::getDocuments() {
 
 
 
+/*********************************
+ **    incrementCount Method    **
+ ********************************/
+void WordNode::incrementCount() {
+    ++count;
+}
+
+
+
+/***************************
+ **    getCount Method    **
+ **************************/
+long WordNode::getCount() {
+    return count;
+}
+long WordNode::getCount() const {
+    return count;
+}
+
+
+
 /********************************
  **    Comparison Operators    **
  *******************************/
@@ -141,21 +173,32 @@ bool WordNode::operator>(std::string &w) {
 WordNode &WordNode::operator=(WordNode &w) {
     word = w.word;
     docs = w.docs;
+    count = w.count;
+
+    return *this;
+}
+WordNode &WordNode::operator=(const WordNode &w) {
+    word = w.word;
+    docs = w.docs;
+    count = w.count;
 
     return *this;
 }
 WordNode& WordNode::operator=(std::string& str) {
     // Breakup the string into word and documents
-    std::vector<std::string> tokenizedWordDocs = tokStr(str, wordDocDel, 1);
+    std::vector<std::string> tokenizedWordDocs = tokStr(str, wordDocDel, 2);
 
     // Store the word from the vector
     word = std::string(tokenizedWordDocs[0]);
 
+    // Store the count from the vector
+    count = stol(tokenizedWordDocs[1]);
+
     // If the tokenized string has more than 1 value, store the other values
     // as documents
-    if (tokenizedWordDocs.size() > 1) {
+    if (tokenizedWordDocs.size() > 2) {
         // Store the second part of the tokenized string
-        std::string documents = tokenizedWordDocs[1];
+        std::string documents = tokenizedWordDocs[2];
 
         // Split up the documents by the docDel delimiter
         std::vector<std::string> tokenizedDocs = tokStr(documents, docDel, -1);
@@ -190,7 +233,7 @@ std::ostream& operator<< (std::ostream& out, const WordNode& node) {
  **    Overload FStream Insertion Operator    **
  **********************************************/
 std::fstream& operator<< (std::fstream& out, const WordNode& node) {
-    out << node.word.c_str() << node.wordDocDel;
+    out << node.word.c_str() << node.wordDocDel << node.count << node.wordDocDel;
 
     node.docs.fstreamLevelOrder(out, node.docDel);
     //node.docs.printTree2();

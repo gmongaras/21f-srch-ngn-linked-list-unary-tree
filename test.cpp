@@ -186,9 +186,11 @@ TEST_CASE("AVLTree class", "[AVLTree]") {
 
 
     SECTION("Checking the insert method with the getInOrderVec method") {
-        std::vector<int> v = AVL1.getInOrderVec();
+        std::vector<int> v;
+        AVL1.getInOrderVec(v);
         REQUIRE(v == std::vector<int>({0,1,4,5,9,10,11,90,100,101}));
-        std::vector<std::string> v1 = AVL2.getInOrderVec();
+        std::vector<std::string> v1;
+        AVL2.getInOrderVec(v1);
         REQUIRE(v1 == std::vector<std::string>({std::string("Sussy"), std::string("Zaka"), std::string("baka"), std::string("bob"), std::string("cob"), std::string("hello"), std::string("iii"), std::string("job"), std::string("sob"), std::string("sussy")}));
     }
 
@@ -235,9 +237,11 @@ TEST_CASE("AVLTree class", "[AVLTree]") {
     SECTION("Checking the clearTree Method") {
         AVL1.clearTree();
         AVL2.clearTree();
-        std::vector<int> v = AVL1.getInOrderVec();
+        std::vector<int> v;
+        AVL1.getInOrderVec(v);
         REQUIRE(v.size() == std::vector<int>().size());
-        std::vector<std::string> v1 = AVL2.getInOrderVec();
+        std::vector<std::string> v1;
+        AVL2.getInOrderVec(v1);
         REQUIRE(v1.size() == std::vector<std::string>().size());
     }
 }

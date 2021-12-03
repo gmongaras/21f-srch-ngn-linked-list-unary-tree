@@ -122,7 +122,7 @@ public:
      * getTop50
      * @return A vector of the top 50 most common words
      */
-    std::vector<DocumentProcessor::wordToCount> getTopFifty();
+    std::vector<WordNode> getTopFifty();
 
     /**
      * saveFiles

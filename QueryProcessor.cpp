@@ -436,7 +436,7 @@ std::vector<float> QueryProcessor::getStats() {
 /******************************
  **    getTopFifty Method    **
  *****************************/
-std::vector<DocumentProcessor::wordToCount> QueryProcessor::getTopFifty() {
+std::vector<WordNode> QueryProcessor::getTopFifty() {
     // Get all words from the wordCounts tree
     return DocProcessor.getTopFifty();
 }

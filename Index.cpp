@@ -1,16 +1,18 @@
 #include "Index.h"
+#include <algorithm>
 
 
 
 /**
  * wordsEqualityFunction
  * Function to pass into the insert method in the words AVL tree. It
- * adds a new document to the given node.
+ * adds a new document to the given node and increases the count of the word.
  * @param newItem The item to insert
  * @param curPtr The pointer to the current subtree
  */
 void wordsEqualityFunction(WordNode& newItem, TreeNode<WordNode>*& curPtr) {
     curPtr->getData().addDoc(newItem.getDocuments().getRootData());
+    curPtr->getData().incrementCount();
     //curPtr->getData().addDoc(newItem.getDocuments()[0]);//temp.getDocLocation(newItem.getDocuments()[0]));
 }
 
@@ -38,6 +40,30 @@ void peopleEqualityFunction(WordNode& nodeValue, WordNode& givenValue) {
 void orgsEqualityFunction(WordNode& nodeValue, WordNode& givenValue) {
     nodeValue.addDoc(givenValue.getDocuments().getRootData());
 }
+
+
+
+
+
+
+
+
+
+
+/***************************
+ **    loadTree Method    **
+ **************************/
+;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -75,7 +101,7 @@ void Index::saveFiles(std::string &wordsFileName, std::string &peopleFileName, s
 void Index::LoadFiles(std::string &wordsFileName, std::string &peopleFileName, std::string &orgsFileName) {
     // Unload the old words data and load in the new data
     words.clearTree();
-    words.loadTree(wordsFileName, '\n', &wordsEqualityFunction);
+    words.loadTree(wordsFileName, '\n', &wordsEqualityFunction);//, wordCounts);
 
     // Unload the old people data and load in the new data
     people.clear();
@@ -129,6 +155,32 @@ long long Index::getNumWords() {
  ***********************************/
 int Index::getNumUniqueWords() {
     return words.getNumNodes();
+}
+
+
+
+/******************************
+ **    getTop50WordCounts    **
+ *****************************/
+//bool sortFunc(const WordNode& a, const WordNode& b) {return (a.getCount() > b.getCount());}
+//bool sortFunc(WordNode& a, WordNode& b) {return (a.getCount() > b.getCount());}
+std::vector<WordNode> Index::getTop50WordCounts() {
+    // Get an inorder vector of the Words AVL Tree
+    std::vector<WordNode> inorderAVLTree;
+    inorderAVLTree.resize(words.getNumNodes());
+    words.getInOrderVec(inorderAVLTree);
+
+    // Re sort the vector in terms of the word counts
+    std::sort(inorderAVLTree.begin(), inorderAVLTree.end());
+    return inorderAVLTree;
+
+    // Get the top 50 words from the vector
+    std::vector<WordNode> topCounts = std::vector<WordNode>(inorderAVLTree.begin(), inorderAVLTree.begin() + std::min((int)inorderAVLTree.size(), 50));
+
+    // Reverse the top values
+    std::reverse(topCounts.begin(), topCounts.begin());
+
+    return topCounts;
 }
 
 
