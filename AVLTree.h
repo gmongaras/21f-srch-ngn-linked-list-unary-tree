@@ -841,7 +841,6 @@ AVLTree<nodetype> &AVLTree<nodetype>::operator=(AVLTree<nodetype> &tree) {
 
     // Insert the root node
     root = new TreeNode<nodetype>(tree.root);
-    return *this;
 
     // Insert the other nodes
     AssignmentOperatorHelper(root, tree.root);
@@ -861,7 +860,6 @@ AVLTree<nodetype> &AVLTree<nodetype>::operator=(const AVLTree<nodetype> &tree) {
 
     // Insert the root node
     root = new TreeNode<nodetype>(tree.root);
-    return *this;
 
     // Insert the other nodes
     TreeNode<nodetype>*& temp = reinterpret_cast<TreeNode<nodetype>*&>(const_cast<TreeNode<nodetype>*&>(tree.root));
