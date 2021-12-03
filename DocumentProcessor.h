@@ -64,7 +64,8 @@ public:
 
 private:
     AVLTree<std::string> stopWords;
-    AVLTree<wordToCount> wordCounts;
+    //AVLTree<wordToCount> wordCounts;
+    std::vector<WordNode> top50WordCounts;
     Index index;
     long NUMFILES;
     std::chrono::duration<float> timeToParse;

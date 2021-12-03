@@ -104,8 +104,8 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
                 WordNode temp(word, docNode);
                 //Words.insert(temp, &wordsEqualityFunction);
                 index.addWord(temp);
-                DocumentProcessor::wordToCount temp2(word);
-                wordCounts.insert(temp2, &wordCountsEqualityFunction);
+                //DocumentProcessor::wordToCount temp2(word);
+                //wordCounts.insert(temp2, &wordCountsEqualityFunction);
                 word.clear();
             }
         }
@@ -132,8 +132,8 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
         WordNode temp(word, docNode);
         //Words.insert(temp, &wordsEqualityFunction);
         index.addWord(temp);
-        DocumentProcessor::wordToCount temp2(word);
-        wordCounts.insert(temp2, &wordCountsEqualityFunction);
+        //DocumentProcessor::wordToCount temp2(word);
+        //wordCounts.insert(temp2, &wordCountsEqualityFunction);
         word.clear();
     }
     word.clear();
@@ -352,10 +352,10 @@ DocumentProcessor::DocumentProcessor() {
  **    clearIndex Method    **
  ****************************/
 void DocumentProcessor::clearIndex() {
-    wordCounts.clearTree();
+    //wordCounts.clearTree();
+    top50WordCounts.clear();
     NUMFILES = 0;
     index.clearIndex();
-
 }
 
 
@@ -377,7 +377,7 @@ std::vector<float> DocumentProcessor::getStats() {
 //bool sortFunc (DocumentProcessor::wordToCount& a, DocumentProcessor::wordToCount& b) {return (a.count > b.count);};
 std::vector<WordNode> DocumentProcessor::getTopFifty() {
     // Get all the words and return them
-    return index.getTop50WordCounts();
+    return top50WordCounts;
 
 
 
@@ -431,6 +431,9 @@ void DocumentProcessor::processDocumentsDir(const std::string& directory) {
 
     // Store the final difference in time
     timeToParse = stop - start;
+
+    // Get the top 50 word counts
+    top50WordCounts = index.getTop50WordCounts();
 }
 
 
@@ -450,6 +453,9 @@ void DocumentProcessor::processDocumentsFiles(std::string& wordsFileName, std::s
 
     // Store the final difference in time
     timeToParse = stop - start;
+
+    // Get the top 50 word counts
+    top50WordCounts = index.getTop50WordCounts();
 }
 
 
