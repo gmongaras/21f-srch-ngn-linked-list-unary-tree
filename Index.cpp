@@ -195,7 +195,6 @@ std::vector<WordNode> Index::getTop50WordCounts() {
 
     // Re sort the vector in terms of the word counts
     std::sort(inorderAVLTree.begin(), inorderAVLTree.end(), sortFunc);
-    return inorderAVLTree;
 
     // Get the top 50 words from the vector
     std::vector<WordNode> topCounts = std::vector<WordNode>(inorderAVLTree.begin(), inorderAVLTree.begin() + std::min((int)inorderAVLTree.size(), 50));
