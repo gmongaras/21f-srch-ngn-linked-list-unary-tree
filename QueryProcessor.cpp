@@ -1,3 +1,15 @@
+/**
+ * Outline: The QueryProcessor class holds information to be used when given a query
+ *          and uses that information to return the correct results for a given query
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A query to handle and information on that query
+ * Output: The results for the given query
+ */
+
+
+
+
 #include <iostream>
 #include "QueryProcessor.h"
 #include <set>
@@ -333,19 +345,6 @@ std::vector<DocumentNode> QueryProcessor::queryWords(std::vector<std::string>& v
 
         // Return the union of all words
         return queryResults;
-
-
-
-//        // The current difference
-//        std::vector<DocumentNode> diffvec = queries[0];
-//
-//        // Takes the difference using all words after the "NOT" symbol
-//        for (int i = 1; i < queries.size(); i++) {
-//            diffvec = Difference<DocumentNode>(diffvec, queries[i]);
-//        }
-//
-//        // Return the vector
-//        return diffvec;
     }
 
     // If the mode is not 'OR' or 'AND' and a keyword isn't used,

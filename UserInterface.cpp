@@ -1,3 +1,15 @@
+/**
+ * Outline: The UserInterface class handles input from the user and
+ *          returns the requested information
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A query from the user
+ * Output: The information requested from the user
+ */
+
+
+
+
 #include "UserInterface.h"
 #include <iostream>
 

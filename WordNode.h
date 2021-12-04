@@ -1,8 +1,18 @@
+/**
+ * Outline: The WordNode class holds information on a word along with documents
+ *          that node belongs to
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A word and information on that word
+ * Output: A WordNode holding the information on that word
+ */
+
+
+
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_WORDNODE_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_WORDNODE_H
 
 
-//#include <string>
 #include "AVLTree.h"
 #include "DocumentNode.h"
 #include "tokStr.h"

@@ -1,3 +1,14 @@
+/**
+ * Outline: The tokStr function tokenizes a string given a token.
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A string and a token
+ * Output: A vector of strings broken up by the token
+ */
+
+
+
+
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_TOKSTR_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_TOKSTR_H
 

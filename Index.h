@@ -1,3 +1,17 @@
+/**
+ * Outline: The Index class stores an AVL Tree of words and their respective documents,
+ *          A hashmap of people and their respective documents, and a hashmap of organizations
+ *          along with their respective indicies.
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A AVLTree of words, hashmap of people, and hashmap of organizations
+ * Output: An index with methods to work the stored data
+ */
+
+
+
+
+
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_INDEX_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_INDEX_H
 

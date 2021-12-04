@@ -1,3 +1,15 @@
+/**
+ * Outline: The WordNode class holds information on a word along with documents
+ *          that node belongs to
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A word and information on that word
+ * Output: A WordNode holding the information on that word
+ */
+
+
+
+
 #include "WordNode.h"
 #include <iostream>
 
@@ -10,7 +22,6 @@
  */
 void docsEqualityFunction(DocumentNode& newItem, TreeNode<DocumentNode>*& curPtr) {
     curPtr->getData().updateFreq();
-    //curPtr->getData().addDoc(newItem.getDocuments()[0]);//temp.getDocLocation(newItem.getDocuments()[0]));
 }
 
 
@@ -236,7 +247,6 @@ std::fstream& operator<< (std::fstream& out, const WordNode& node) {
     out << node.word.c_str() << node.wordDocDel << node.count << node.wordDocDel;
 
     node.docs.fstreamLevelOrder(out, node.docDel);
-    //node.docs.printTree2();
 
     return out;
 }

@@ -1,3 +1,15 @@
+/**
+ * Outline: This class stores a key and value pair along with
+ *          a pointer to the next key and value pair
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A key and value pair
+ * Output: A node containing the key and value pair
+ */
+
+
+
+
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_HASHNODE_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_HASHNODE_H
 

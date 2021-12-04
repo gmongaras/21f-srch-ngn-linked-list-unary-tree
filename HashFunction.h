@@ -1,3 +1,17 @@
+/**
+ * Outline: This struct is used to hash a string using the murmur3 hash function
+ * Note: The hash function (murmur3) I used was a part of a set of multiple algorithms
+ *       which can be found at the following link: https://github.com/aappleby/smhasher
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A string to hash and a table size
+ * Output: A hashed value of type long that fits into the table
+ */
+
+
+
+
+
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_HASHFUNCTION_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_HASHFUNCTION_H
 

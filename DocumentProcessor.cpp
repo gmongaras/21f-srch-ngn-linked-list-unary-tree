@@ -1,3 +1,18 @@
+/**
+ * Outline: The DocumentProcessor class processes a set of documents and stores
+ *          the information.
+ * Node: The stopword list I used is found at:
+ *       https://www.link-assistant.com/seo-stop-words.html
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A set of documents to parse
+ * Output: Data on the parsed set of documents
+ */
+
+
+
+
+
 #include "DocumentProcessor.h"
 #include <chrono>
 #include <algorithm>
@@ -14,19 +29,6 @@
  */
 void stopWordsEqualityFunction(std::string& newItem, TreeNode<std::string>*& curPtr) {
     return;
-}
-
-
-
-/**
- * wordCountsEqualityFunction
- * Function to pass into the insert method in the wordCounts AVL tree.
- * This function increases
- * @param newItem The item to insert
- * @param curPtr The pointer to the current subtree
- */
-void wordCountsEqualityFunction(DocumentProcessor::wordToCount& newItem, TreeNode<DocumentProcessor::wordToCount>*& curPtr) {
-    curPtr->getData().increaseCount();
 }
 
 
@@ -102,10 +104,7 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
 
                 // Add the word
                 WordNode temp(word, docNode);
-                //Words.insert(temp, &wordsEqualityFunction);
                 index.addWord(temp);
-                //DocumentProcessor::wordToCount temp2(word);
-                //wordCounts.insert(temp2, &wordCountsEqualityFunction);
                 word.clear();
             }
         }
@@ -130,10 +129,7 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
 
         // Add the word
         WordNode temp(word, docNode);
-        //Words.insert(temp, &wordsEqualityFunction);
         index.addWord(temp);
-        //DocumentProcessor::wordToCount temp2(word);
-        //wordCounts.insert(temp2, &wordCountsEqualityFunction);
         word.clear();
     }
     word.clear();
@@ -173,32 +169,6 @@ void DocumentProcessor::cleanAndAdd(rapidjson::Document*& doc, std::string& docN
             index.addOrg(org, temp);
         }
     }
-
-
-
-
-
-
-
-
-
-
-//    // Store the information on the organizations from the document
-//    std::string organizations = (*doc)["organizations"].GetString();
-//
-//    // If there is information on the people in the document, store it
-//    if (!people.empty()) {
-//        // Breakup the people string into a vector of each person
-//        std::vector<std::string> peopleVec = tokStr(people, ',');
-//
-//        // Iterate over all values in the vector
-//        for (std::string person : peopleVec) {
-//            // Add the person to the HashMap
-//            DocumentNode tempNode(docName, 1, ID, text.GetStringLength());
-//            WordNode temp(person, tempNode);
-//            index.addPerson(person, temp);
-//        }
-//    }
 }
 
 
@@ -266,7 +236,7 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory, lon
 
 
         // Check if the file is a directory and ends in .json
-        if (fileName == "." || fileName == "..") {// || fileName[size-4] != 'j' || fileName[size-3] != 's' && fileName[size-2] != 'o' && fileName[size-1] != 'n') {
+        if (fileName == "." || fileName == "..") {
             continue;
         }
         else if (stat(fullFileName.c_str(), &st) == -1)
@@ -295,9 +265,6 @@ void DocumentProcessor::processDocumentsHelper(const std::string &directory, lon
 
         // Read the JSON from the file into the document
         rapidjson::FileReadStream* inputStream = new rapidjson::FileReadStream(filePointer, readBuffer, readBufferSize);
-        //        myDocument<rapidjson::UTF8<>> *doc = new myDocument<rapidjson::UTF8<>>;
-        //        AVLTree<std::string>* AVL = new AVLTree<std::string>;
-        //        doc->ParseStream(*inputStream, AVL);
         rapidjson::Document *doc = new rapidjson::Document;
         doc->ParseStream(*inputStream);
 
@@ -352,7 +319,6 @@ DocumentProcessor::DocumentProcessor() {
  **    clearIndex Method    **
  ****************************/
 void DocumentProcessor::clearIndex() {
-    //wordCounts.clearTree();
     top50WordCounts.clear();
     NUMFILES = 0;
     index.clearIndex();
@@ -374,27 +340,9 @@ std::vector<float> DocumentProcessor::getStats() {
 /******************************
  **    getTopFifty Method    **
  *****************************/
-//bool sortFunc (DocumentProcessor::wordToCount& a, DocumentProcessor::wordToCount& b) {return (a.count > b.count);};
 std::vector<WordNode> DocumentProcessor::getTopFifty() {
     // Get all the words and return them
     return top50WordCounts;
-
-
-
-
-//    // Get all words from the wordCounts tree
-//    std::vector<DocumentProcessor::wordToCount> counts = wordCounts.getInOrderVec();
-//
-//    // Sort the vector
-//    std::sort(counts.begin(), counts.end(), sortFunc);
-//
-//    // Get the top 50 words from the vector
-//    std::vector<DocumentProcessor::wordToCount> topCounts = std::vector<DocumentProcessor::wordToCount>(counts.begin(), counts.begin() + std::min((int)counts.size(), 50));
-//
-//    // Reverse the top values
-//    std::reverse(topCounts.begin(), topCounts.begin());
-//
-//    return topCounts;
 }
 
 
@@ -477,12 +425,6 @@ WordNode DocumentProcessor::searchWord(std::string word) {
 
     // Return the results of the query
     return index.getWord(word);
-
-
-    //stopWords.saveTree(std::string("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/21f-srch-ngn-linked-list-unary-tree/storage/stop.csv"));
-    //Words.saveTree(std::string("/mnt/c/Users/gabri/Documents/SMU/Classes/Fall 2021/CS 2341 (Data Structures)/Projects/Project 5/21f-srch-ngn-linked-list-unary-tree/storage/tree.csv"));
-    //WordNode temp(word);
-    //return Words.getNode(temp);
 }
 
 

@@ -1,3 +1,17 @@
+/**
+ * Outline: The DocumentProcessor class processes a set of documents and stores
+ *          the information.
+ * Node: The stopword list I used is found at:
+ *       https://www.link-assistant.com/seo-stop-words.html
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A set of documents to parse
+ * Output: Data on the parsed set of documents
+ */
+
+
+
+
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_DOCUMENTPROCESSOR_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_DOCUMENTPROCESSOR_H
 
@@ -25,46 +39,8 @@
 
 
 class DocumentProcessor {
-public:
-    // Struct to hold information on the word counts in an AVL tree. It holds a single
-    // word and the word count for that word. This will be used to store the number
-    // of times each words appears in all the documents
-    struct wordToCount {
-        std::string word;
-        int count;
-
-        wordToCount() {
-            word = "";
-            count = 0;
-        }
-
-        wordToCount(std::string& s) {
-            word = s;
-            count = 1;
-        }
-
-        bool operator<(wordToCount& w) {
-            return word < w.word;
-        }
-
-        bool operator>(wordToCount& w) {
-            return word > w.word;
-        }
-
-        bool operator==(wordToCount& w) {
-            return word == w.word;
-        }
-
-        void increaseCount() {
-            count++;
-        }
-    };
-
-
-
 private:
     AVLTree<std::string> stopWords;
-    //AVLTree<wordToCount> wordCounts;
     std::vector<WordNode> top50WordCounts;
     Index index;
     long NUMFILES;

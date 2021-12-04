@@ -1,3 +1,14 @@
+/**
+ * Outline: The UserInterface class handles input from the user and
+ *          returns the requested information
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A query from the user
+ * Output: The information requested from the user
+ */
+
+
+
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_USERINTERFACE_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_USERINTERFACE_H
 

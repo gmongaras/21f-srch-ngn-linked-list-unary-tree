@@ -1,3 +1,16 @@
+/**
+ * Outline: The HashMap class stores a bunch of values in a vector where each value
+ *          can be found given a hash
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A key and value pair
+ * Output: A hashmap with the added key and value pair
+ */
+
+
+
+
+
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_HASHMAP_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_HASHMAP_H
 

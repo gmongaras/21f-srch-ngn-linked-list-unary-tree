@@ -1,3 +1,14 @@
+/**
+ * Outline: The AVLTree calss stores multiple items of any datatye
+ *          in a balanced tree
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A set of items to store
+ * Output: A balanced tree of those items
+ */
+
+
+
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_AVLTREE_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_AVLTREE_H
 

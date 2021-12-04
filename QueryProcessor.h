@@ -1,3 +1,16 @@
+/**
+ * Outline: The QueryProcessor class holds information to be used when given a query
+ *          and uses that information to return the correct results for a given query
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A query to handle and information on that query
+ * Output: The results for the given query
+ */
+
+
+
+
+
 #ifndef INC_21F_FINAL_PROJ_TEMPLATE_QUERYPROCESSOR_H
 #define INC_21F_FINAL_PROJ_TEMPLATE_QUERYPROCESSOR_H
 

@@ -1,7 +1,7 @@
 /**
  * Outline: The TreeNode class stores a single item within it that can be of
- *          any datatype.
- * Date: 10/22/21
+ *          any datatype and two pointers to a left and right subtree
+ * Date: 12/4/21
  * Author: Gabriel Mongaras
  * Input: item to store
  * Output: A node with that item stored

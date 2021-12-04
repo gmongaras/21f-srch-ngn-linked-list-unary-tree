@@ -1,3 +1,17 @@
+/**
+ * Outline: The Index class stores an AVL Tree of words and their respective documents,
+ *          A hashmap of people and their respective documents, and a hashmap of organizations
+ *          along with their respective indicies.
+ * Date: 12/4/21
+ * Author: Gabriel Mongaras
+ * Input: A AVLTree of words, hashmap of people, and hashmap of organizations
+ * Output: An index with methods to work the stored data
+ */
+
+
+
+
+
 #include "Index.h"
 #include <algorithm>
 
@@ -13,7 +27,6 @@
 void wordsEqualityFunction(WordNode& newItem, TreeNode<WordNode>*& curPtr) {
     curPtr->getData().addDoc(newItem.getDocuments().getRootData());
     curPtr->getData().incrementCount();
-    //curPtr->getData().addDoc(newItem.getDocuments()[0]);//temp.getDocLocation(newItem.getDocuments()[0]));
 }
 
 
@@ -40,20 +53,6 @@ void peopleEqualityFunction(WordNode& nodeValue, WordNode& givenValue) {
 void orgsEqualityFunction(WordNode& nodeValue, WordNode& givenValue) {
     nodeValue.addDoc(givenValue.getDocuments().getRootData());
 }
-
-
-
-
-
-
-
-
-
-
-/***************************
- **    loadTree Method    **
- **************************/
-;
 
 
 
@@ -188,7 +187,6 @@ int Index::getNumUniqueWords() {
  **    getTop50WordCounts    **
  *****************************/
 bool sortFunc(const WordNode& a, const WordNode& b) {return (a.getCount() > b.getCount());}
-//bool sortFunc(WordNode& a, WordNode& b) {return (a.getCount() > b.getCount());}
 std::vector<WordNode> Index::getTop50WordCounts() {
     // Get an inorder vector of the Words AVL Tree
     std::vector<WordNode> inorderAVLTree;
@@ -203,6 +201,7 @@ std::vector<WordNode> Index::getTop50WordCounts() {
 
     // Reverse the top values
     std::reverse(topCounts.begin(), topCounts.begin());
+    inorderAVLTree.clear();
 
     return topCounts;
 }
