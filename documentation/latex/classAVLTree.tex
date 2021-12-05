@@ -1,0 +1,239 @@
+\hypertarget{classAVLTree}{}\doxysection{A\+V\+L\+Tree$<$ nodetype $>$ Class Template Reference}
+\label{classAVLTree}\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classAVLTree_a0659bfcf0176708ba08743e9cad588ed}{A\+V\+L\+Tree}} ()
+\item 
+\mbox{\Hypertarget{classAVLTree_a54d432eb8f510dbdfd011804339be50c}\label{classAVLTree_a54d432eb8f510dbdfd011804339be50c}} 
+{\bfseries A\+V\+L\+Tree} (\mbox{\hyperlink{classTreeNode}{Tree\+Node}}$<$ nodetype $>$ $\ast$\&r)
+\item 
+\mbox{\Hypertarget{classAVLTree_a74a566b3031c1aef78e64acf2c1a5d77}\label{classAVLTree_a74a566b3031c1aef78e64acf2c1a5d77}} 
+{\bfseries A\+V\+L\+Tree} (\mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$ \&tree)
+\item 
+nodetype \& \mbox{\hyperlink{classAVLTree_a2066622dca15d313aa22c1137c94255e}{insert}} (nodetype \&new\+Item, std\+::function$<$ void(nodetype \&new\+Item, \mbox{\hyperlink{classTreeNode}{Tree\+Node}}$<$ nodetype $>$ $\ast$\&cur\+Ptr)$>$ equality\+Function)
+\item 
+bool \mbox{\hyperlink{classAVLTree_a3f1174bc906267a345dd867da3cc2af0}{has\+Node}} (nodetype \&node)
+\item 
+\mbox{\Hypertarget{classAVLTree_ad238969653309753479aeb016d6aa14b}\label{classAVLTree_ad238969653309753479aeb016d6aa14b}} 
+bool {\bfseries has\+Node} (\mbox{\hyperlink{classTreeNode}{Tree\+Node}}$<$ nodetype $>$ \&node)
+\item 
+nodetype \& \mbox{\hyperlink{classAVLTree_a7858125fd06e3c2ee5912fd6dfa1a416}{get\+Node}} (nodetype \&node)
+\item 
+\mbox{\Hypertarget{classAVLTree_a9cf095e073897d9859819da417282003}\label{classAVLTree_a9cf095e073897d9859819da417282003}} 
+nodetype \& {\bfseries get\+Node} (\mbox{\hyperlink{classTreeNode}{Tree\+Node}}$<$ nodetype $>$ \&node)
+\item 
+std\+::vector$<$ nodetype $>$ \& \mbox{\hyperlink{classAVLTree_afe3bee39e01785b3af2d142f0eb3288f}{get\+In\+Order\+Vec}} (std\+::vector$<$ nodetype $>$ \&vec)
+\item 
+\mbox{\Hypertarget{classAVLTree_a61b966e35c01990fecb841b232784ad2}\label{classAVLTree_a61b966e35c01990fecb841b232784ad2}} 
+std\+::vector$<$ nodetype $>$ {\bfseries get\+In\+Order\+Vec} ()
+\item 
+long long \mbox{\hyperlink{classAVLTree_a73c2274b6545d815eaa904d1f0f5a366}{get\+Num\+Added}} ()
+\item 
+int \mbox{\hyperlink{classAVLTree_aaed5fabf3041a2fedd06ca7bc8d525a7}{get\+Num\+Nodes}} ()
+\item 
+\mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$ \& \mbox{\hyperlink{classAVLTree_a1dd87b3c1b2386e8af30ba9165ba3813}{operator=}} (\mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$ \&tree)
+\item 
+\mbox{\Hypertarget{classAVLTree_aa9fd66fa7a1d9de7a962bc5a8bdf7237}\label{classAVLTree_aa9fd66fa7a1d9de7a962bc5a8bdf7237}} 
+\mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$ \& {\bfseries operator=} (const \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$ \&tree)
+\item 
+void \mbox{\hyperlink{classAVLTree_acc8dd2544def7d5ea59e671e2ac249f9}{clear\+Tree}} ()
+\item 
+void \mbox{\hyperlink{classAVLTree_a24b19ab342e04dfa5ca884ca3164f884}{print\+Tree}} ()
+\item 
+void \mbox{\hyperlink{classAVLTree_a4436eed5ab4986b96cc004c64baa0711}{print\+Tree2}} () const
+\item 
+nodetype \& \mbox{\hyperlink{classAVLTree_a9116399d523070002eeb8ae099fd5c4f}{get\+Root\+Data}} ()
+\item 
+std\+::fstream \& \mbox{\hyperlink{classAVLTree_a2c64d5e474d0601f3993fc2c7aa1aac4}{fstream\+Level\+Order}} (std\+::fstream \&out, const std\+::string \&delimiter) const
+\item 
+void \mbox{\hyperlink{classAVLTree_a80dc65701d9091e6a23c894c78a218bb}{save\+Tree}} (const std\+::string \&filename)
+\item 
+\mbox{\Hypertarget{classAVLTree_a05ae903aef5f303411621a1b5b9ae954}\label{classAVLTree_a05ae903aef5f303411621a1b5b9ae954}} 
+std\+::fstream \& {\bfseries save\+Tree} (std\+::fstream \&out)
+\item 
+void \mbox{\hyperlink{classAVLTree_af670ec81ebd8d06ed55caf42ffd0a624}{load\+Tree}} (const std\+::string \&filename, char delimiter, std\+::function$<$ void(nodetype \&new\+Item, \mbox{\hyperlink{classTreeNode}{Tree\+Node}}$<$ nodetype $>$ $\ast$\&cur\+Ptr)$>$ equality\+Function)
+\item 
+\mbox{\Hypertarget{classAVLTree_a6abd06881155417c785e919fda2ba1cf}\label{classAVLTree_a6abd06881155417c785e919fda2ba1cf}} 
+std\+::fstream \& {\bfseries load\+Tree} (std\+::fstream \&file, char delimiter, std\+::function$<$ void(nodetype \&new\+Item, \mbox{\hyperlink{classTreeNode}{Tree\+Node}}$<$ nodetype $>$ $\ast$\&cur\+Ptr)$>$ equality\+Function)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classAVLTree_a0659bfcf0176708ba08743e9cad588ed}\label{classAVLTree_a0659bfcf0176708ba08743e9cad588ed}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!AVLTree@{AVLTree}}
+\index{AVLTree@{AVLTree}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{AVLTree()}{AVLTree()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+\mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::\mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}}
+
+Constructors and Destructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classAVLTree_acc8dd2544def7d5ea59e671e2ac249f9}\label{classAVLTree_acc8dd2544def7d5ea59e671e2ac249f9}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!clearTree@{clearTree}}
+\index{clearTree@{clearTree}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{clearTree()}{clearTree()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+void \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::clear\+Tree}
+
+clear\+Tree Method Clears the subtree and frees the memory used \mbox{\Hypertarget{classAVLTree_a2c64d5e474d0601f3993fc2c7aa1aac4}\label{classAVLTree_a2c64d5e474d0601f3993fc2c7aa1aac4}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!fstreamLevelOrder@{fstreamLevelOrder}}
+\index{fstreamLevelOrder@{fstreamLevelOrder}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{fstreamLevelOrder()}{fstreamLevelOrder()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+std\+::fstream \& \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::fstream\+Level\+Order (\begin{DoxyParamCaption}\item[{std\+::fstream \&}]{out,  }\item[{const std\+::string \&}]{delimiter }\end{DoxyParamCaption}) const}
+
+fstream Level\+Order Method Sends a level order of the tree to a given fstream 
+\begin{DoxyParams}{Parameters}
+{\em out} & The fstream to send output to \\
+\hline
+{\em delimiter} & The delimiter to go between each part of the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The fstream with contents from the tree 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classAVLTree_afe3bee39e01785b3af2d142f0eb3288f}\label{classAVLTree_afe3bee39e01785b3af2d142f0eb3288f}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!getInOrderVec@{getInOrderVec}}
+\index{getInOrderVec@{getInOrderVec}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{getInOrderVec()}{getInOrderVec()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+std\+::vector$<$ nodetype $>$ \& \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::get\+In\+Order\+Vec (\begin{DoxyParamCaption}\item[{std\+::vector$<$ nodetype $>$ \&}]{vec }\end{DoxyParamCaption})}
+
+get\+In\+Order\+Vec Method Get an inorder traversal of the tree in a vector 
+\begin{DoxyParams}{Parameters}
+{\em vec} & The vector to store the contents of the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector storing the contents of the tree in order 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classAVLTree_a7858125fd06e3c2ee5912fd6dfa1a416}\label{classAVLTree_a7858125fd06e3c2ee5912fd6dfa1a416}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!getNode@{getNode}}
+\index{getNode@{getNode}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{getNode()}{getNode()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+nodetype \& \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::get\+Node (\begin{DoxyParamCaption}\item[{nodetype \&}]{node }\end{DoxyParamCaption})}
+
+get\+Node Method Returns the node if the node is found in the node. 
+\begin{DoxyParams}{Parameters}
+{\em node} & The node to look for in the tree. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The node in the tree if the node is found 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classAVLTree_a73c2274b6545d815eaa904d1f0f5a366}\label{classAVLTree_a73c2274b6545d815eaa904d1f0f5a366}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!getNumAdded@{getNumAdded}}
+\index{getNumAdded@{getNumAdded}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{getNumAdded()}{getNumAdded()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+long long \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::get\+Num\+Added}
+
+get\+Num\+Added Method \begin{DoxyReturn}{Returns}
+The number of nodes that were attempted to be added to the tree 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classAVLTree_aaed5fabf3041a2fedd06ca7bc8d525a7}\label{classAVLTree_aaed5fabf3041a2fedd06ca7bc8d525a7}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!getNumNodes@{getNumNodes}}
+\index{getNumNodes@{getNumNodes}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{getNumNodes()}{getNumNodes()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+int \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::get\+Num\+Nodes}
+
+get\+Num\+Nodes Method \begin{DoxyReturn}{Returns}
+The number of unique nodes on the tree 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classAVLTree_a9116399d523070002eeb8ae099fd5c4f}\label{classAVLTree_a9116399d523070002eeb8ae099fd5c4f}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!getRootData@{getRootData}}
+\index{getRootData@{getRootData}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{getRootData()}{getRootData()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+nodetype \& \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::get\+Root\+Data}
+
+get\+Root\+Data Method Returns the data at the root node \mbox{\Hypertarget{classAVLTree_a3f1174bc906267a345dd867da3cc2af0}\label{classAVLTree_a3f1174bc906267a345dd867da3cc2af0}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!hasNode@{hasNode}}
+\index{hasNode@{hasNode}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{hasNode()}{hasNode()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+bool \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::has\+Node (\begin{DoxyParamCaption}\item[{nodetype \&}]{node }\end{DoxyParamCaption})}
+
+has\+Node Method 
+\begin{DoxyParams}{Parameters}
+{\em node} & The node to look for in the tree. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the node look for is in the tree, false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classAVLTree_a2066622dca15d313aa22c1137c94255e}\label{classAVLTree_a2066622dca15d313aa22c1137c94255e}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!insert@{insert}}
+\index{insert@{insert}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+nodetype \& \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::insert (\begin{DoxyParamCaption}\item[{nodetype \&}]{new\+Item,  }\item[{std\+::function$<$ void(nodetype \&new\+Item, \mbox{\hyperlink{classTreeNode}{Tree\+Node}}$<$ nodetype $>$ $\ast$\&cur\+Ptr)$>$}]{equality\+Function }\end{DoxyParamCaption})}
+
+Insert Method Inserts a node into the tree keeping the A\+VL tree balanced 
+\begin{DoxyParams}{Parameters}
+{\em new\+Item} & The new item to add to the tree \\
+\hline
+{\em equality\+Function} & The function to run if the given item is already in the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value at the inserted node. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classAVLTree_af670ec81ebd8d06ed55caf42ffd0a624}\label{classAVLTree_af670ec81ebd8d06ed55caf42ffd0a624}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!loadTree@{loadTree}}
+\index{loadTree@{loadTree}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{loadTree()}{loadTree()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+void \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::load\+Tree (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename,  }\item[{char}]{delimiter,  }\item[{std\+::function$<$ void(nodetype \&new\+Item, \mbox{\hyperlink{classTreeNode}{Tree\+Node}}$<$ nodetype $>$ $\ast$\&cur\+Ptr)$>$}]{equality\+Function }\end{DoxyParamCaption})}
+
+load\+Tree Method Loads a tree from a given file 
+\begin{DoxyParams}{Parameters}
+{\em filename} & The file use to lead in \\
+\hline
+{\em delimiter} & The delimiter used when leading in the tree \\
+\hline
+{\em equality\+Function} & The function to use when inserting a node and equality is found between two nodes \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classAVLTree_a1dd87b3c1b2386e8af30ba9165ba3813}\label{classAVLTree_a1dd87b3c1b2386e8af30ba9165ba3813}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+\mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$ \& \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$ \&}]{tree }\end{DoxyParamCaption})}
+
+Overloaded Assignment Operator \mbox{\Hypertarget{classAVLTree_a24b19ab342e04dfa5ca884ca3164f884}\label{classAVLTree_a24b19ab342e04dfa5ca884ca3164f884}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!printTree@{printTree}}
+\index{printTree@{printTree}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{printTree()}{printTree()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+void \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::print\+Tree}
+
+print\+Tree Method \mbox{\Hypertarget{classAVLTree_a4436eed5ab4986b96cc004c64baa0711}\label{classAVLTree_a4436eed5ab4986b96cc004c64baa0711}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!printTree2@{printTree2}}
+\index{printTree2@{printTree2}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{printTree2()}{printTree2()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+void \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::print\+Tree2}
+
+print\+Tree Method \mbox{\Hypertarget{classAVLTree_a80dc65701d9091e6a23c894c78a218bb}\label{classAVLTree_a80dc65701d9091e6a23c894c78a218bb}} 
+\index{AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}!saveTree@{saveTree}}
+\index{saveTree@{saveTree}!AVLTree$<$ nodetype $>$@{AVLTree$<$ nodetype $>$}}
+\doxysubsubsection{\texorpdfstring{saveTree()}{saveTree()}}
+{\footnotesize\ttfamily template$<$typename nodetype $>$ \\
+void \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ nodetype $>$\+::save\+Tree (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+save\+Tree Method Saves a tree to a given filename 
+\begin{DoxyParams}{Parameters}
+{\em filename} & The filename to save to \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+A\+V\+L\+Tree.\+h\end{DoxyCompactItemize}

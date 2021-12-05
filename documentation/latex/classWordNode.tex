@@ -1,0 +1,192 @@
+\hypertarget{classWordNode}{}\doxysection{Word\+Node Class Reference}
+\label{classWordNode}\index{WordNode@{WordNode}}
+
+
+{\ttfamily \#include $<$Word\+Node.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classWordNode_a0a828622332638f43e08b92f4fda4a4f}{Word\+Node}} ()
+\item 
+\mbox{\Hypertarget{classWordNode_abaac00438581c73cbbf6383450a30711}\label{classWordNode_abaac00438581c73cbbf6383450a30711}} 
+{\bfseries Word\+Node} (std\+::string \&new\+Word)
+\item 
+\mbox{\Hypertarget{classWordNode_adf7427ea9dab0b85fc27f99237f9e8c5}\label{classWordNode_adf7427ea9dab0b85fc27f99237f9e8c5}} 
+{\bfseries Word\+Node} (std\+::string \&new\+Word, \mbox{\hyperlink{classDocumentNode}{Document\+Node}} \&doc)
+\item 
+\mbox{\Hypertarget{classWordNode_a83b899a3566829f12978f941c1a3a5a2}\label{classWordNode_a83b899a3566829f12978f941c1a3a5a2}} 
+{\bfseries Word\+Node} (\mbox{\hyperlink{classWordNode}{Word\+Node}} \&node)
+\item 
+\mbox{\Hypertarget{classWordNode_a75fe792ca7d0ff82f8ee9de99faf03e6}\label{classWordNode_a75fe792ca7d0ff82f8ee9de99faf03e6}} 
+{\bfseries Word\+Node} (const \mbox{\hyperlink{classWordNode}{Word\+Node}} \&node)
+\item 
+void \mbox{\hyperlink{classWordNode_ac6a61305b368b84710dd0035b7426f92}{add\+Doc}} (std\+::string \&Doc, std\+::string \&ID, int length, std\+::string \&title, std\+::string \&author, std\+::string \&date)
+\item 
+\mbox{\Hypertarget{classWordNode_a8567d8ce2e9926d7b49893bf20266f48}\label{classWordNode_a8567d8ce2e9926d7b49893bf20266f48}} 
+void {\bfseries add\+Doc} (\mbox{\hyperlink{classDocumentNode}{Document\+Node}} \&Doc)
+\item 
+\mbox{\hyperlink{classDocumentNode}{Document\+Node}} \& \mbox{\hyperlink{classWordNode_a8c26d4d8dc496b44b9ff3814f8205ae6}{get\+Doc}} (std\+::string \&Doc)
+\item 
+\mbox{\Hypertarget{classWordNode_a1b0c3a0acc19a921ba5bd24f3cef1815}\label{classWordNode_a1b0c3a0acc19a921ba5bd24f3cef1815}} 
+\mbox{\hyperlink{classDocumentNode}{Document\+Node}} \& {\bfseries get\+Doc} (\mbox{\hyperlink{classDocumentNode}{Document\+Node}} \&Doc)
+\item 
+void \mbox{\hyperlink{classWordNode_ab2c305d314d17923414eeb6bce6b8956}{increment\+Doc}} (std\+::string \&Doc)
+\item 
+\mbox{\Hypertarget{classWordNode_aa765cb4149dd925005492db494a81219}\label{classWordNode_aa765cb4149dd925005492db494a81219}} 
+void {\bfseries increment\+Doc} (\mbox{\hyperlink{classDocumentNode}{Document\+Node}} \&Doc)
+\item 
+std\+::string \& \mbox{\hyperlink{classWordNode_a00c5a5b9b625a5b1f72429c027381455}{get\+Word}} ()
+\item 
+\mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ \mbox{\hyperlink{classDocumentNode}{Document\+Node}} $>$ \& \mbox{\hyperlink{classWordNode_a5f39084245a23505e8884818b64c009b}{get\+Documents}} ()
+\item 
+void \mbox{\hyperlink{classWordNode_a601e2861bf517109ca5a67c92b7ffcea}{increment\+Count}} ()
+\item 
+long \mbox{\hyperlink{classWordNode_a843940d81f40ba1c41ce17e939e34772}{get\+Count}} ()
+\item 
+\mbox{\Hypertarget{classWordNode_acaf58d75ca3a94dbabe62e917340784f}\label{classWordNode_acaf58d75ca3a94dbabe62e917340784f}} 
+long {\bfseries get\+Count} () const
+\item 
+bool \mbox{\hyperlink{classWordNode_a76708ec899486d7e970dbf5ca159a7a0}{operator==}} (\mbox{\hyperlink{classWordNode}{Word\+Node}} \&w)
+\item 
+\mbox{\Hypertarget{classWordNode_a778f8a4c46b7ab1401344bfb14eb3dff}\label{classWordNode_a778f8a4c46b7ab1401344bfb14eb3dff}} 
+bool {\bfseries operator==} (std\+::string \&w)
+\item 
+\mbox{\Hypertarget{classWordNode_a15911c3852574d2141c0be581ba1af56}\label{classWordNode_a15911c3852574d2141c0be581ba1af56}} 
+bool {\bfseries operator$>$} (\mbox{\hyperlink{classWordNode}{Word\+Node}} \&w)
+\item 
+\mbox{\Hypertarget{classWordNode_ab9cb024a7960953c927d1da7991c72da}\label{classWordNode_ab9cb024a7960953c927d1da7991c72da}} 
+bool {\bfseries operator$>$} (std\+::string \&w)
+\item 
+\mbox{\Hypertarget{classWordNode_a8210eeb17a1a45a9ecdaea26e0c9679b}\label{classWordNode_a8210eeb17a1a45a9ecdaea26e0c9679b}} 
+bool {\bfseries operator$<$} (\mbox{\hyperlink{classWordNode}{Word\+Node}} \&w)
+\item 
+\mbox{\Hypertarget{classWordNode_ad037ad0ae9484277eaf0bd2b6cdf7e83}\label{classWordNode_ad037ad0ae9484277eaf0bd2b6cdf7e83}} 
+bool {\bfseries operator$<$} (std\+::string \&w)
+\item 
+\mbox{\hyperlink{classWordNode}{Word\+Node}} \& \mbox{\hyperlink{classWordNode_af97db9c784761e0a18507183e20a5946}{operator=}} (\mbox{\hyperlink{classWordNode}{Word\+Node}} \&w)
+\item 
+\mbox{\Hypertarget{classWordNode_abfc5e1c5cb11413cfc39e376787b0c8b}\label{classWordNode_abfc5e1c5cb11413cfc39e376787b0c8b}} 
+\mbox{\hyperlink{classWordNode}{Word\+Node}} \& {\bfseries operator=} (const \mbox{\hyperlink{classWordNode}{Word\+Node}} \&w)
+\item 
+\mbox{\Hypertarget{classWordNode_aee69c348f74488f6f626a5b9a95f2ddf}\label{classWordNode_aee69c348f74488f6f626a5b9a95f2ddf}} 
+\mbox{\hyperlink{classWordNode}{Word\+Node}} \& {\bfseries operator=} (std\+::string \&str)
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \mbox{\hyperlink{classWordNode_a19f9c54bdd008220b4109c27fa7cb94a}{operator$<$$<$}} (std\+::ostream \&, const \mbox{\hyperlink{classWordNode}{Word\+Node}} \&)
+\item 
+std\+::fstream \& \mbox{\hyperlink{classWordNode_a5f17abe28dbbe5ed6c1483c0c6c9e2e9}{operator$<$$<$}} (std\+::fstream \&, const \mbox{\hyperlink{classWordNode}{Word\+Node}} \&)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Outline\+: The \mbox{\hyperlink{classWordNode}{Word\+Node}} class holds information on a word along with documents that node belongs to Date\+: 12/4/21 Author\+: Gabriel Mongaras Input\+: A word and information on that word Output\+: A \mbox{\hyperlink{classWordNode}{Word\+Node}} holding the information on that word 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classWordNode_a0a828622332638f43e08b92f4fda4a4f}\label{classWordNode_a0a828622332638f43e08b92f4fda4a4f}} 
+\index{WordNode@{WordNode}!WordNode@{WordNode}}
+\index{WordNode@{WordNode}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{WordNode()}{WordNode()}}
+{\footnotesize\ttfamily Word\+Node\+::\+Word\+Node (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructors 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classWordNode_ac6a61305b368b84710dd0035b7426f92}\label{classWordNode_ac6a61305b368b84710dd0035b7426f92}} 
+\index{WordNode@{WordNode}!addDoc@{addDoc}}
+\index{addDoc@{addDoc}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{addDoc()}{addDoc()}}
+{\footnotesize\ttfamily void Word\+Node\+::add\+Doc (\begin{DoxyParamCaption}\item[{std\+::string \&}]{Doc,  }\item[{std\+::string \&}]{ID,  }\item[{int}]{length,  }\item[{std\+::string \&}]{title,  }\item[{std\+::string \&}]{author,  }\item[{std\+::string \&}]{date }\end{DoxyParamCaption})}
+
+add\+Doc Method 
+\begin{DoxyParams}{Parameters}
+{\em Doc} & The document to add to the vector \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classWordNode_a843940d81f40ba1c41ce17e939e34772}\label{classWordNode_a843940d81f40ba1c41ce17e939e34772}} 
+\index{WordNode@{WordNode}!getCount@{getCount}}
+\index{getCount@{getCount}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{getCount()}{getCount()}}
+{\footnotesize\ttfamily long Word\+Node\+::get\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Count Method \begin{DoxyReturn}{Returns}
+The count of the word 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classWordNode_a8c26d4d8dc496b44b9ff3814f8205ae6}\label{classWordNode_a8c26d4d8dc496b44b9ff3814f8205ae6}} 
+\index{WordNode@{WordNode}!getDoc@{getDoc}}
+\index{getDoc@{getDoc}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{getDoc()}{getDoc()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classDocumentNode}{Document\+Node}} \& Word\+Node\+::get\+Doc (\begin{DoxyParamCaption}\item[{std\+::string \&}]{Doc }\end{DoxyParamCaption})}
+
+get\+Doc Method Get the document from the A\+VL tree 
+\begin{DoxyParams}{Parameters}
+{\em Doc} & The document to search for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The document in the A\+VL tree 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classWordNode_a5f39084245a23505e8884818b64c009b}\label{classWordNode_a5f39084245a23505e8884818b64c009b}} 
+\index{WordNode@{WordNode}!getDocuments@{getDocuments}}
+\index{getDocuments@{getDocuments}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{getDocuments()}{getDocuments()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}}$<$ \mbox{\hyperlink{classDocumentNode}{Document\+Node}} $>$ \& Word\+Node\+::get\+Documents (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Documents Method Returns the documents stored in this object @retrun The documents stored in this object \mbox{\Hypertarget{classWordNode_a00c5a5b9b625a5b1f72429c027381455}\label{classWordNode_a00c5a5b9b625a5b1f72429c027381455}} 
+\index{WordNode@{WordNode}!getWord@{getWord}}
+\index{getWord@{getWord}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{getWord()}{getWord()}}
+{\footnotesize\ttfamily std\+::string \& Word\+Node\+::get\+Word (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Word Method Returns the word stored in this object @retrun The stored word in this object \mbox{\Hypertarget{classWordNode_a601e2861bf517109ca5a67c92b7ffcea}\label{classWordNode_a601e2861bf517109ca5a67c92b7ffcea}} 
+\index{WordNode@{WordNode}!incrementCount@{incrementCount}}
+\index{incrementCount@{incrementCount}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{incrementCount()}{incrementCount()}}
+{\footnotesize\ttfamily void Word\+Node\+::increment\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+increment\+Count Method Increases the count of the word by 1. \mbox{\Hypertarget{classWordNode_ab2c305d314d17923414eeb6bce6b8956}\label{classWordNode_ab2c305d314d17923414eeb6bce6b8956}} 
+\index{WordNode@{WordNode}!incrementDoc@{incrementDoc}}
+\index{incrementDoc@{incrementDoc}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{incrementDoc()}{incrementDoc()}}
+{\footnotesize\ttfamily void Word\+Node\+::increment\+Doc (\begin{DoxyParamCaption}\item[{std\+::string \&}]{Doc }\end{DoxyParamCaption})}
+
+increment\+Doc Increment the counter for a given document 
+\begin{DoxyParams}{Parameters}
+{\em Doc} & The document to search for \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classWordNode_af97db9c784761e0a18507183e20a5946}\label{classWordNode_af97db9c784761e0a18507183e20a5946}} 
+\index{WordNode@{WordNode}!operator=@{operator=}}
+\index{operator=@{operator=}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classWordNode}{Word\+Node}} \& Word\+Node\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classWordNode}{Word\+Node}} \&}]{w }\end{DoxyParamCaption})}
+
+Overloaded Assignment Operator \mbox{\Hypertarget{classWordNode_a76708ec899486d7e970dbf5ca159a7a0}\label{classWordNode_a76708ec899486d7e970dbf5ca159a7a0}} 
+\index{WordNode@{WordNode}!operator==@{operator==}}
+\index{operator==@{operator==}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool Word\+Node\+::operator== (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classWordNode}{Word\+Node}} \&}]{w }\end{DoxyParamCaption})}
+
+Comparison Operators 
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classWordNode_a5f17abe28dbbe5ed6c1483c0c6c9e2e9}\label{classWordNode_a5f17abe28dbbe5ed6c1483c0c6c9e2e9}} 
+\index{WordNode@{WordNode}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::fstream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::fstream \&}]{out,  }\item[{const \mbox{\hyperlink{classWordNode}{Word\+Node}} \&}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+Overload fstream insertion operator to print the contents of this list to fstream\textquotesingle{}s output stream in the first argument. \mbox{\Hypertarget{classWordNode_a19f9c54bdd008220b4109c27fa7cb94a}\label{classWordNode_a19f9c54bdd008220b4109c27fa7cb94a}} 
+\index{WordNode@{WordNode}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!WordNode@{WordNode}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{out,  }\item[{const \mbox{\hyperlink{classWordNode}{Word\+Node}} \&}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+Overload ostream insertion operator to print the contents of this list to ostream\textquotesingle{}s output stream in the first argument. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Word\+Node.\+h\item 
+Word\+Node.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,106 @@
+\hypertarget{classHashNode}{}\doxysection{Hash\+Node$<$ K, V $>$ Class Template Reference}
+\label{classHashNode}\index{HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}}
+
+
+{\ttfamily \#include $<$Hash\+Node.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classHashNode_a2c7d3f9f7f1b60f8a267c5026e87148f}{Hash\+Node}} ()
+\item 
+\mbox{\Hypertarget{classHashNode_ac731540286ac7a93185d0156961c3c52}\label{classHashNode_ac731540286ac7a93185d0156961c3c52}} 
+{\bfseries Hash\+Node} (K \&new\+Key, V \&new\+Value)
+\item 
+\mbox{\Hypertarget{classHashNode_a335a2d7056a59d6a0dc577606f5c455c}\label{classHashNode_a335a2d7056a59d6a0dc577606f5c455c}} 
+{\bfseries Hash\+Node} (\mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K, V $>$ \&node)
+\item 
+void \mbox{\hyperlink{classHashNode_ac58f3853b83db397d9dbd52b8e9c5470}{set\+Key}} (const K \&new\+Key)
+\item 
+\mbox{\Hypertarget{classHashNode_af0358e22024447f94f65f2bd3a6a65d9}\label{classHashNode_af0358e22024447f94f65f2bd3a6a65d9}} 
+void {\bfseries set\+Value} (V \&new\+Val)
+\item 
+\mbox{\Hypertarget{classHashNode_a0bf33e1c3b24e758dbc6e2ec3dda12c8}\label{classHashNode_a0bf33e1c3b24e758dbc6e2ec3dda12c8}} 
+void {\bfseries set\+Next} (const \mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K, V $>$ $\ast$node)
+\item 
+K \& \mbox{\hyperlink{classHashNode_a6ddb8df4cd2fc03ab08c7b5ef0b2c395}{get\+Key}} ()
+\item 
+\mbox{\Hypertarget{classHashNode_aee02c4707e4a261543b357be7ce14221}\label{classHashNode_aee02c4707e4a261543b357be7ce14221}} 
+V \& {\bfseries get\+Value} ()
+\item 
+\mbox{\Hypertarget{classHashNode_a3ac96ce14dbb55c50a86d796e6f3732b}\label{classHashNode_a3ac96ce14dbb55c50a86d796e6f3732b}} 
+\mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K, V $>$ $\ast$\& {\bfseries get\+Next} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classHashNode_a9a94990e0a2af4a345a060301a2bb410}\label{classHashNode_a9a94990e0a2af4a345a060301a2bb410}} 
+{\footnotesize template$<$typename K3 , typename V3 , typename F3 $>$ }\\class {\bfseries Hash\+Map}
+\item 
+{\footnotesize template$<$typename K2 , typename V2 $>$ }\\std\+::ostream \& \mbox{\hyperlink{classHashNode_a9ac225e8d835695fd9830e8a6b78745f}{operator$<$$<$}} (std\+::ostream \&, const \mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K2, V2 $>$ \&)
+\item 
+\mbox{\Hypertarget{classHashNode_a5a8de48411a2706675f5d3a0dbf67885}\label{classHashNode_a5a8de48411a2706675f5d3a0dbf67885}} 
+{\footnotesize template$<$typename K2 , typename V2 $>$ }\\std\+::ostream \& {\bfseries operator$<$$<$} (std\+::ostream \&, const \mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K2, V2 $>$ $\ast$)
+\item 
+{\footnotesize template$<$typename K2 , typename V2 $>$ }\\std\+::fstream \& \mbox{\hyperlink{classHashNode_a9b4b395abdaa4fead2a79343ce10fe0e}{operator$<$$<$}} (std\+::fstream \&, const \mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K2, V2 $>$ \&)
+\item 
+\mbox{\Hypertarget{classHashNode_a836e99398ced7782595e930538b7c57e}\label{classHashNode_a836e99398ced7782595e930538b7c57e}} 
+{\footnotesize template$<$typename K2 , typename V2 $>$ }\\std\+::fstream \& {\bfseries operator$<$$<$} (std\+::fstream \&, const \mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K2, V2 $>$ $\ast$)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename K, typename V$>$\newline
+class Hash\+Node$<$ K, V $>$}
+
+Outline\+: This class stores a key and value pair along with a pointer to the next key and value pair Date\+: 12/4/21 Author\+: Gabriel Mongaras Input\+: A key and value pair Output\+: A node containing the key and value pair 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classHashNode_a2c7d3f9f7f1b60f8a267c5026e87148f}\label{classHashNode_a2c7d3f9f7f1b60f8a267c5026e87148f}} 
+\index{HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}!HashNode@{HashNode}}
+\index{HashNode@{HashNode}!HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{HashNode()}{HashNode()}}
+{\footnotesize\ttfamily template$<$typename K , typename V $>$ \\
+\mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K, V $>$\+::\mbox{\hyperlink{classHashNode}{Hash\+Node}}}
+
+Constructors 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classHashNode_a6ddb8df4cd2fc03ab08c7b5ef0b2c395}\label{classHashNode_a6ddb8df4cd2fc03ab08c7b5ef0b2c395}} 
+\index{HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}!getKey@{getKey}}
+\index{getKey@{getKey}!HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{getKey()}{getKey()}}
+{\footnotesize\ttfamily template$<$typename K , typename V $>$ \\
+K \& \mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K, V $>$\+::get\+Key}
+
+Get Methods \mbox{\Hypertarget{classHashNode_ac58f3853b83db397d9dbd52b8e9c5470}\label{classHashNode_ac58f3853b83db397d9dbd52b8e9c5470}} 
+\index{HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}!setKey@{setKey}}
+\index{setKey@{setKey}!HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{setKey()}{setKey()}}
+{\footnotesize\ttfamily template$<$typename K , typename V $>$ \\
+void \mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K, V $>$\+::set\+Key (\begin{DoxyParamCaption}\item[{const K \&}]{new\+Key }\end{DoxyParamCaption})}
+
+Set Methods 
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classHashNode_a9b4b395abdaa4fead2a79343ce10fe0e}\label{classHashNode_a9b4b395abdaa4fead2a79343ce10fe0e}} 
+\index{HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename K , typename V $>$ \\
+template$<$typename K2 , typename V2 $>$ \\
+std\+::fstream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::fstream \&}]{out,  }\item[{const \mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K2, V2 $>$ \&}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+Overload fstream insertion operator to print the contents of this list to fstream\textquotesingle{}s output stream in the first argument. \mbox{\Hypertarget{classHashNode_a9ac225e8d835695fd9830e8a6b78745f}\label{classHashNode_a9ac225e8d835695fd9830e8a6b78745f}} 
+\index{HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!HashNode$<$ K, V $>$@{HashNode$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename K , typename V $>$ \\
+template$<$typename K2 , typename V2 $>$ \\
+std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{out,  }\item[{const \mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K2, V2 $>$ \&}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+Overload ostream insertion operator to print the contents of this list to ostream\textquotesingle{}s output stream in the first argument. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Hash\+Node.\+h\end{DoxyCompactItemize}

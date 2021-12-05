@@ -1,0 +1,208 @@
+\hypertarget{classIndex}{}\doxysection{Index Class Reference}
+\label{classIndex}\index{Index@{Index}}
+
+
+{\ttfamily \#include $<$Index.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classIndex_a85bcdfc34b847ab8232e1d8511408616}{clear\+Index}} ()
+\item 
+void \mbox{\hyperlink{classIndex_a032b1b4232414f32303586e78409cc83}{save\+Files}} (std\+::string \&words\+File\+Name, std\+::string \&people\+File\+Name, std\+::string \&orgs\+File\+Name, long \&N\+U\+M\+F\+I\+L\+ES)
+\item 
+void \mbox{\hyperlink{classIndex_aba7def185283648fb6d9c346ab2ce287}{Load\+Files}} (std\+::string \&words\+File\+Name, std\+::string \&people\+File\+Name, std\+::string \&orgs\+File\+Name, long \&N\+U\+M\+F\+I\+L\+ES)
+\item 
+void \mbox{\hyperlink{classIndex_ac1c8903bc8500fea05fead801b9732dd}{add\+Word}} (\mbox{\hyperlink{classWordNode}{Word\+Node}} \&word)
+\item 
+\mbox{\hyperlink{classWordNode}{Word\+Node}} \& \mbox{\hyperlink{classIndex_ac90cddd31569d11f2d607cd91f9183fa}{get\+Word}} (std\+::string \&word)
+\item 
+long long \mbox{\hyperlink{classIndex_a6473af4d8df665e0131eae285a33996d}{get\+Num\+Words}} ()
+\item 
+int \mbox{\hyperlink{classIndex_afad48ba9ee812bea9adf0b456da09a94}{get\+Num\+Unique\+Words}} ()
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classWordNode}{Word\+Node}} $>$ \& \mbox{\hyperlink{classIndex_acc7915c5c7fa5f604d1642e61f3b99ba}{get\+Top50\+Word\+Counts}} (std\+::vector$<$ \mbox{\hyperlink{classWordNode}{Word\+Node}} $>$ \&top50\+Word\+Counts)
+\item 
+void \mbox{\hyperlink{classIndex_ac8851c195b72aa3e5c3bc7f3c2516b68}{add\+Person}} (std\+::string \&person, \mbox{\hyperlink{classWordNode}{Word\+Node}} \&node)
+\item 
+\mbox{\hyperlink{classWordNode}{Word\+Node}} \& \mbox{\hyperlink{classIndex_a7bf3703cc2337d7d5ace367cf0859a61}{get\+People\+Docs}} (std\+::string \&person)
+\item 
+int \mbox{\hyperlink{classIndex_a41ae053cdf4d3df5b52eac9b5afac0d2}{get\+Num\+Unique\+People}} ()
+\item 
+void \mbox{\hyperlink{classIndex_a40baea5c099b0f774fad1e26b7c6e70f}{add\+Org}} (std\+::string \&org, \mbox{\hyperlink{classWordNode}{Word\+Node}} \&node)
+\item 
+\mbox{\hyperlink{classWordNode}{Word\+Node}} \& \mbox{\hyperlink{classIndex_a5bad038713cf9db1ce6fc99fcff0c4e0}{get\+Org\+Docs}} (std\+::string \&org)
+\item 
+int \mbox{\hyperlink{classIndex_a2fcb74c71ed63019159678b104ddcd84}{get\+Num\+Unique\+Orgs}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Outline\+: The \mbox{\hyperlink{classIndex}{Index}} class stores an A\+VL Tree of words and their respective documents, A hashmap of people and their respective documents, and a hashmap of organizations along with their respective indicies. Date\+: 12/4/21 Author\+: Gabriel Mongaras Input\+: A \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}} of words, hashmap of people, and hashmap of organizations Output\+: An index with methods to work the stored data 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classIndex_a40baea5c099b0f774fad1e26b7c6e70f}\label{classIndex_a40baea5c099b0f774fad1e26b7c6e70f}} 
+\index{Index@{Index}!addOrg@{addOrg}}
+\index{addOrg@{addOrg}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{addOrg()}{addOrg()}}
+{\footnotesize\ttfamily void Index\+::add\+Org (\begin{DoxyParamCaption}\item[{std\+::string \&}]{org,  }\item[{\mbox{\hyperlink{classWordNode}{Word\+Node}} \&}]{node }\end{DoxyParamCaption})}
+
+add\+Org Method Adds a org to the hashmap 
+\begin{DoxyParams}{Parameters}
+{\em org} & The organization to add to the hash map \\
+\hline
+{\em node} & The node to add with the information about the organization \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classIndex_ac8851c195b72aa3e5c3bc7f3c2516b68}\label{classIndex_ac8851c195b72aa3e5c3bc7f3c2516b68}} 
+\index{Index@{Index}!addPerson@{addPerson}}
+\index{addPerson@{addPerson}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{addPerson()}{addPerson()}}
+{\footnotesize\ttfamily void Index\+::add\+Person (\begin{DoxyParamCaption}\item[{std\+::string \&}]{person,  }\item[{\mbox{\hyperlink{classWordNode}{Word\+Node}} \&}]{node }\end{DoxyParamCaption})}
+
+add\+Person Method Adds a person to the hashmap 
+\begin{DoxyParams}{Parameters}
+{\em person} & The person to add to the hash map \\
+\hline
+{\em node} & The node to add with the information about the person \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classIndex_ac1c8903bc8500fea05fead801b9732dd}\label{classIndex_ac1c8903bc8500fea05fead801b9732dd}} 
+\index{Index@{Index}!addWord@{addWord}}
+\index{addWord@{addWord}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{addWord()}{addWord()}}
+{\footnotesize\ttfamily void Index\+::add\+Word (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classWordNode}{Word\+Node}} \&}]{word }\end{DoxyParamCaption})}
+
+add\+Word Method Adds a word to the words A\+VL Tree 
+\begin{DoxyParams}{Parameters}
+{\em word} & The word to add to the tree \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classIndex_a85bcdfc34b847ab8232e1d8511408616}\label{classIndex_a85bcdfc34b847ab8232e1d8511408616}} 
+\index{Index@{Index}!clearIndex@{clearIndex}}
+\index{clearIndex@{clearIndex}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{clearIndex()}{clearIndex()}}
+{\footnotesize\ttfamily void Index\+::clear\+Index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+clear\+Index Method Clears all information from the index \mbox{\Hypertarget{classIndex_a2fcb74c71ed63019159678b104ddcd84}\label{classIndex_a2fcb74c71ed63019159678b104ddcd84}} 
+\index{Index@{Index}!getNumUniqueOrgs@{getNumUniqueOrgs}}
+\index{getNumUniqueOrgs@{getNumUniqueOrgs}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{getNumUniqueOrgs()}{getNumUniqueOrgs()}}
+{\footnotesize\ttfamily int Index\+::get\+Num\+Unique\+Orgs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Num\+Unique\+Orgs Method \begin{DoxyReturn}{Returns}
+The number of unique organizations entered into the map 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classIndex_a41ae053cdf4d3df5b52eac9b5afac0d2}\label{classIndex_a41ae053cdf4d3df5b52eac9b5afac0d2}} 
+\index{Index@{Index}!getNumUniquePeople@{getNumUniquePeople}}
+\index{getNumUniquePeople@{getNumUniquePeople}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{getNumUniquePeople()}{getNumUniquePeople()}}
+{\footnotesize\ttfamily int Index\+::get\+Num\+Unique\+People (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Num\+Unique\+People Method \begin{DoxyReturn}{Returns}
+The number of unique people entered into the map 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classIndex_afad48ba9ee812bea9adf0b456da09a94}\label{classIndex_afad48ba9ee812bea9adf0b456da09a94}} 
+\index{Index@{Index}!getNumUniqueWords@{getNumUniqueWords}}
+\index{getNumUniqueWords@{getNumUniqueWords}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{getNumUniqueWords()}{getNumUniqueWords()}}
+{\footnotesize\ttfamily int Index\+::get\+Num\+Unique\+Words (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Num\+Unique\+Words Method \begin{DoxyReturn}{Returns}
+The number of unique words read in 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classIndex_a6473af4d8df665e0131eae285a33996d}\label{classIndex_a6473af4d8df665e0131eae285a33996d}} 
+\index{Index@{Index}!getNumWords@{getNumWords}}
+\index{getNumWords@{getNumWords}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{getNumWords()}{getNumWords()}}
+{\footnotesize\ttfamily long long Index\+::get\+Num\+Words (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Num\+Words Method \begin{DoxyReturn}{Returns}
+The number of words read in 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classIndex_a5bad038713cf9db1ce6fc99fcff0c4e0}\label{classIndex_a5bad038713cf9db1ce6fc99fcff0c4e0}} 
+\index{Index@{Index}!getOrgDocs@{getOrgDocs}}
+\index{getOrgDocs@{getOrgDocs}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{getOrgDocs()}{getOrgDocs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classWordNode}{Word\+Node}} \& Index\+::get\+Org\+Docs (\begin{DoxyParamCaption}\item[{std\+::string \&}]{org }\end{DoxyParamCaption})}
+
+get\+Org Method \begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{classWordNode}{Word\+Node}} mapping the searched organization to document they\textquotesingle{}re found in 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classIndex_a7bf3703cc2337d7d5ace367cf0859a61}\label{classIndex_a7bf3703cc2337d7d5ace367cf0859a61}} 
+\index{Index@{Index}!getPeopleDocs@{getPeopleDocs}}
+\index{getPeopleDocs@{getPeopleDocs}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{getPeopleDocs()}{getPeopleDocs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classWordNode}{Word\+Node}} \& Index\+::get\+People\+Docs (\begin{DoxyParamCaption}\item[{std\+::string \&}]{person }\end{DoxyParamCaption})}
+
+get\+People Method \begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{classWordNode}{Word\+Node}} mapping the searched person to document they\textquotesingle{}re found in 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classIndex_acc7915c5c7fa5f604d1642e61f3b99ba}\label{classIndex_acc7915c5c7fa5f604d1642e61f3b99ba}} 
+\index{Index@{Index}!getTop50WordCounts@{getTop50WordCounts}}
+\index{getTop50WordCounts@{getTop50WordCounts}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{getTop50WordCounts()}{getTop50WordCounts()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classWordNode}{Word\+Node}} $>$ \& Index\+::get\+Top50\+Word\+Counts (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classWordNode}{Word\+Node}} $>$ \&}]{top50\+Word\+Counts }\end{DoxyParamCaption})}
+
+get\+Top50\+Word\+Counts Method 
+\begin{DoxyParams}{Parameters}
+{\em top50\+Word\+Counts} & vector to store the top 50 word counts \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The top 50 word counts in order in a vector 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classIndex_ac90cddd31569d11f2d607cd91f9183fa}\label{classIndex_ac90cddd31569d11f2d607cd91f9183fa}} 
+\index{Index@{Index}!getWord@{getWord}}
+\index{getWord@{getWord}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{getWord()}{getWord()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classWordNode}{Word\+Node}} \& Index\+::get\+Word (\begin{DoxyParamCaption}\item[{std\+::string \&}]{word }\end{DoxyParamCaption})}
+
+get\+Word Method Retrieves a \mbox{\hyperlink{classWordNode}{Word\+Node}} from the words \mbox{\hyperlink{classAVLTree}{A\+V\+L\+Tree}} 
+\begin{DoxyParams}{Parameters}
+{\em word} & The word to search for in the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The \mbox{\hyperlink{classWordNode}{Word\+Node}} that was searched for 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classIndex_aba7def185283648fb6d9c346ab2ce287}\label{classIndex_aba7def185283648fb6d9c346ab2ce287}} 
+\index{Index@{Index}!LoadFiles@{LoadFiles}}
+\index{LoadFiles@{LoadFiles}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{LoadFiles()}{LoadFiles()}}
+{\footnotesize\ttfamily void Index\+::\+Load\+Files (\begin{DoxyParamCaption}\item[{std\+::string \&}]{words\+File\+Name,  }\item[{std\+::string \&}]{people\+File\+Name,  }\item[{std\+::string \&}]{orgs\+File\+Name,  }\item[{long \&}]{N\+U\+M\+F\+I\+L\+ES }\end{DoxyParamCaption})}
+
+Load\+Files Method Accepts a few files to parse the indices from 
+\begin{DoxyParams}{Parameters}
+{\em words\+File\+Name} & The name of the file to load the words A\+VL Tree from \\
+\hline
+{\em people\+File\+Name} & The name of the file to load the people Hash Table from \\
+\hline
+{\em orgs\+File\+Name} & The name of the file to load the organizations Hash Table from \\
+\hline
+{\em N\+U\+M\+F\+I\+L\+ES} & The number of files read in \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classIndex_a032b1b4232414f32303586e78409cc83}\label{classIndex_a032b1b4232414f32303586e78409cc83}} 
+\index{Index@{Index}!saveFiles@{saveFiles}}
+\index{saveFiles@{saveFiles}!Index@{Index}}
+\doxysubsubsection{\texorpdfstring{saveFiles()}{saveFiles()}}
+{\footnotesize\ttfamily void Index\+::save\+Files (\begin{DoxyParamCaption}\item[{std\+::string \&}]{words\+File\+Name,  }\item[{std\+::string \&}]{people\+File\+Name,  }\item[{std\+::string \&}]{orgs\+File\+Name,  }\item[{long \&}]{N\+U\+M\+F\+I\+L\+ES }\end{DoxyParamCaption})}
+
+save\+Files Saves the info in index given three file names 
+\begin{DoxyParams}{Parameters}
+{\em words\+File\+Name} & The name of the file to save the words A\+VL Tree \\
+\hline
+{\em people\+File\+Name} & The name of the file to save the people Hash Table \\
+\hline
+{\em orgs\+File\+Name} & The name of the file to save the organizations Hash Table \\
+\hline
+{\em N\+U\+M\+F\+I\+L\+ES} & The number of files read in \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Index.\+h\item 
+Index.\+cpp\end{DoxyCompactItemize}

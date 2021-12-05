@@ -1,0 +1,140 @@
+\hypertarget{classHashMap}{}\doxysection{Hash\+Map$<$ K, V, F $>$ Class Template Reference}
+\label{classHashMap}\index{HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}}
+
+
+{\ttfamily \#include $<$Hash\+Map.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classHashMap_a60dc1b5d2319fe234c44e3c437ed7bed}{Hash\+Map}} ()
+\item 
+\mbox{\Hypertarget{classHashMap_a873169faea36f7ced02a41e1d8361e2e}\label{classHashMap_a873169faea36f7ced02a41e1d8361e2e}} 
+{\bfseries Hash\+Map} (\mbox{\hyperlink{classHashMap}{Hash\+Map}} \&old\+Map)
+\item 
+void \mbox{\hyperlink{classHashMap_a7962cc98f263515d2b5f23de25ba6a3a}{clear}} ()
+\item 
+void \mbox{\hyperlink{classHashMap_ae78422d0dd5f7b3f6b088e3883d6f43c}{save\+Table}} (std\+::string \&filename)
+\item 
+void \mbox{\hyperlink{classHashMap_a8a7c576b73a5534c9b4f4822517d5470}{load\+Table}} (std\+::string \&filename, std\+::function$<$ void(V \&old\+Value, V \&new\+Value)$>$ equality\+Function)
+\item 
+void \mbox{\hyperlink{classHashMap_ac4c504497d9e82d48e41de526a96b04b}{add\+Pair}} (K \&new\+Key, V \&new\+Value, std\+::function$<$ void(V \&old\+Value, V \&new\+Value)$>$ equality\+Function)
+\item 
+void \mbox{\hyperlink{classHashMap_aed5b28bc51860815c86754bf2ee0eed3}{add\+Node}} (\mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K, V $>$ $\ast$\&new\+Node, std\+::function$<$ void(V \&old\+Value, V \&new\+Value)$>$ equality\+Function)
+\item 
+V \& \mbox{\hyperlink{classHashMap_a7f954b2d5c9698f3ca01bfe3a4faf530}{operator\mbox{[}$\,$\mbox{]}}} (K \&search\+Key)
+\item 
+int \mbox{\hyperlink{classHashMap_ab0159e600972e900ec7db3f23884f91f}{get\+Unique}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename K, typename V, typename F = Key\+Hash$<$\+K$>$$>$\newline
+class Hash\+Map$<$ K, V, F $>$}
+
+Outline\+: The \mbox{\hyperlink{classHashMap}{Hash\+Map}} class stores a bunch of values in a vector where each value can be found given a hash Date\+: 12/4/21 Author\+: Gabriel Mongaras Input\+: A key and value pair Output\+: A hashmap with the added key and value pair 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classHashMap_a60dc1b5d2319fe234c44e3c437ed7bed}\label{classHashMap_a60dc1b5d2319fe234c44e3c437ed7bed}} 
+\index{HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}!HashMap@{HashMap}}
+\index{HashMap@{HashMap}!HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}}
+\doxysubsubsection{\texorpdfstring{HashMap()}{HashMap()}}
+{\footnotesize\ttfamily template$<$typename K , typename V , typename F $>$ \\
+\mbox{\hyperlink{classHashMap}{Hash\+Map}}$<$ K, V, F $>$\+::\mbox{\hyperlink{classHashMap}{Hash\+Map}}}
+
+Constructors and Destructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classHashMap_aed5b28bc51860815c86754bf2ee0eed3}\label{classHashMap_aed5b28bc51860815c86754bf2ee0eed3}} 
+\index{HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}!addNode@{addNode}}
+\index{addNode@{addNode}!HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}}
+\doxysubsubsection{\texorpdfstring{addNode()}{addNode()}}
+{\footnotesize\ttfamily template$<$typename K , typename V , typename F $>$ \\
+void \mbox{\hyperlink{classHashMap}{Hash\+Map}}$<$ K, V, F $>$\+::add\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classHashNode}{Hash\+Node}}$<$ K, V $>$ $\ast$\&}]{new\+Node,  }\item[{std\+::function$<$ void(V \&old\+Value, V \&new\+Value)$>$}]{equality\+Function }\end{DoxyParamCaption})}
+
+add\+Node Method Adds a hash node to the map 
+\begin{DoxyParams}{Parameters}
+{\em node} & The node to add \\
+\hline
+{\em equality\+Func} & The function to use if the key was found in the map. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classHashMap_ac4c504497d9e82d48e41de526a96b04b}\label{classHashMap_ac4c504497d9e82d48e41de526a96b04b}} 
+\index{HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}!addPair@{addPair}}
+\index{addPair@{addPair}!HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}}
+\doxysubsubsection{\texorpdfstring{addPair()}{addPair()}}
+{\footnotesize\ttfamily template$<$typename K , typename V , typename F $>$ \\
+void \mbox{\hyperlink{classHashMap}{Hash\+Map}}$<$ K, V, F $>$\+::add\+Pair (\begin{DoxyParamCaption}\item[{K \&}]{new\+Key,  }\item[{V \&}]{new\+Value,  }\item[{std\+::function$<$ void(V \&old\+Value, V \&new\+Value)$>$}]{equality\+Function }\end{DoxyParamCaption})}
+
+add\+Pair Method Adds a key-\/value pair to the map 
+\begin{DoxyParams}{Parameters}
+{\em new\+Key} & The key to add \\
+\hline
+{\em new\+Val} & The value to add \\
+\hline
+{\em equality\+Func} & The function to use if the key was found in the map. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classHashMap_a7962cc98f263515d2b5f23de25ba6a3a}\label{classHashMap_a7962cc98f263515d2b5f23de25ba6a3a}} 
+\index{HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}!clear@{clear}}
+\index{clear@{clear}!HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily template$<$typename K , typename V , typename F $>$ \\
+void \mbox{\hyperlink{classHashMap}{Hash\+Map}}$<$ K, V, F $>$\+::clear}
+
+clear Method Clear all contents in the hash map and frees all the memory \mbox{\Hypertarget{classHashMap_ab0159e600972e900ec7db3f23884f91f}\label{classHashMap_ab0159e600972e900ec7db3f23884f91f}} 
+\index{HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}!getUnique@{getUnique}}
+\index{getUnique@{getUnique}!HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}}
+\doxysubsubsection{\texorpdfstring{getUnique()}{getUnique()}}
+{\footnotesize\ttfamily template$<$typename K , typename V , typename F $>$ \\
+int \mbox{\hyperlink{classHashMap}{Hash\+Map}}$<$ K, V, F $>$\+::get\+Unique}
+
+get\+Unique Method \begin{DoxyReturn}{Returns}
+The number of unique items entered into this hash map 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHashMap_a8a7c576b73a5534c9b4f4822517d5470}\label{classHashMap_a8a7c576b73a5534c9b4f4822517d5470}} 
+\index{HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}!loadTable@{loadTable}}
+\index{loadTable@{loadTable}!HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}}
+\doxysubsubsection{\texorpdfstring{loadTable()}{loadTable()}}
+{\footnotesize\ttfamily template$<$typename K , typename V , typename F $>$ \\
+void \mbox{\hyperlink{classHashMap}{Hash\+Map}}$<$ K, V, F $>$\+::load\+Table (\begin{DoxyParamCaption}\item[{std\+::string \&}]{filename,  }\item[{std\+::function$<$ void(V \&old\+Value, V \&new\+Value)$>$}]{equality\+Function }\end{DoxyParamCaption})}
+
+load\+Table Method Loads all contents from a given files into this table 
+\begin{DoxyParams}{Parameters}
+{\em filename} & The file to read from \\
+\hline
+{\em equality\+Func} & The function to use if the key was found in the map. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classHashMap_a7f954b2d5c9698f3ca01bfe3a4faf530}\label{classHashMap_a7f954b2d5c9698f3ca01bfe3a4faf530}} 
+\index{HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily template$<$typename K , typename V , typename F $>$ \\
+V \& \mbox{\hyperlink{classHashMap}{Hash\+Map}}$<$ K, V, F $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{K \&}]{search\+Key }\end{DoxyParamCaption})}
+
+Overloaded \mbox{[}\mbox{]} Operator Retrieve a value from the map at the location of a given key 
+\begin{DoxyParams}{Parameters}
+{\em search\+Key} & The key used to search for the value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value at the given key 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classHashMap_ae78422d0dd5f7b3f6b088e3883d6f43c}\label{classHashMap_ae78422d0dd5f7b3f6b088e3883d6f43c}} 
+\index{HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}!saveTable@{saveTable}}
+\index{saveTable@{saveTable}!HashMap$<$ K, V, F $>$@{HashMap$<$ K, V, F $>$}}
+\doxysubsubsection{\texorpdfstring{saveTable()}{saveTable()}}
+{\footnotesize\ttfamily template$<$typename K , typename V , typename F $>$ \\
+void \mbox{\hyperlink{classHashMap}{Hash\+Map}}$<$ K, V, F $>$\+::save\+Table (\begin{DoxyParamCaption}\item[{std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+save\+Table Method Saves all contents to a given files in a rereadable format 
+\begin{DoxyParams}{Parameters}
+{\em filename} & The file to save the table to \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Hash\+Map.\+h\end{DoxyCompactItemize}

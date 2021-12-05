@@ -1,0 +1,144 @@
+\hypertarget{classQueryProcessor}{}\doxysection{Query\+Processor Class Reference}
+\label{classQueryProcessor}\index{QueryProcessor@{QueryProcessor}}
+
+
+{\ttfamily \#include $<$Query\+Processor.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classQueryProcessor_a32a6760ff0aab51b38fb8eb236e2e140}{Query\+Processor}} ()
+\item 
+void \mbox{\hyperlink{classQueryProcessor_a7f36fd1b2dd23a320dadf1bfe9b1cc04}{clear\+Index}} ()
+\item 
+std\+::vector$<$ float $>$ \mbox{\hyperlink{classQueryProcessor_a36a92b51a900ae3f6dd96d52bbfaefbf}{get\+Stats}} ()
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classWordNode}{Word\+Node}} $>$ \mbox{\hyperlink{classQueryProcessor_a82372579b3d7f152cdcd96a53050018d}{get\+Top\+Fifty}} ()
+\item 
+void \mbox{\hyperlink{classQueryProcessor_a3de13e51b91475aa8e598056f92b1ed8}{save\+Files}} (std\+::string \&words\+File\+Name, std\+::string \&people\+File\+Name, std\+::string \&orgs\+File\+Name)
+\item 
+void \mbox{\hyperlink{classQueryProcessor_a62458d58efa6c18fbfa07105547eebd3}{Load\+Dir}} (std\+::string \&directory)
+\item 
+void \mbox{\hyperlink{classQueryProcessor_a8c3d0589f4d17d12cafb999608e17b19}{Load\+Files}} (std\+::string \&words\+File\+Name, std\+::string \&people\+File\+Name, std\+::string \&orgs\+File\+Name)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classDocumentNode}{Document\+Node}} $>$ \mbox{\hyperlink{classQueryProcessor_a8041367e207616653afa05426732ca3d}{Process\+Query}} (std\+::string \&query)
+\item 
+bool \mbox{\hyperlink{classQueryProcessor_ab7395af3d7c0ad3a387358109b13b3fd}{is\+Shutdown}} ()
+\item 
+void \mbox{\hyperlink{classQueryProcessor_ad5b64859c772e7b3711b61accd86a977}{Shutdown}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Outline\+: The \mbox{\hyperlink{classQueryProcessor}{Query\+Processor}} class holds information to be used when given a query and uses that information to return the correct results for a given query Date\+: 12/4/21 Author\+: Gabriel Mongaras Input\+: A query to handle and information on that query Output\+: The results for the given query 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classQueryProcessor_a32a6760ff0aab51b38fb8eb236e2e140}\label{classQueryProcessor_a32a6760ff0aab51b38fb8eb236e2e140}} 
+\index{QueryProcessor@{QueryProcessor}!QueryProcessor@{QueryProcessor}}
+\index{QueryProcessor@{QueryProcessor}!QueryProcessor@{QueryProcessor}}
+\doxysubsubsection{\texorpdfstring{QueryProcessor()}{QueryProcessor()}}
+{\footnotesize\ttfamily Query\+Processor\+::\+Query\+Processor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classQueryProcessor_a7f36fd1b2dd23a320dadf1bfe9b1cc04}\label{classQueryProcessor_a7f36fd1b2dd23a320dadf1bfe9b1cc04}} 
+\index{QueryProcessor@{QueryProcessor}!clearIndex@{clearIndex}}
+\index{clearIndex@{clearIndex}!QueryProcessor@{QueryProcessor}}
+\doxysubsubsection{\texorpdfstring{clearIndex()}{clearIndex()}}
+{\footnotesize\ttfamily void Query\+Processor\+::clear\+Index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+clear\+Index Clear all items from the index \mbox{\Hypertarget{classQueryProcessor_a36a92b51a900ae3f6dd96d52bbfaefbf}\label{classQueryProcessor_a36a92b51a900ae3f6dd96d52bbfaefbf}} 
+\index{QueryProcessor@{QueryProcessor}!getStats@{getStats}}
+\index{getStats@{getStats}!QueryProcessor@{QueryProcessor}}
+\doxysubsubsection{\texorpdfstring{getStats()}{getStats()}}
+{\footnotesize\ttfamily std\+::vector$<$ float $>$ Query\+Processor\+::get\+Stats (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Stats \begin{DoxyReturn}{Returns}
+A vector of stats to display 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classQueryProcessor_a82372579b3d7f152cdcd96a53050018d}\label{classQueryProcessor_a82372579b3d7f152cdcd96a53050018d}} 
+\index{QueryProcessor@{QueryProcessor}!getTopFifty@{getTopFifty}}
+\index{getTopFifty@{getTopFifty}!QueryProcessor@{QueryProcessor}}
+\doxysubsubsection{\texorpdfstring{getTopFifty()}{getTopFifty()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classWordNode}{Word\+Node}} $>$ Query\+Processor\+::get\+Top\+Fifty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Top50 \begin{DoxyReturn}{Returns}
+A vector of the top 50 most common words 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classQueryProcessor_ab7395af3d7c0ad3a387358109b13b3fd}\label{classQueryProcessor_ab7395af3d7c0ad3a387358109b13b3fd}} 
+\index{QueryProcessor@{QueryProcessor}!isShutdown@{isShutdown}}
+\index{isShutdown@{isShutdown}!QueryProcessor@{QueryProcessor}}
+\doxysubsubsection{\texorpdfstring{isShutdown()}{isShutdown()}}
+{\footnotesize\ttfamily bool Query\+Processor\+::is\+Shutdown (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+is\+Shutdown Method \begin{DoxyReturn}{Returns}
+True if the search engine is shutdown, false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classQueryProcessor_a62458d58efa6c18fbfa07105547eebd3}\label{classQueryProcessor_a62458d58efa6c18fbfa07105547eebd3}} 
+\index{QueryProcessor@{QueryProcessor}!LoadDir@{LoadDir}}
+\index{LoadDir@{LoadDir}!QueryProcessor@{QueryProcessor}}
+\doxysubsubsection{\texorpdfstring{LoadDir()}{LoadDir()}}
+{\footnotesize\ttfamily void Query\+Processor\+::\+Load\+Dir (\begin{DoxyParamCaption}\item[{std\+::string \&}]{directory }\end{DoxyParamCaption})}
+
+Load\+Dir Method Load the data for the search engine from multiple files in a single directory 
+\begin{DoxyParams}{Parameters}
+{\em directory} & The directory used to load the documents from \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classQueryProcessor_a8c3d0589f4d17d12cafb999608e17b19}\label{classQueryProcessor_a8c3d0589f4d17d12cafb999608e17b19}} 
+\index{QueryProcessor@{QueryProcessor}!LoadFiles@{LoadFiles}}
+\index{LoadFiles@{LoadFiles}!QueryProcessor@{QueryProcessor}}
+\doxysubsubsection{\texorpdfstring{LoadFiles()}{LoadFiles()}}
+{\footnotesize\ttfamily void Query\+Processor\+::\+Load\+Files (\begin{DoxyParamCaption}\item[{std\+::string \&}]{words\+File\+Name,  }\item[{std\+::string \&}]{people\+File\+Name,  }\item[{std\+::string \&}]{orgs\+File\+Name }\end{DoxyParamCaption})}
+
+Load\+Files Method Load the data for the search engine from three different preloaded files 
+\begin{DoxyParams}{Parameters}
+{\em words\+File\+Name} & The name of the file to load the words A\+VL Tree from \\
+\hline
+{\em people\+File\+Name} & The name of the file to load the people Hash Table from \\
+\hline
+{\em orgs\+File\+Name} & The name of the file to load the organizations Hash Table from \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classQueryProcessor_a8041367e207616653afa05426732ca3d}\label{classQueryProcessor_a8041367e207616653afa05426732ca3d}} 
+\index{QueryProcessor@{QueryProcessor}!ProcessQuery@{ProcessQuery}}
+\index{ProcessQuery@{ProcessQuery}!QueryProcessor@{QueryProcessor}}
+\doxysubsubsection{\texorpdfstring{ProcessQuery()}{ProcessQuery()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classDocumentNode}{Document\+Node}} $>$ Query\+Processor\+::\+Process\+Query (\begin{DoxyParamCaption}\item[{std\+::string \&}]{query }\end{DoxyParamCaption})}
+
+Process\+Query Method Processes a given query 
+\begin{DoxyParams}{Parameters}
+{\em query} & The query to process \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The results of the query 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classQueryProcessor_a3de13e51b91475aa8e598056f92b1ed8}\label{classQueryProcessor_a3de13e51b91475aa8e598056f92b1ed8}} 
+\index{QueryProcessor@{QueryProcessor}!saveFiles@{saveFiles}}
+\index{saveFiles@{saveFiles}!QueryProcessor@{QueryProcessor}}
+\doxysubsubsection{\texorpdfstring{saveFiles()}{saveFiles()}}
+{\footnotesize\ttfamily void Query\+Processor\+::save\+Files (\begin{DoxyParamCaption}\item[{std\+::string \&}]{words\+File\+Name,  }\item[{std\+::string \&}]{people\+File\+Name,  }\item[{std\+::string \&}]{orgs\+File\+Name }\end{DoxyParamCaption})}
+
+save\+Files Saves the info in index given three file names 
+\begin{DoxyParams}{Parameters}
+{\em words\+File\+Name} & The name of the file to save the words A\+VL Tree \\
+\hline
+{\em people\+File\+Name} & The name of the file to save the people Hash Table \\
+\hline
+{\em orgs\+File\+Name} & The name of the file to save the organizations Hash Table \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classQueryProcessor_ad5b64859c772e7b3711b61accd86a977}\label{classQueryProcessor_ad5b64859c772e7b3711b61accd86a977}} 
+\index{QueryProcessor@{QueryProcessor}!Shutdown@{Shutdown}}
+\index{Shutdown@{Shutdown}!QueryProcessor@{QueryProcessor}}
+\doxysubsubsection{\texorpdfstring{Shutdown()}{Shutdown()}}
+{\footnotesize\ttfamily void Query\+Processor\+::\+Shutdown (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+shutdown Method Shuts down the search engine 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Query\+Processor.\+h\item 
+Query\+Processor.\+cpp\end{DoxyCompactItemize}

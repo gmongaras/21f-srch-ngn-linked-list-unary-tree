@@ -1,0 +1,157 @@
+\hypertarget{classDocumentProcessor}{}\doxysection{Document\+Processor Class Reference}
+\label{classDocumentProcessor}\index{DocumentProcessor@{DocumentProcessor}}
+
+
+{\ttfamily \#include $<$Document\+Processor.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classDocumentProcessor_a4a4cefc8163b834855aa0cd0aec68d86}{Document\+Processor}} ()
+\item 
+void \mbox{\hyperlink{classDocumentProcessor_ad20072f79cf3b747eefa5fb559972535}{clear\+Index}} ()
+\item 
+std\+::vector$<$ float $>$ \mbox{\hyperlink{classDocumentProcessor_afa0fc9d52829bce8b99adc67e56b6d77}{get\+Stats}} ()
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classWordNode}{Word\+Node}} $>$ \mbox{\hyperlink{classDocumentProcessor_a378cac3882b06121223b568577ef1ed3}{get\+Top\+Fifty}} ()
+\item 
+void \mbox{\hyperlink{classDocumentProcessor_a94c5d0002ceefcf062aac671e8558591}{save\+Files}} (std\+::string \&words\+File\+Name, std\+::string \&people\+File\+Name, std\+::string \&orgs\+File\+Name)
+\item 
+void \mbox{\hyperlink{classDocumentProcessor_a9049d69ad69ede7e914606408fa9401d}{process\+Documents\+Dir}} (const std\+::string \&directory)
+\item 
+void \mbox{\hyperlink{classDocumentProcessor_a8cd6ecc81a8ca2317776660f434ece0f}{process\+Documents\+Files}} (std\+::string \&words\+File\+Name, std\+::string \&people\+File\+Name, std\+::string \&orgs\+File\+Name)
+\item 
+\mbox{\hyperlink{classWordNode}{Word\+Node}} \mbox{\hyperlink{classDocumentProcessor_af426e4d76583a6f89d1170356dac7c46}{search\+Word}} (std\+::string word)
+\item 
+\mbox{\hyperlink{classWordNode}{Word\+Node}} \mbox{\hyperlink{classDocumentProcessor_a702ce69786cbc4b56374e2b6e4cfd6d8}{search\+People}} (std\+::string person)
+\item 
+\mbox{\hyperlink{classWordNode}{Word\+Node}} \mbox{\hyperlink{classDocumentProcessor_adabe74f569d7a7fa1981e6b99b5bedcc}{search\+Orgs}} (std\+::string org)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Outline\+: The \mbox{\hyperlink{classDocumentProcessor}{Document\+Processor}} class processes a set of documents and stores the information. Node\+: The stopword list I used is found at\+: \href{https://www.link-assistant.com/seo-stop-words.html}{\texttt{ https\+://www.\+link-\/assistant.\+com/seo-\/stop-\/words.\+html}} Date\+: 12/4/21 Author\+: Gabriel Mongaras Input\+: A set of documents to parse Output\+: Data on the parsed set of documents 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classDocumentProcessor_a4a4cefc8163b834855aa0cd0aec68d86}\label{classDocumentProcessor_a4a4cefc8163b834855aa0cd0aec68d86}} 
+\index{DocumentProcessor@{DocumentProcessor}!DocumentProcessor@{DocumentProcessor}}
+\index{DocumentProcessor@{DocumentProcessor}!DocumentProcessor@{DocumentProcessor}}
+\doxysubsubsection{\texorpdfstring{DocumentProcessor()}{DocumentProcessor()}}
+{\footnotesize\ttfamily Document\+Processor\+::\+Document\+Processor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default Constructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classDocumentProcessor_ad20072f79cf3b747eefa5fb559972535}\label{classDocumentProcessor_ad20072f79cf3b747eefa5fb559972535}} 
+\index{DocumentProcessor@{DocumentProcessor}!clearIndex@{clearIndex}}
+\index{clearIndex@{clearIndex}!DocumentProcessor@{DocumentProcessor}}
+\doxysubsubsection{\texorpdfstring{clearIndex()}{clearIndex()}}
+{\footnotesize\ttfamily void Document\+Processor\+::clear\+Index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+clear\+Index Clears all items from the index \mbox{\Hypertarget{classDocumentProcessor_afa0fc9d52829bce8b99adc67e56b6d77}\label{classDocumentProcessor_afa0fc9d52829bce8b99adc67e56b6d77}} 
+\index{DocumentProcessor@{DocumentProcessor}!getStats@{getStats}}
+\index{getStats@{getStats}!DocumentProcessor@{DocumentProcessor}}
+\doxysubsubsection{\texorpdfstring{getStats()}{getStats()}}
+{\footnotesize\ttfamily std\+::vector$<$ float $>$ Document\+Processor\+::get\+Stats (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Stats \begin{DoxyReturn}{Returns}
+A vector of stats to display 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classDocumentProcessor_a378cac3882b06121223b568577ef1ed3}\label{classDocumentProcessor_a378cac3882b06121223b568577ef1ed3}} 
+\index{DocumentProcessor@{DocumentProcessor}!getTopFifty@{getTopFifty}}
+\index{getTopFifty@{getTopFifty}!DocumentProcessor@{DocumentProcessor}}
+\doxysubsubsection{\texorpdfstring{getTopFifty()}{getTopFifty()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classWordNode}{Word\+Node}} $>$ Document\+Processor\+::get\+Top\+Fifty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+get\+Top50 \begin{DoxyReturn}{Returns}
+A vector of the top 50 most common words 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classDocumentProcessor_a9049d69ad69ede7e914606408fa9401d}\label{classDocumentProcessor_a9049d69ad69ede7e914606408fa9401d}} 
+\index{DocumentProcessor@{DocumentProcessor}!processDocumentsDir@{processDocumentsDir}}
+\index{processDocumentsDir@{processDocumentsDir}!DocumentProcessor@{DocumentProcessor}}
+\doxysubsubsection{\texorpdfstring{processDocumentsDir()}{processDocumentsDir()}}
+{\footnotesize\ttfamily void Document\+Processor\+::process\+Documents\+Dir (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{directory }\end{DoxyParamCaption})}
+
+process\+Documents\+Dir Method Accepts a directory name to parse .json documents from 
+\begin{DoxyParams}{Parameters}
+{\em directory} & The name of the directory to parse files from \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classDocumentProcessor_a8cd6ecc81a8ca2317776660f434ece0f}\label{classDocumentProcessor_a8cd6ecc81a8ca2317776660f434ece0f}} 
+\index{DocumentProcessor@{DocumentProcessor}!processDocumentsFiles@{processDocumentsFiles}}
+\index{processDocumentsFiles@{processDocumentsFiles}!DocumentProcessor@{DocumentProcessor}}
+\doxysubsubsection{\texorpdfstring{processDocumentsFiles()}{processDocumentsFiles()}}
+{\footnotesize\ttfamily void Document\+Processor\+::process\+Documents\+Files (\begin{DoxyParamCaption}\item[{std\+::string \&}]{words\+File\+Name,  }\item[{std\+::string \&}]{people\+File\+Name,  }\item[{std\+::string \&}]{orgs\+File\+Name }\end{DoxyParamCaption})}
+
+process\+Documents\+Files Method Accepts a few files to parse the indices from 
+\begin{DoxyParams}{Parameters}
+{\em words\+File\+Name} & The name of the file to load the words A\+VL Tree from \\
+\hline
+{\em people\+File\+Name} & The name of the file to load the people Hash Table from \\
+\hline
+{\em orgs\+File\+Name} & The name of the file to load the organizations Hash Table from \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classDocumentProcessor_a94c5d0002ceefcf062aac671e8558591}\label{classDocumentProcessor_a94c5d0002ceefcf062aac671e8558591}} 
+\index{DocumentProcessor@{DocumentProcessor}!saveFiles@{saveFiles}}
+\index{saveFiles@{saveFiles}!DocumentProcessor@{DocumentProcessor}}
+\doxysubsubsection{\texorpdfstring{saveFiles()}{saveFiles()}}
+{\footnotesize\ttfamily void Document\+Processor\+::save\+Files (\begin{DoxyParamCaption}\item[{std\+::string \&}]{words\+File\+Name,  }\item[{std\+::string \&}]{people\+File\+Name,  }\item[{std\+::string \&}]{orgs\+File\+Name }\end{DoxyParamCaption})}
+
+save\+Files Saves the info in index given three file names 
+\begin{DoxyParams}{Parameters}
+{\em words\+File\+Name} & The name of the file to save the words A\+VL Tree \\
+\hline
+{\em people\+File\+Name} & The name of the file to save the people Hash Table \\
+\hline
+{\em orgs\+File\+Name} & The name of the file to save the organizations Hash Table \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classDocumentProcessor_adabe74f569d7a7fa1981e6b99b5bedcc}\label{classDocumentProcessor_adabe74f569d7a7fa1981e6b99b5bedcc}} 
+\index{DocumentProcessor@{DocumentProcessor}!searchOrgs@{searchOrgs}}
+\index{searchOrgs@{searchOrgs}!DocumentProcessor@{DocumentProcessor}}
+\doxysubsubsection{\texorpdfstring{searchOrgs()}{searchOrgs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classWordNode}{Word\+Node}} Document\+Processor\+::search\+Orgs (\begin{DoxyParamCaption}\item[{std\+::string}]{org }\end{DoxyParamCaption})}
+
+search\+Orgs Method Accepts a organization to search for in the Orgs Hash Map and returns the results from the search in the Hash Map 
+\begin{DoxyParams}{Parameters}
+{\em org} & The organization to search for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{classWordNode}{Word\+Node}} containing information on that organization 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classDocumentProcessor_a702ce69786cbc4b56374e2b6e4cfd6d8}\label{classDocumentProcessor_a702ce69786cbc4b56374e2b6e4cfd6d8}} 
+\index{DocumentProcessor@{DocumentProcessor}!searchPeople@{searchPeople}}
+\index{searchPeople@{searchPeople}!DocumentProcessor@{DocumentProcessor}}
+\doxysubsubsection{\texorpdfstring{searchPeople()}{searchPeople()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classWordNode}{Word\+Node}} Document\+Processor\+::search\+People (\begin{DoxyParamCaption}\item[{std\+::string}]{person }\end{DoxyParamCaption})}
+
+search\+People Method Accepts a person to search for in the People Hash Map and returns the results from the search in the Hash Map 
+\begin{DoxyParams}{Parameters}
+{\em person} & The person to search for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{classWordNode}{Word\+Node}} containing information on that person 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classDocumentProcessor_af426e4d76583a6f89d1170356dac7c46}\label{classDocumentProcessor_af426e4d76583a6f89d1170356dac7c46}} 
+\index{DocumentProcessor@{DocumentProcessor}!searchWord@{searchWord}}
+\index{searchWord@{searchWord}!DocumentProcessor@{DocumentProcessor}}
+\doxysubsubsection{\texorpdfstring{searchWord()}{searchWord()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classWordNode}{Word\+Node}} Document\+Processor\+::search\+Word (\begin{DoxyParamCaption}\item[{std\+::string}]{word }\end{DoxyParamCaption})}
+
+search\+Word Method Accepts a word to search for in the Words tree and returns the \mbox{\hyperlink{classWordNode}{Word\+Node}} containing that word 
+\begin{DoxyParams}{Parameters}
+{\em word} & The word to search for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{classWordNode}{Word\+Node}} containing that word 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Document\+Processor.\+h\item 
+Document\+Processor.\+cpp\end{DoxyCompactItemize}
