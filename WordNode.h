@@ -76,8 +76,8 @@ public:
 
     /**
      * getDocuments Method
-     * Returns the word stored in this object
-     * @retrun The stored word in this object
+     * Returns the documents stored in this object
+     * @retrun The documents stored in this object
      */
     AVLTree<DocumentNode>& getDocuments();
 

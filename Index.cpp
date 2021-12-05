@@ -187,7 +187,7 @@ int Index::getNumUniqueWords() {
  **    getTop50WordCounts    **
  *****************************/
 bool sortFunc(const WordNode& a, const WordNode& b) {return (a.getCount() > b.getCount());}
-std::vector<WordNode> Index::getTop50WordCounts() {
+std::vector<WordNode>& Index::getTop50WordCounts(std::vector<WordNode>& top50WordCounts) {
     // Get an inorder vector of the Words AVL Tree
     std::vector<WordNode> inorderAVLTree;
     inorderAVLTree.resize(words.getNumNodes());
@@ -197,15 +197,15 @@ std::vector<WordNode> Index::getTop50WordCounts() {
     std::sort(inorderAVLTree.begin(), inorderAVLTree.end(), sortFunc);
 
     // Get the top 50 words from the vector
-    std::vector<WordNode> topCounts = std::vector<WordNode>(inorderAVLTree.begin(), inorderAVLTree.begin() + std::min((int)inorderAVLTree.size(), 50));
+    top50WordCounts = std::vector<WordNode>(inorderAVLTree.begin(), inorderAVLTree.begin() + std::min((int)inorderAVLTree.size(), 50));
 
     // Reverse the top values
-    inorderAVLTree.clear();
-    inorderAVLTree.resize(0);
-    std::reverse(topCounts.begin(), topCounts.begin());
-    topCounts.shrink_to_fit();
+    std::reverse(top50WordCounts.begin(), top50WordCounts.begin());
+    for (auto& i : top50WordCounts) {
+        i.getDocuments().clearTree();
+    }
 
-    return topCounts;
+    return top50WordCounts;
 }
 
 

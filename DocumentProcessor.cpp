@@ -381,7 +381,7 @@ void DocumentProcessor::processDocumentsDir(const std::string& directory) {
     timeToParse = stop - start;
 
     // Get the top 50 word counts
-    top50WordCounts = index.getTop50WordCounts();
+    top50WordCounts = index.getTop50WordCounts(top50WordCounts);
 }
 
 
@@ -403,7 +403,7 @@ void DocumentProcessor::processDocumentsFiles(std::string& wordsFileName, std::s
     timeToParse = stop - start;
 
     // Get the top 50 word counts
-    top50WordCounts = index.getTop50WordCounts();
+    top50WordCounts = index.getTop50WordCounts(top50WordCounts);
 }
 
 
