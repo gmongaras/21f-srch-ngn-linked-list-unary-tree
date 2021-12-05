@@ -623,11 +623,6 @@ void AVLTree<nodetype>::rotateWithLeftChild(TreeNode<nodetype>*& subtree) {
     subtree->height = std::max(getSubtreeHeight(subtree->left), getSubtreeHeight(subtree->right)) + 1;
     temp->height = std::max(getSubtreeHeight(temp->left), subtree->height) + 1;
     subtree = temp;
-
-//    subtree = subtree->left;
-//    subtree->height = temp->height;
-//    temp->left = subtree->right;
-//    subtree->right = temp;
 }
 
 template <typename nodetype>
@@ -644,11 +639,6 @@ void AVLTree<nodetype>::rotateWithRightChild(TreeNode<nodetype>*& subtree) {
     subtree->height = std::max(getSubtreeHeight(subtree->right), getSubtreeHeight(subtree->left)) + 1;
     temp->height = std::max(getSubtreeHeight(temp->right), subtree->height) + 1;
     subtree = temp;
-
-//    TreeNode<nodetype>* temp = subtree;
-//    subtree = subtree->right;
-//    temp->right = subtree->left;
-//    subtree->left = temp;
 }
 
 template <typename nodetype>
